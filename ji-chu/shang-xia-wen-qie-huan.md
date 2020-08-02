@@ -14,7 +14,7 @@ CPU中的寄存器数量有多少呢，这个肯定跟具体型号的CPU有关�
 
 ## 上下文，jmp\_buf
 
-我们看下Linux中如何标识进程上下文信息。熟悉Linux下c语言开发的同学，应该知道setjmp, longjmp（还有变体形式sigsetjmp/siglongjmp）这两个函数。前者定义一个`jmp_buf`结构体（还有变体形式sigjmp\_buf），后者可以在其他函数中实现跨函数的跳转（goto只能实现函数间跳转）。这里的jmp\_buf（sigjmp\_buf）其实就是表示的任务的栈上下文信息（stack context）。
+我们看下Linux中如何标识进程上下文信息。熟悉Linux下c语言开发的同学，应该知道setjmp, longjmp这两个函数。前者定义一个`jmp_buf`结构体，后者可以在其他函数中实现跨函数的跳转（goto只能实现函数间跳转）。这里的jmp\_buf其实就是表示的任务的栈上下文信息（stack context）。
 
 以下是i386架构中 `struct __jmp_buf` 的定义，x86\_64架构就先不赘述了。
 
@@ -32,7 +32,15 @@ unsigned int __eip; // 指令指针寄存器(程序计数器PC=CS:IP,二者结�
 typedef struct __jmp_buf jmp_buf[1];
 ```
 
-glibc在此基础上还定义了一个新类型，不仅保存处理器硬件上下文，还保存了信号屏蔽字，这些共同构成了setjmp/longjmp时的“上下文信息：
+如果之前有写过汇编或者反汇编的经历，对这些寄存器应该不会太陌生。函数调用开头一般就是 "push epb", "mov ebp, esp", "sub $size, esp"的操作，函数返回前也常看到ret这种对eip进行修改的指令。
+
+简单说，其实就是这些寄存器基本描述了一个任务的当前执行状态，当这个任务被切换出去的时候，需要保存这些寄存器信息到进程PCB（task\_struct）中，等任务下次重新被调度的时候，再从进程PCB中读取并还原到寄存器，任务就可以不间断地继续执行下去。
+
+现在，我们介绍了任务的上下文如何表示，也了解了上下文如何保存、恢复，我们还需要了解更多信息。
+
+## 上下文，sigjmp\_buf
+
+前面提过了jmp\_buf，jmp\_buf有个不足之处，就是它没有考虑信号处理屏蔽字的问题，glibc在此基础上做了改进，定义了一个新的类型`sigjmp_buf`，对应的也提供了函数sigsetjmp/siglongjmp。
 
 ```c
 struct __jmp_buf_tag
@@ -48,13 +56,9 @@ __sigset_t __saved_mask; /* Saved signal mask. */
 typedef struct __jmp_buf_tag jmp_buf[1];
 ```
 
-如果之前有写过汇编或者反汇编的经历，对这些寄存器应该不会太陌生。函数调用开头一般就是 "push epb", "mov ebp, esp", "sub $size, esp"的操作，函数返回前也常看到ret这种对eip进行修改的指令。
+sigjmp\_buf不仅保存了处理器硬件上下文信息（jmp\_buf），还保存了信号屏蔽字，这些共同构成了任务的上下文信息。
 
-简单说，其实就是这些寄存器基本描述了一个任务的当前执行状态，当这个任务被切换出去的时候，需要保存这些寄存器信息到进程PCB（task\_struct）中，等任务下次重新被调度的时候，再从进程PCB中读取并还原到寄存器，任务就可以不间断地继续执行下去。
 
-现在，我们介绍了任务的上下文如何表示，也了解了上下文如何保存、恢复，我们还需要了解更多信息。
-
-上下文
 
 
 
