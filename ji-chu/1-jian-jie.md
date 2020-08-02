@@ -1,6 +1,8 @@
 ---
 description: >-
-  libmill是一个基于c语言开发的go风格协程库，实现了go风格的协程操作、chan操作、非阻塞的网络io操作等等，是一个不错的linux平台下c风格协程库实现。如果你想从0到1的快速了解如何开发一个协程库，libmill将是一个非常不错的案例；如果你想更深入地了解go，libmill里面也借鉴了go的一些设计思想；或者你想在生产环境中使用，开发者也提供了一个更健壮的版本libdill。
+  libmill是Martin Sustrik发起的一个go风格的c语言协程库，讲到这里，可能大家对Martin
+  Sustrik比较陌生，但是对ZeroMQ应该还算了解吧。鼎鼎大名的ZeroMQ之父，正是Martin
+  Sustrik。这一c语言协程库实现代码量1w+左右，但是其设计、实现之精巧，充分展示了作者的深厚功力。学习这样的协程库设计实现真的是非常享受的一件美事。
 ---
 
 # libmill协程库
