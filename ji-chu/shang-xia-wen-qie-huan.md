@@ -30,7 +30,7 @@ unsigned int __eip; // 指令指针寄存器(程序计数器PC=CS:IP,二者结�
 typedef struct __jmp_buf jmp_buf[1];
 ```
 
-glibc在此基础上定义了一个新类型，不仅保存处理器硬件上下文，还保存了信号屏蔽字，这些共同构成了setjmp/longjmp时的“上下文”息：
+glibc在此基础上定义了一个新类型，不仅保存处理器硬件上下文，还保存了信号屏蔽字，这些共同构成了setjmp/longjmp时的“上下文信息：
 
 ```c
 struct __jmp_buf_tag
