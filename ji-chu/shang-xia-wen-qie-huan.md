@@ -40,7 +40,7 @@ typedef struct __jmp_buf jmp_buf[1];
 
 ## 上下文，sigjmp\_buf
 
-前面提过了jmp\_buf，jmp\_buf有个不足之处，就是它没有考虑信号处理屏蔽字的问题，glibc在此基础上做了改进，定义了一个新的类型`sigjmp_buf`，对应的也提供了函数sigsetjmp/siglongjmp。
+前面提过了jmp\_buf，jmp\_buf有个不足之处，就是它没有考虑信号处理掩码的问题，glibc在此基础上做了改进，定义了一个新的类型`sigjmp_buf`，对应的也提供了函数sigsetjmp/siglongjmp。
 
 ```c
 struct __jmp_buf_tag
@@ -56,9 +56,148 @@ __sigset_t __saved_mask; /* Saved signal mask. */
 typedef struct __jmp_buf_tag jmp_buf[1];
 ```
 
-sigjmp\_buf不仅保存了处理器硬件上下文信息（jmp\_buf），还保存了信号屏蔽字，这些共同构成了任务的上下文信息。
+sigjmp\_buf不仅保存了处理器硬件上下文信息（jmp\_buf），还保存了信号掩码，这些共同构成了任务的上下文信息。
 
+## 上下文，ucontext\_t
 
+在经历了jmp\_buf、sigjmp\_buf这样的改进之后，还是不能完全满足要求，我们还需要更加精细有力的上下文切换控制，ucontext\_t诞生了。
+
+在System-V系统中，ucontext.h提供了两个新类型和4个新函数。
+
+上下文对应的类型mcontext\_t是与机器相关的、不透明的，它作为ucontext\_t的一个内部成员。ucontext\_t定义则至少包含了如下字段：
+
+```c
+typedef struct ucontext {
+    // pointer to the context that will be resumed when this context returns
+    struct ucontext *uc_link;
+    
+    // the set of signals that are blocked when this context is active
+    sigset_t         uc_sigmask;
+    
+    // the stack used by this context
+    stack_t          uc_stack;
+    
+    // a machine-specific representation of the saved context
+    mcontext_t       uc_mcontext;
+    ...
+} ucontext_t;
+```
+
+上下文相关的4个操作函数：
+
+```c
+int  getcontext(ucontext_t *);
+int  setcontext(const ucontext_t *);
+void makecontext(ucontext_t *, (void *)(), int, ...);
+int  swapcontext(ucontext_t *, const ucontext_t *);
+```
+
+wikipedia提供了一个非常赞的示例：
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <ucontext.h>
+
+/* The three contexts:
+ *    (1) main_context1 : The point in main to which loop will return.
+ *    (2) main_context2 : The point in main to which control from loop will
+ *                        flow by switching contexts.
+ *    (3) loop_context  : The point in loop to which control from main will
+ *                        flow by switching contexts. */
+ucontext_t main_context1, main_context2, loop_context;
+
+/* The iterator return value. */
+volatile int i_from_iterator;
+
+/* This is the iterator function. It is entered on the first call to
+ * swapcontext, and loops from 0 to 9. Each value is saved in i_from_iterator,
+ * and then swapcontext used to return to the main loop.  The main loop prints
+ * the value and calls swapcontext to swap back into the function. When the end
+ * of the loop is reached, the function exits, and execution switches to the
+ * context pointed to by main_context1. */
+void loop(
+    ucontext_t *loop_context,
+    ucontext_t *other_context,
+    int *i_from_iterator)
+{
+    int i;
+    
+    for (i=0; i < 10; ++i) {
+        /* Write the loop counter into the iterator return location. */
+        *i_from_iterator = i;
+        
+        /* Save the loop context (this point in the code) into ''loop_context'',
+         * and switch to other_context. */
+        swapcontext(loop_context, other_context);
+    }
+    
+    /* The function falls through to the calling context with an implicit
+     * ''setcontext(&loop_context->uc_link);'' */
+} 
+ 
+int main(void)
+{
+    /* The stack for the iterator function. */
+    char iterator_stack[SIGSTKSZ];
+
+    /* Flag indicating that the iterator has completed. */
+    volatile int iterator_finished;
+
+    getcontext(&loop_context);
+    /* Initialise the iterator context. uc_link points to main_context1, the
+     * point to return to when the iterator finishes. */
+    loop_context.uc_link          = &main_context1;
+    loop_context.uc_stack.ss_sp   = iterator_stack;
+    loop_context.uc_stack.ss_size = sizeof(iterator_stack);
+
+    /* Fill in loop_context so that it makes swapcontext start loop. The
+     * (void (*)(void)) typecast is to avoid a compiler warning but it is
+     * not relevant to the behaviour of the function. */
+    makecontext(&loop_context, (void (*)(void)) loop,
+        3, &loop_context, &main_context2, &i_from_iterator);
+   
+    /* Clear the finished flag. */      
+    iterator_finished = 0;
+
+    /* Save the current context into main_context1. When loop is finished,
+     * control flow will return to this point. */
+    getcontext(&main_context1);
+  
+    if (!iterator_finished) {
+        /* Set iterator_finished so that when the previous getcontext is
+         * returned to via uc_link, the above if condition is false and the
+         * iterator is not restarted. */
+        iterator_finished = 1;
+       
+        while (1) {
+            /* Save this point into main_context2 and switch into the iterator.
+             * The first call will begin loop.  Subsequent calls will switch to
+             * the swapcontext in loop. */
+            swapcontext(&main_context2, &loop_context);
+            printf("%d\n", i_from_iterator);
+        }
+    }
+    
+    return 0;
+}
+```
+
+我们可以通过 `gcc -o main main.c` 编译并且通过 `./main` 来运行，运行会得到如下结果：
+
+```text
+$ ./main 
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+```
 
 
 
