@@ -92,7 +92,17 @@ void makecontext(ucontext_t *, (void *)(), int, ...);
 int  swapcontext(ucontext_t *, const ucontext_t *);
 ```
 
-wikipedia提供了一个非常赞的示例：
+wikipedia提供了一个非常赞的示例，来演示如何实现任务切换，如下所示。没有接触过这些的可能开始有点懵，我来解释下这里的逻辑。
+
+程序中创建了3个ucontext\_t变量，main\_context1在68行被设置，loop函数退出时loop函数绑定的loop\_context将被销毁，程序中会隐式调用setcontext\(loop\_context.uc\_link\)来切换到父上下文中去执行，即getcontext\(&main\_context1\)对应的下一条指令地址处（70行）。
+
+main函数执行时，什么时候激活loop函数呢，在while循环内swapcontext的时候（80行），执行到这里的时候，main函数将当前上下文信息存储到main\_context2，并切换到loop\_context去执行，执行什么呢？50行~61行定义了loop\_context的父上下文，以及loop\_context绑定的函数执行时要采用的栈空间，当然还绑定了要执行的函数loop以及传递给loop的参数信息。loop函数将使用数组iterator\_stack\[SIGSTKSZ\]作为自己的栈空间。
+
+loop执行起来之后，会进入一个循环，每轮循环会更新一下变量i\_from\_iterator的值，然后呢，就执行上下文切换swapcontext\(loop\_context, other\_context\)，这里的other\_context刚好是main\_context2，切过去之后就是执行语句printf\("%d\n", i\_from\_iterator\)来完成变量的打印。然后进入while\(1\)循环，此时又会执行上下文切换继续执行loop函数，loop函数从上次停下来的地方继续执行，这样连续打印了0~9。
+
+然后，loop函数for循环结束，退出函数，loop\_context结束，此时函数退出前会隐式调用setcontext以切换到父上下文main\_context1去执行，由于前面main函数执行时已经将变量iterator\_finished更新为了1，所以此时即便从main\_context1继续执行，也不会再次进入while循环再次执行loop函数。
+
+程序正常结束。
 
 ```c
 #include <stdio.h>
@@ -198,6 +208,8 @@ $ ./main
 8
 9
 ```
+
+这里的volatile qualifier是为了避免编译器相关的优化，在这个示例中作用不大，如果是多线程+强一致CPU中还有点用。关于volatile的细节可以参考我的另一篇文章：[https://hitzhangjie.github.io/blog/2019-01-07-%E4%BD%A0%E4%B8%8D%E8%AE%A4%E8%AF%86%E7%9A%84cc++-volatile/](https://hitzhangjie.github.io/blog/2019-01-07-%E4%BD%A0%E4%B8%8D%E8%AE%A4%E8%AF%86%E7%9A%84cc++-volatile/)。
 
 
 
