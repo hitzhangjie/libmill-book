@@ -162,4 +162,6 @@ Go programs can easily support six figures concurrent Goroutine operation, and w
 2. linux kernel documentation, [https://sourcegraph.com/github.com/torvalds/linux/-/blob/Documentation/x86/pti.rst\#L116](https://sourcegraph.com/github.com/torvalds/linux/-/blob/Documentation/x86/pti.rst#L116)
 3. quantifying the cost of context switch, [https://www.usenix.org/legacy/events/expcs07/papers/2-li.pdf](https://www.usenix.org/legacy/events/expcs07/papers/2-li.pdf)
 4. measuring context switching and memory overheads for linux threads, [https://eli.thegreenplace.net/2018/measuring-context-switching-and-memory-overheads-for-linux-threads/](https://eli.thegreenplace.net/2018/measuring-context-switching-and-memory-overheads-for-linux-threads/)
-
+5. thread overhead, [https://github.com/eliben/code-for-blog/tree/master/2018/threadoverhead](https://github.com/eliben/code-for-blog/tree/master/2018/threadoverhead)
+6. user-level threads...with threads, Paul Turner, Google, [https://www.youtube.com/watch?v=KXuZi9aeGTw&feature=youtu.be](https://www.youtube.com/watch?v=KXuZi9aeGTw&feature=youtu.be)
+7. 
