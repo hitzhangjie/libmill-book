@@ -217,7 +217,17 @@ $ ./main
 
 言归正传，我们是否可以直接利用ucontext\_t来实现协程呢？我们还需要考虑下上下文切换的开销才能决定。ucontext\_t的目的是通用，因此其内部mcontext\_t包含了所有的CPU寄存器信息，有些是没必要的，如果每次上下文切换都把寄存器信息保存一下、恢复一下，这里的开销我们人类感觉不到，但是机器是能感觉到的，必须要考虑下，这部分内容我们在下一节介绍。
 
+当前比较火的libgo协程库，之前也是基于ucontext\_t来实现的，不过后面的版本做了些优化，去掉了一些冗余的寄存器的保存、恢复操作，可以参考libgo patches setcontext/getcontext。
 
+> Google's Ian Lance Taylor explained in the commit improving libgo, "Currently, goroutine switches are implemented with libc getcontext/setcontext functions, which saves/restores the machine register states and also the signal context. This does more than what we need, and performs an expensive syscall. This CL implements a simplified version of getcontext/setcontext, in assembly, that only saves/restores the necessary part, i.e. the callee-save registers, and the PC, SP. A simplified version of makecontext, written in C, is also added. Currently this is only implemented on Linux/AMD64."
+
+
+
+参考资料：
+
+1. setcontext, [https://en.wikipedia.org/wiki/Setcontext](https://en.wikipedia.org/wiki/Setcontext)
+2. libgo cheaper context switch on x86\_64,  [https://gcc.gnu.org/legacy-ml/gcc-patches/2019-05/msg02155.html](https://gcc.gnu.org/legacy-ml/gcc-patches/2019-05/msg02155.html)
+3. linux man\(2\)
 
 
 
