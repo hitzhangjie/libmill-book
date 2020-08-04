@@ -16,9 +16,21 @@
 
 间接引入的开销，主要是与cache miss相关的，CPU本身有自己的L1、L2、L3级缓存，对于页式管理还有TLB（转换旁路缓冲），还有分支预测相关的（branch direction, branch target, return buffer），等等。
 
+#### L1~L3 cache miss
+
 CPU本身的L1、L2、L3级缓存，本身是为了加速数据读写、减少对内存的访问所引入的，如果任务切换后，任务需要读写的数据在CPU cache中没有找到，就要再去读写内存并同步到cache中去，这个是比较耗时间的。另外，如果任务之前在当前CPU core的cache上是有数据的，但是经过几次任务切换后，将其调度到了另外的CPU或CPU core上，那么这个时候任务读写数据时也肯定会出现cache miss，也需要读写内存。这些CPU cache miss的问题会带来明显的开销。
 
-操作系统采用页式管理对进程地址空间进行管理，页式管理中很重要的一个操作就是
+![Intel Core i7](../.gitbook/assets/image%20%2815%29.png)
+
+#### TLB cache miss
+
+操作系统采用页式管理对进程地址空间进行管理，为了节省内存空间，操作系统一般都是采用多级页表的方式，如Linux中采用PGD+PUD+PMD+PTE+Offset的方式，这样以更少的内存占用支持了更大的虚地址空间。但是多级页表也有个问题，计算一个虚地址对应的物理地址需要多次读取内存，也有开销。
+
+![](../.gitbook/assets/image%20%2817%29.png)
+
+页式管理中很重要的一个操作就是计算虚拟地址向物理地址的映射。
+
+![&#x9875;&#x5F0F;&#x7BA1;&#x7406;&#x5730;&#x5740;&#x6620;&#x5C04;-TLB](../.gitbook/assets/image%20%2818%29.png)
 
 
 
@@ -61,3 +73,7 @@ Go programs can easily support six figures concurrent Goroutine operation, and w
 
 
 
+参考资料：
+
+1. what is the overhead of a context switch, [https://stackoverflow.com/questions/21887797/what-is-the-overhead-of-a-context-switch/54057079\#54057079](https://stackoverflow.com/questions/21887797/what-is-the-overhead-of-a-context-switch/54057079#54057079)
+2. 
