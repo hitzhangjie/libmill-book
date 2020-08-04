@@ -58,7 +58,9 @@ PCID本身也是有开销的，具体来说，当在某个CPU上的页式映射�
 
 除了这里列出来的，应该还有其他开销，这里就不再讨论了。
 
+## 量化上下文切换开销
 
+前文讨论了上下文切换的开销类型，现在我们来量化下上下文切换的开销。
 
 ## libgo patches get/setcontext
 
@@ -99,4 +101,5 @@ Go programs can easily support six figures concurrent Goroutine operation, and w
 
 1. what is the overhead of a context switch, [https://stackoverflow.com/questions/21887797/what-is-the-overhead-of-a-context-switch/54057079\#54057079](https://stackoverflow.com/questions/21887797/what-is-the-overhead-of-a-context-switch/54057079#54057079)
 2. linux kernel documentation, [https://sourcegraph.com/github.com/torvalds/linux/-/blob/Documentation/x86/pti.rst\#L116](https://sourcegraph.com/github.com/torvalds/linux/-/blob/Documentation/x86/pti.rst#L116)
-3. 
+3. quantifying the cost of context switch, [https://www.usenix.org/legacy/events/expcs07/papers/2-li.pdf](https://www.usenix.org/legacy/events/expcs07/papers/2-li.pdf)
+
