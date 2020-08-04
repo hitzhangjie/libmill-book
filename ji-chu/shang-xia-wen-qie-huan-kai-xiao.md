@@ -36,9 +36,9 @@ CPU本身的L1、L2、L3级缓存，本身是为了加速数据读写、减少�
 
 ### 其他开销
 
+在某些硬件平台上，TLB是有PCID支持的，PCID允许从硬件层面对TLB中的条目进行精细化管理，如淘汰特定的条目。
 
-
-[https://stackoverflow.com/a/54057079](https://stackoverflow.com/a/54057079)
+如果没有PCID支持的话，每次CR3寄存器写操作，都会清空整个TLB，说的再具体点就是执行系统调用、遇到interrupt、exception、trap的时候，都要清空TLB，这也是一种开销。
 
 ## libgo patches get/setcontext
 
@@ -78,4 +78,5 @@ Go programs can easily support six figures concurrent Goroutine operation, and w
 参考资料：
 
 1. what is the overhead of a context switch, [https://stackoverflow.com/questions/21887797/what-is-the-overhead-of-a-context-switch/54057079\#54057079](https://stackoverflow.com/questions/21887797/what-is-the-overhead-of-a-context-switch/54057079#54057079)
-2. 
+2. linux kernel documentation, [https://sourcegraph.com/github.com/torvalds/linux/-/blob/Documentation/x86/pti.rst\#L116](https://sourcegraph.com/github.com/torvalds/linux/-/blob/Documentation/x86/pti.rst#L116)
+3. 
