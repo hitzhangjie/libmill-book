@@ -60,7 +60,13 @@ PCID本身也是有开销的，具体来说，当在某个CPU上的页式映射�
 
 ## 量化上下文切换开销
 
-前文讨论了上下文切换的开销类型，现在我们来量化下上下文切换的开销。
+要想准确地量化上下文切换的开销，就必须要知道这里的开销涉及到哪些类型。前文已经介绍了这里大致包含的开销类型，读者肯定也感受到了量化这一开销的复杂性。
+
+确实，要想量化这里的开销，一方面要考虑具体硬件层面的特性，另一方面也要考虑软件层面的影响，比如系统当时的负载、系统采用的调度器算法（CFS、FIFO等）、任务的优先级，测试程序测量的模拟上下文切换的代码粒度……这些都会影响量化准确性。
+
+针对这一问题，很多系统性能工程师、研究人员进行了探索，可以供我们参考，文末附了部分参考的资料、论文，感兴趣的可以查看以了解更多信息。
+
+
 
 ## libgo patches get/setcontext
 
@@ -102,4 +108,5 @@ Go programs can easily support six figures concurrent Goroutine operation, and w
 1. what is the overhead of a context switch, [https://stackoverflow.com/questions/21887797/what-is-the-overhead-of-a-context-switch/54057079\#54057079](https://stackoverflow.com/questions/21887797/what-is-the-overhead-of-a-context-switch/54057079#54057079)
 2. linux kernel documentation, [https://sourcegraph.com/github.com/torvalds/linux/-/blob/Documentation/x86/pti.rst\#L116](https://sourcegraph.com/github.com/torvalds/linux/-/blob/Documentation/x86/pti.rst#L116)
 3. quantifying the cost of context switch, [https://www.usenix.org/legacy/events/expcs07/papers/2-li.pdf](https://www.usenix.org/legacy/events/expcs07/papers/2-li.pdf)
+4. measuring context switching and memory overheads for linux threads, [https://eli.thegreenplace.net/2018/measuring-context-switching-and-memory-overheads-for-linux-threads/](https://eli.thegreenplace.net/2018/measuring-context-switching-and-memory-overheads-for-linux-threads/)
 
