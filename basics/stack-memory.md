@@ -107,6 +107,58 @@ Disassembly of section __TEXT,__text:
 
 Linux下有个库函数**alloca**可以在当前栈帧上继续分配空间，但是呢，它不会检查是否出现越界的行为，注意了，因为内存分配后，栈顶会发生变化，寄存器%rsp会受到影响，基于这个side effect，我们就可以让rsp指向我们预先分配的堆区内存。
 
+```bash
+       alloca - allocate memory that is automatically freed
+
+SYNOPSIS
+       #include <alloca.h>
+
+       void *alloca(size_t size);
+
+DESCRIPTION
+       The  alloca() function allocates size bytes of space in the stack frame 
+       of the caller.  This temporary space is automatically freed when the 
+       function that called alloca() returns to its caller.
+
+RETURN VALUE
+       The alloca() function returns a pointer to the beginning of the allocated 
+       space.  If the allocation causes stack overflow, program behavior is 
+       undefined.
+
+CONFORMING TO
+       This function is not in POSIX.1-2001.
+
+       There is evidence that the alloca() function appeared in 32V, PWB, PWB.2, 
+       3BSD, and 4BSD. There is a man page for it in 4.3BSD.  
+       Linux uses the GNU version.
+
+NOTES
+       The alloca() function is machine- and compiler-dependent. For certain 
+       applications, its use can improve efficiency compared to the use of malloc(3) 
+       plus free(3). In certain  cases, it can also simplify memory deallocation 
+       in applications that use longjmp(3) or siglongjmp(3). Otherwise, its use 
+       is discouraged.
+
+       Because the space allocated by alloca() is allocated within the stack frame, 
+       that space is automatically freed if the function return is jumped over by 
+       a call to longjmp(3) or siglongjmp(3).
+
+       Do not attempt to free(3) space allocated by alloca()!
+       ...
+
+BUGS
+       There is no error indication if the stack frame cannot be extended.  
+       (However, after a failed allocation, the program is likely to receive 
+       a SIGSEGV signal if it attempts to access the  unallocated space.)
+
+       On  many systems alloca() cannot be used inside the list of arguments 
+       of a function call, because the stack space reserved by alloca() would 
+       appear on the stack in the middle of the space forthe function arguments.
+
+SEE ALSO
+       brk(2), longjmp(3), malloc(3)
+```
+
 libmill里面也是基于此原理，实现让指定的函数go\(func\)将新分配的内存空间当做自己的栈帧继续运行。这样每个协程都有自己的栈空间，再存储一下协程上下文就可以很方便地实现协程切换。如果你看不懂下面的代码，请联系下我上面提及的示例。c语言黑魔法，哈哈哈！
 
 ```c
