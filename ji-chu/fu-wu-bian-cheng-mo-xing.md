@@ -11,13 +11,51 @@ description: >-
 
 ## 服务编程模型
 
-常见的服务编程模型，根据服务并发处理的组织形式，常见的有如下几种。
+常见的服务编程模型，可以根据是采用（单/多）进程模型、（单/多）线程模型、对网络IO的处理方式的差异，进行归类。
 
-### 异步+单/多进程
+我们先解释下一些基本概念。
 
-### 同步+多线程 
+### 进程 vs 线程
+
+进程是资源分配的基本单位，线程是任务调度的基本单位，一个进程可以包含多个线程，线程共享进程资源。进程隔离相对来说更安全，即一个进程崩溃，不会影响到其他的进程。但是进程中一个线程崩溃则可能导致整个进程崩溃。在Linux中一个线程其实是轻量级进程，它共享进程的某些资源而已。
+
+当执行网络IO阻塞，或者执行一些其他的阻塞型系统调用的时候，线程会被阻塞以让出CPU给其他线程执行。这种情况通常在IO密集型服务中关注比较多，也进一步会带来对同步阻塞、同步非阻塞、异步、实时信号驱动等方式的讨论。在Linux下比较成熟的是IO多路复用技术epoll（属于同步非阻塞）。
+
+下面我们来看看常见的编程模型，我们这里涉及到的网络IO将只限于epoll IO多路复用技术（select、poll在需要高并发场景下有明显的不足）。
+
+### 单进程+单线程
+
+如果计算场景是IO密集型，单进程+单线程模型，结合epoll IO多路复用，实现的服务依旧可以获得很高的性能，redis 6之前版本就是基于这种编程模型实现的，可以获得很不错的性能。redis 6版本也引入了多线程来实现更快速的IO。
+
+### 单进程+多线程
+
+单进程+多线程模型，结合epoll IO多路复用，也是比较常见的，比如进程内维护一个线程池，姑且称之为worker threads，然后有一个专门的线程来进行网络IO，收到请求之后将请求dispatch到一个全局request queue中或者各个worker thread特定的request queue中，worker threads从request queue中取走任务完成处理，并将结果写会response queue中，IO线程负责取出响应并回包。
+
+这种编程模型，其实更常见，比如很多Java Web服务都是单进程+多线程的。
+
+### 多进程+单线程
+
+有些服务采用是采用多进程+单线程模型，并结合epoll IO多路复用，这种也比较常见，典型如nginx。nginx服务启动之后会有一个专门的master进程负责配置加载等工作，然后还会起多个worker进程负责建立连接、处理客户端请求。这里的worker采用了多进程模型，而各个进程内部又采用了单线程+IO多路复用的方式，这里的多个worker可以绑定到不同的cpu core充分利用多核处理能力。
+
+笔者在腾讯期间，也见过类似服务编程模型的一些框架，比如用过的较多的Serverbench Plus Plus（俗称SPP）。一个SPP服务部署后主要包括一个proxy进程（单线程）、多个worker进程（单线程）、一个controller进程（单线程）。proxy进程负责网络IO，将请求通过各worker私有的请求队列（基于共享内存实现的无锁队列）分发请求给worker，并从worker私有的响应队列接受worker的处理结果，proxy再回包，这里的网络IO借助了IO多路复用技术。
+
+### 多进程+多线程
+
+多进程+多线程模型，结合epoll IO复用技术，这种可以进一步挖掘并发处理潜力。在单线程程序中，虽然我们可以借助非阻塞fd解决网络IO给线程带来的阻塞问题，也可以借助epoll来实现高效的IO事件处理，但是能够造成线程阻塞的原因，并不只有网络IO一种，有些其他的阻塞性系统调用也是可以导致线程阻塞。
+
+如果只是单线程，并且不可避免地要用到一些阻塞型系统调用的话，那性能就会受影响，多线程程序可以减轻这里的影响。nginx中也可以开启线程池可以让nginx处理性能取得明显提升，来避免某些阻塞操作对性能的影响。
 
 ### 协程
+
+进程比线程重，线程比协程重，线程切换的开销比协程切换开销多太多，对于要求更高并发的场景而言，减少线程切换所引入的开销也是一个研究的重点。
+
+对于网络IO而言，前面我们提到借助epoll IO多路复用技术即可避免线程阻塞问题，但是通过这种epoll事件回调处理的方式来编程，并不是一种很友好的方式。开发人员希望像同步的方式来编写代码，同时又能拥有异步执行的高效。协程是一个解决思路，基于对epoll事件的管理，来绝对何时挂起、恢复一个协程的执行，以实现“同步编码、异步运行”之功效。
+
+当然，我们在任务处理中除了网络IO，还会涉及到一些其他的操作。我们可以创建一个线程，但是我们也了解到了线程的创建、销毁、切换开销都是比较大的，而协程是比较轻量的，它是个不错的选择。如果不能理解协程为何轻量，请阅读这篇文章\[Why Go so fast\]\([https://laptrinhx.com/why-go-so-fast-1818987478/](https://laptrinhx.com/why-go-so-fast-1818987478/)\)。
+
+如果执行时陷入阻塞性系统调用，就会阻塞线程，引起线程切换、恢复的开销，其他任务也可能会被delay，因此对阻塞型系统调用一般也要特殊处理，比如进入之前创建一个新线程，或者协程管理器观测到runnable threads不足时创建新线程来执行任务。
+
+协程从开发者便利性、性能等方面来说，都是很值得追求的，我们也看到不管是Go、Java、C\CPP都有这方面的尝试。
 
 ## 选择合适的编程模型
 
@@ -60,6 +98,14 @@ description: >-
 同一个服务中同时实现两种任务是否满足要求，也要根据具体情况来分析。比如，多数任务是IO密集型，计算密集型占少数，但是少量的计算密集型任务也可能会导致大量的IO密集型任务无法得到快速有效的响应，这种是否符合预期的设计要求，就需要权衡。
 
 是否应该将两种类型的计算任务进行重构、分离，并对两种类型的服务做针对性的优化、部署，这些都要结合具体的场景、预期性能、成本核算来做权衡。
+
+## 参考资料
+
+* \[redis benchmarks\]\([https://redis.io/topics/benchmarks](https://redis.io/topics/benchmarks)\)
+* \[redis6 arrives with multithreading for faster IO\]\([https://www.infoworld.com/article/3541356/redis-6-arrives-with-multithreading-for-faster-io.html](https://www.infoworld.com/article/3541356/redis-6-arrives-with-multithreading-for-faster-io.html)\)
+* \[how can a single threaded nginx handle so many connections\]\([https://stackoverflow.com/questions/29950133/how-can-a-single-threaded-nginx-handle-so-many-connections](https://stackoverflow.com/questions/29950133/how-can-a-single-threaded-nginx-handle-so-many-connections)\)
+* \[Thread Pools in NGINX Boost Performance 9x\]\([https://www.nginx.com/blog/thread-pools-boost-performance-9x/](https://www.nginx.com/blog/thread-pools-boost-performance-9x/)\)
+* \[Why Go so Fast\]\([https://laptrinhx.com/why-go-so-fast-1818987478/](https://laptrinhx.com/why-go-so-fast-1818987478/)\)
 
 #### 
 
