@@ -129,7 +129,7 @@ So，我们就是应该物尽其用，让这1.2μs来发挥更大的价值。所
 
 Google's Ian Lance Taylor explained in the commit improving libgo, "Currently, goroutine switches are implemented with libc getcontext/setcontext functions, which saves/restores the machine register states and also the signal context. This does more than what we need, and performs an expensive syscall. This CL implements a simplified version of getcontext/setcontext, in assembly, that only saves/restores the necessary part, i.e. the callee-save registers, and the PC, SP. A simplified version of makecontext, written in C, is also added. Currently this is only implemented on Linux/AMD64."
 
-{% embed url="https://patchwork.ozlabs.org/project/gcc/patch/CAOyqgcUHhUkx0YqtLea1G5eFWg+0bQBJW-44V=jdjCJpW5VX4A@mail.gmail.com/" %}
+see: \[libgo patch committed: Cheaper context switch on x86\_64\]\([https://patchwork.ozlabs.org/project/gcc/patch/CAOyqgcUHhUkx0YqtLea1G5eFWg+0bQBJW-44V=jdjCJpW5VX4A@mail.gmail.com/](https://patchwork.ozlabs.org/project/gcc/patch/CAOyqgcUHhUkx0YqtLea1G5eFWg+0bQBJW-44V=jdjCJpW5VX4A@mail.gmail.com/)\)
 
 ## go cheaper context switch
 
