@@ -230,7 +230,7 @@ void *mill_prologue_(const char *created) {
 #if defined MILL_VALGRIND
     ......
 #else
-    // 先从cache中取，取不到动态fen'pei
+    // 先从cache中取，取不到动态分配
     struct mill_cr *cr = ((struct mill_cr*)mill_allocstack(NULL)) - 1;
 #endif
     mill_register_cr(&cr->debug, created);
@@ -241,7 +241,7 @@ void *mill_prologue_(const char *created) {
     cr->timer.expiry = -1;
     cr->fd = -1;
     cr->events = 0;
-    mill_trace(created, "{%d}=go()", (int)cr->debug.id);
+    mill_trace(created, "[%d]=go()", (int)cr->debug.id);
     // 挂起父协程并调度新创建的协程来运行
     mill_resume(mill_running, 0);    
     mill_running = cr;
