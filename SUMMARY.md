@@ -1,7 +1,7 @@
 # Table of contents
 
 * [序言](README.md)
-* [作者](zuo-zhe-jian-jie.md)
+* [作者](author.md)
 
 ## Part I - 系统基础 <a id="ji-chu"></a>
 
