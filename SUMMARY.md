@@ -16,18 +16,18 @@
 
 ## Part II - 源码分析 <a id="source"></a>
 
-## chan：通过通信来共享 <a id="share-by-communication-1"></a>
+## chan：通过通信来共享 <a id="communication"></a>
 
 ---
 
-* [chan: 通过通信来共享](share-by-communication.md)
+* [chan: 通过通信来共享](libmill-chan.md)
 
 ## coroutine: 高效轻量级并发 <a id="coroutine"></a>
 
 ---
 
 * [coroutine: libmill.h](coroutine-libmill.md)
-* [coroutine: cr.h/cr.c](coroutine-channel.md)
+* [coroutine: cr.h/cr.c](coroutine-cr.md)
 * [coroutine: mfork](coroutine-mfork.md)
 * [coroutine: stack](coroutine-stack.md)
 
