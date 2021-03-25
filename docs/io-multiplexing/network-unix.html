@@ -1,0 +1,1078 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>network: unix · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="libmill是一个基于c语言开发的go风格协程库，实现了go风格的协程操作、chan操作、非阻塞的网络io操作等等，是一个不错的linux平台下c风格协程库实现。如果你想从0到1的快速了解如何开发一个协程库，libmill将是一个非常不错的案例；如果你想更深入地了解go，libmill里面也借鉴了go的一些设计思想；或者你想在生产环境中使用，开发者也提供了一个更健壮的版本libdill。">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="network-file.html" />
+    
+    
+    <link rel="prev" href="network-udp.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    序言
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="../author.html">
+            
+                <a href="../author.html">
+            
+                    
+                    作者
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">Part I - 系统基础</li>
+        
+        
+    
+        <li class="chapter " data-level="2.1" data-path="../basics/server-programming-model.html">
+            
+                <a href="../basics/server-programming-model.html">
+            
+                    
+                    服务编程模型
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" data-path="../basics/process-thread-coroutine.html">
+            
+                <a href="../basics/process-thread-coroutine.html">
+            
+                    
+                    进程, 线程, 协程
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3" data-path="../basics/libmill-intro.html">
+            
+                <a href="../basics/libmill-intro.html">
+            
+                    
+                    libmill协程库
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.4" data-path="../basics/libdill-intro.html">
+            
+                <a href="../basics/libdill-intro.html">
+            
+                    
+                    libdill协程库
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.5" data-path="../basics/stack-memory.html">
+            
+                <a href="../basics/stack-memory.html">
+            
+                    
+                    栈空间分配
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.6" data-path="../basics/context-switching.html">
+            
+                <a href="../basics/context-switching.html">
+            
+                    
+                    上下文切换
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.7" data-path="../basics/context-switching-cost.html">
+            
+                <a href="../basics/context-switching-cost.html">
+            
+                    
+                    上下文切换开销
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.8" data-path="../basics/thread-model.html">
+            
+                <a href="../basics/thread-model.html">
+            
+                    
+                    线程模型
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">Part II - 源码分析</li>
+        
+        
+    
+
+    
+        
+        <li class="header">chan：通过通信来共享</li>
+        
+        
+    
+        <li class="chapter " data-level="4.1" data-path="../libmill-chan.html">
+            
+                <a href="../libmill-chan.html">
+            
+                    
+                    chan: 通过通信来共享
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">coroutine: 高效轻量级并发</li>
+        
+        
+    
+        <li class="chapter " data-level="5.1" data-path="../coroutine-libmill.html">
+            
+                <a href="../coroutine-libmill.html">
+            
+                    
+                    coroutine: libmill.h
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.2" data-path="../coroutine-cr.html">
+            
+                <a href="../coroutine-cr.html">
+            
+                    
+                    coroutine: cr.h/cr.c
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.3" data-path="../coroutine-mfork.html">
+            
+                <a href="../coroutine-mfork.html">
+            
+                    
+                    coroutine: mfork
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.4" data-path="../coroutine-stack.html">
+            
+                <a href="../coroutine-stack.html">
+            
+                    
+                    coroutine: stack
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">网络IO: 多路复用Hook系统调用</li>
+        
+        
+    
+        <li class="chapter " data-level="6.1" data-path="network-ip.html">
+            
+                <a href="network-ip.html">
+            
+                    
+                    network: ip
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.2" data-path="network-tcp.html">
+            
+                <a href="network-tcp.html">
+            
+                    
+                    network: tcp
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.3" data-path="network-udp.html">
+            
+                <a href="network-udp.html">
+            
+                    
+                    network: udp
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="6.4" data-path="network-unix.html">
+            
+                <a href="network-unix.html">
+            
+                    
+                    network: unix
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.5" data-path="network-file.html">
+            
+                <a href="network-file.html">
+            
+                    
+                    network: file
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.6" data-path="network-poller.html">
+            
+                <a href="network-poller.html">
+            
+                    
+                    network: poller
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">常用数据结构</li>
+        
+        
+    
+        <li class="chapter " data-level="7.1" data-path="../datatypes/datatype-iterator.html">
+            
+                <a href="../datatypes/datatype-iterator.html">
+            
+                    
+                    通用链表及迭代器实现
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="7.2" data-path="../datatypes/datatype-list.html">
+            
+                <a href="../datatypes/datatype-list.html">
+            
+                    
+                    双向链表: list
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="7.3" data-path="../datatypes/datatype-slist.html">
+            
+                <a href="../datatypes/datatype-slist.html">
+            
+                    
+                    单向链表: slist
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">高精度定时器</li>
+        
+        
+    
+        <li class="chapter " data-level="8.1" data-path="../timer/libmill-timer.html">
+            
+                <a href="../timer/libmill-timer.html">
+            
+                    
+                    定时器: timer
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">调试说明</li>
+        
+        
+    
+        <li class="chapter " data-level="9.1" data-path="../debugging/libmill-debugging.html">
+            
+                <a href="../debugging/libmill-debugging.html">
+            
+                    
+                    如何调试libmill
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">常用辅助方法</li>
+        
+        
+    
+        <li class="chapter " data-level="10.1" data-path="../utils/libmill-utils.html">
+            
+                <a href="../utils/libmill-utils.html">
+            
+                    
+                    常用工具函数：函数+宏
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >network: unix</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="network-unix">network: unix</h1>
+<h4 id="unix-socket">unix-socket</h4>
+<pre><code class="lang-c"><span class="hljs-comment">// unix socket&#x63A5;&#x6536;&#x7F13;&#x51B2;&#x5927;&#x5C0F;</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">ifndef</span> MILL_UNIX_BUFLEN</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> MILL_UNIX_BUFLEN (4096)</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span>
+
+<span class="hljs-comment">// unix socket&#x7C7B;&#x578B;</span>
+<span class="hljs-keyword">enum</span> mill_unixtype {
+   MILL_UNIXLISTENER,
+   MILL_UNIXCONN
+};
+
+<span class="hljs-comment">// unix socket</span>
+<span class="hljs-keyword">struct</span> mill_unixsock_ {
+    <span class="hljs-keyword">enum</span> mill_unixtype type;
+};
+
+<span class="hljs-comment">// unix listen socket</span>
+<span class="hljs-keyword">struct</span> mill_unixlistener {
+    <span class="hljs-keyword">struct</span> mill_unixsock_ sock;
+    <span class="hljs-keyword">int</span> fd;
+};
+
+<span class="hljs-comment">// unix conn socket</span>
+<span class="hljs-keyword">struct</span> mill_unixconn {
+    <span class="hljs-keyword">struct</span> mill_unixsock_ sock;
+    <span class="hljs-keyword">int</span> fd;
+    <span class="hljs-keyword">size_t</span> ifirst;  <span class="hljs-comment">// &#x63A5;&#x6536;&#x7F13;&#x51B2;&#x533A;&#x4E2D;&#x5269;&#x4F59;&#x6570;&#x636E;&#x8D77;&#x59CB;&#x4F4D;&#x7F6E;</span>
+    <span class="hljs-keyword">size_t</span> ilen;    <span class="hljs-comment">// &#x63A5;&#x6536;&#x7F13;&#x51B2;&#x533A;&#x4E2D;&#x5269;&#x4F59;&#x6570;&#x636E;&#x957F;&#x5EA6;</span>
+    <span class="hljs-keyword">size_t</span> olen;    <span class="hljs-comment">// &#x53D1;&#x9001;&#x7F13;&#x51B2;&#x533A;&#x4E2D;&#x5269;&#x4F59;&#x6570;&#x636E;&#x957F;&#x5EA6;</span>
+    <span class="hljs-keyword">char</span> ibuf[MILL_UNIX_BUFLEN];    <span class="hljs-comment">// &#x63A5;&#x6536;&#x7F13;&#x51B2;&#x533A;</span>
+    <span class="hljs-keyword">char</span> obuf[MILL_UNIX_BUFLEN];    <span class="hljs-comment">// &#x53D1;&#x9001;&#x7F13;&#x51B2;&#x533A;</span>
+};
+
+<span class="hljs-comment">// unix socket tune (&#x8BBE;&#x4E3A;nonblocking &amp; &#x5C4F;&#x853D;SIGPIPE)</span>
+<span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">mill_unixtune</span><span class="hljs-params">(<span class="hljs-keyword">int</span> s)</span> </span>{
+    <span class="hljs-comment">/* Make the socket non-blocking. */</span>
+    <span class="hljs-keyword">int</span> opt = fcntl(s, F_GETFL, <span class="hljs-number">0</span>);
+    <span class="hljs-keyword">if</span> (opt == <span class="hljs-number">-1</span>)
+        opt = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">int</span> rc = fcntl(s, F_SETFL, opt | O_NONBLOCK);
+    mill_assert(rc != <span class="hljs-number">-1</span>);
+    <span class="hljs-comment">/* If possible, prevent SIGPIPE signal when writing to the connection
+        already closed by the peer. */</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">ifdef</span> SO_NOSIGPIPE</span>
+    opt = <span class="hljs-number">1</span>;
+    rc = setsockopt (s, SOL_SOCKET, SO_NOSIGPIPE, &amp;opt, <span class="hljs-keyword">sizeof</span> (opt));
+    mill_assert (rc == <span class="hljs-number">0</span> || errno == EINVAL);
+<span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span>
+}
+
+<span class="hljs-comment">// unix socket &#x5730;&#x5740;&#x8BBE;&#x7F6E;</span>
+<span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> <span class="hljs-title">mill_unixresolve</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> *addr, <span class="hljs-keyword">struct</span> sockaddr_un *su)</span> </span>{
+    mill_assert(su);
+    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">strlen</span>(addr) &gt;= <span class="hljs-keyword">sizeof</span>(su-&gt;sun_path)) {
+        errno = EINVAL;
+        <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
+    }
+    su-&gt;sun_family = AF_UNIX;
+    <span class="hljs-built_in">strncpy</span>(su-&gt;sun_path, addr, <span class="hljs-keyword">sizeof</span>(su-&gt;sun_path));
+    errno = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+
+<span class="hljs-comment">// unix conn socket &#x521D;&#x59CB;&#x5316;</span>
+<span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">unixconn_init</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> mill_unixconn *conn, <span class="hljs-keyword">int</span> fd)</span> </span>{
+    conn-&gt;sock.type = MILL_UNIXCONN;
+    conn-&gt;fd = fd;
+    conn-&gt;ifirst = <span class="hljs-number">0</span>;
+    conn-&gt;ilen = <span class="hljs-number">0</span>;
+    conn-&gt;olen = <span class="hljs-number">0</span>;
+}
+
+<span class="hljs-comment">// unix listen socket &#x521D;&#x59CB;&#x5316;</span>
+<span class="hljs-function"><span class="hljs-keyword">struct</span> mill_unixsock_ *<span class="hljs-title">mill_unixlisten_</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> *addr, <span class="hljs-keyword">int</span> backlog)</span> </span>{
+    <span class="hljs-keyword">struct</span> sockaddr_un su;
+    <span class="hljs-keyword">int</span> rc = mill_unixresolve(addr, &amp;su);
+    <span class="hljs-keyword">if</span> (rc != <span class="hljs-number">0</span>) {
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>;
+    }
+    <span class="hljs-comment">/* Open the listening socket. */</span>
+    <span class="hljs-keyword">int</span> s = socket(AF_UNIX, SOCK_STREAM, <span class="hljs-number">0</span>);
+    <span class="hljs-keyword">if</span>(s == <span class="hljs-number">-1</span>)
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>;
+    mill_unixtune(s);
+
+    <span class="hljs-comment">/* Start listening. */</span>
+    rc = bind(s, (<span class="hljs-keyword">struct</span> sockaddr*)&amp;su, <span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">struct</span> sockaddr_un));
+    <span class="hljs-keyword">if</span>(rc != <span class="hljs-number">0</span>)
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>;
+    rc = listen(s, backlog);
+    <span class="hljs-keyword">if</span>(rc != <span class="hljs-number">0</span>)
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>;
+
+    <span class="hljs-comment">/* Create the object. */</span>
+    <span class="hljs-keyword">struct</span> mill_unixlistener *l = <span class="hljs-built_in">malloc</span>(<span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">struct</span> mill_unixlistener));
+    <span class="hljs-keyword">if</span>(!l) {
+        fdclean(s);
+        close(s);
+        errno = ENOMEM;
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>;
+    }
+    l-&gt;sock.type = MILL_UNIXLISTENER;
+    l-&gt;fd = s;
+    errno = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">return</span> &amp;l-&gt;sock;
+}
+
+<span class="hljs-comment">// unix listen socket &#x63A5;&#x53D7;&#x4E00;&#x4E2A;&#x8FDE;&#x63A5;&#x8BF7;&#x6C42;&#xFF08;&#x975E;&#x963B;&#x585E;&#x65B9;&#x5F0F;&#xFF09;</span>
+<span class="hljs-function"><span class="hljs-keyword">struct</span> mill_unixsock_ *<span class="hljs-title">mill_unixaccept_</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> mill_unixsock_ *s, int64_t deadline)</span> </span>{
+    <span class="hljs-keyword">if</span>(s-&gt;type != MILL_UNIXLISTENER)
+        mill_panic(<span class="hljs-string">&quot;trying to accept on a socket that isn&apos;t listening&quot;</span>);
+    <span class="hljs-keyword">struct</span> mill_unixlistener *l = (<span class="hljs-keyword">struct</span> mill_unixlistener*)s;
+    <span class="hljs-keyword">while</span>(<span class="hljs-number">1</span>) {
+        <span class="hljs-comment">/* Try to get new connection (non-blocking). */</span>
+        <span class="hljs-keyword">int</span> as = accept(l-&gt;fd, <span class="hljs-literal">NULL</span>, <span class="hljs-literal">NULL</span>);
+        <span class="hljs-keyword">if</span> (as &gt;= <span class="hljs-number">0</span>) {
+            mill_unixtune(as);
+            <span class="hljs-keyword">struct</span> mill_unixconn *conn = <span class="hljs-built_in">malloc</span>(<span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">struct</span> mill_unixconn));
+            <span class="hljs-keyword">if</span>(!conn) {
+                fdclean(as);
+                close(as);
+                errno = ENOMEM;
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>;
+            }
+            unixconn_init(conn, as);
+            errno = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">return</span> (<span class="hljs-keyword">struct</span> mill_unixsock_*)conn;
+        }
+        mill_assert(as == <span class="hljs-number">-1</span>);
+        <span class="hljs-keyword">if</span>(errno != EAGAIN &amp;&amp; errno != EWOULDBLOCK)
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>;
+        <span class="hljs-comment">/* Wait till new connection is available. */</span>
+        <span class="hljs-keyword">int</span> rc = fdwait(l-&gt;fd, FDW_IN, deadline);
+        <span class="hljs-keyword">if</span>(rc == <span class="hljs-number">0</span>) {
+            errno = ETIMEDOUT;
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>;
+        }
+        <span class="hljs-keyword">if</span>(rc &amp; FDW_ERR)
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>;
+        mill_assert(rc == FDW_IN);
+    }
+}
+
+<span class="hljs-comment">// unix socket &#x8FDE;&#x63A5;&#x5230;&#x670D;&#x52A1;&#x5730;&#x5740;&#xFF08;&#x975E;&#x963B;&#x585E;&#x65B9;&#x5F0F;&#xFF09;</span>
+<span class="hljs-function"><span class="hljs-keyword">struct</span> mill_unixsock_ *<span class="hljs-title">mill_unixconnect_</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> *addr)</span> </span>{
+    <span class="hljs-keyword">struct</span> sockaddr_un su;
+    <span class="hljs-keyword">int</span> rc = mill_unixresolve(addr, &amp;su);
+    <span class="hljs-keyword">if</span> (rc != <span class="hljs-number">0</span>) {
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>;
+    }
+
+    <span class="hljs-comment">/* Open a socket. */</span>
+    <span class="hljs-keyword">int</span> s = socket(AF_UNIX,  SOCK_STREAM, <span class="hljs-number">0</span>);
+    <span class="hljs-keyword">if</span>(s == <span class="hljs-number">-1</span>)
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>;
+    mill_unixtune(s);
+
+    <span class="hljs-comment">/* Connect to the remote endpoint. */</span>
+    rc = connect(s, (<span class="hljs-keyword">struct</span> sockaddr*)&amp;su, <span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">struct</span> sockaddr_un));
+    <span class="hljs-keyword">if</span>(rc != <span class="hljs-number">0</span>) {
+        <span class="hljs-keyword">int</span> err = errno;
+        mill_assert(rc == <span class="hljs-number">-1</span>);
+        fdclean(s);
+        close(s);
+        errno = err;
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>;
+    }
+
+    <span class="hljs-comment">/* Create the object. */</span>
+    <span class="hljs-keyword">struct</span> mill_unixconn *conn = <span class="hljs-built_in">malloc</span>(<span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">struct</span> mill_unixconn));
+    <span class="hljs-keyword">if</span>(!conn) {
+        fdclean(s);
+        close(s);
+        errno = ENOMEM;
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>;
+    }
+    unixconn_init(conn, s);
+    errno = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">return</span> (<span class="hljs-keyword">struct</span> mill_unixsock_*)conn;
+}
+
+<span class="hljs-comment">// &#x521B;&#x5EFA; unix socket pair &#xFF08;&#x975E;&#x963B;&#x585E;&#x65B9;&#x5F0F;&#xFF09;</span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">mill_unixpair_</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> mill_unixsock_ **a, <span class="hljs-keyword">struct</span> mill_unixsock_ **b)</span> </span>{
+    <span class="hljs-keyword">if</span>(!a || !b) {
+        errno = EINVAL;
+        <span class="hljs-keyword">return</span>;
+    }
+    <span class="hljs-keyword">int</span> fd[<span class="hljs-number">2</span>];
+    <span class="hljs-keyword">int</span> rc = socketpair(AF_UNIX, SOCK_STREAM, <span class="hljs-number">0</span>, fd);
+    <span class="hljs-keyword">if</span> (rc != <span class="hljs-number">0</span>)
+        <span class="hljs-keyword">return</span>;
+    mill_unixtune(fd[<span class="hljs-number">0</span>]);
+    mill_unixtune(fd[<span class="hljs-number">1</span>]);
+    <span class="hljs-keyword">struct</span> mill_unixconn *conn = <span class="hljs-built_in">malloc</span>(<span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">struct</span> mill_unixconn));
+    <span class="hljs-keyword">if</span>(!conn) {
+        fdclean(fd[<span class="hljs-number">0</span>]);
+        close(fd[<span class="hljs-number">0</span>]);
+        fdclean(fd[<span class="hljs-number">1</span>]);
+        close(fd[<span class="hljs-number">1</span>]);
+        errno = ENOMEM;
+        <span class="hljs-keyword">return</span>;
+    }
+    unixconn_init(conn, fd[<span class="hljs-number">0</span>]);
+    *a = (<span class="hljs-keyword">struct</span> mill_unixsock_*)conn;
+    conn = <span class="hljs-built_in">malloc</span>(<span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">struct</span> mill_unixconn));
+    <span class="hljs-keyword">if</span>(!conn) {
+        <span class="hljs-built_in">free</span>(*a);
+        fdclean(fd[<span class="hljs-number">0</span>]);
+        close(fd[<span class="hljs-number">0</span>]);
+        fdclean(fd[<span class="hljs-number">1</span>]);
+        close(fd[<span class="hljs-number">1</span>]);
+        errno = ENOMEM;
+        <span class="hljs-keyword">return</span>;
+    }
+    unixconn_init(conn, fd[<span class="hljs-number">1</span>]);
+    *b = (<span class="hljs-keyword">struct</span> mill_unixsock_*)conn;
+    errno = <span class="hljs-number">0</span>;
+}
+
+<span class="hljs-comment">// unix socket send&#xFF08;&#x975E;&#x963B;&#x585E;&#x65B9;&#x5F0F;&#xFF09;</span>
+<span class="hljs-keyword">size_t</span> mill_unixsend_(<span class="hljs-keyword">struct</span> mill_unixsock_ *s, <span class="hljs-keyword">const</span> <span class="hljs-keyword">void</span> *buf, <span class="hljs-keyword">size_t</span> len, <span class="hljs-keyword">int64_t</span> deadline) {
+    <span class="hljs-keyword">if</span>(s-&gt;type != MILL_UNIXCONN)
+        mill_panic(<span class="hljs-string">&quot;trying to send to an unconnected socket&quot;</span>);
+    <span class="hljs-keyword">struct</span> mill_unixconn *conn = (<span class="hljs-keyword">struct</span> mill_unixconn*)s;
+
+    <span class="hljs-comment">// &#x5982;&#x679C;&#x8F93;&#x51FA;&#x7F13;&#x51B2;&#x4E2D;&#x5269;&#x4F59;&#x7A7A;&#x95F4;&#x53EF;&#x4EE5;&#x5BB9;&#x7EB3;&#x5F85;&#x53D1;&#x9001;&#x6570;&#x636E;&#xFF0C;&#x5219;&#x5C06;&#x5F85;&#x53D1;&#x9001;&#x6570;&#x636E;&#x76F4;&#x63A5;&#x62F7;&#x8D1D;&#x5230;&#x8F93;&#x51FA;&#x7F13;&#x51B2;</span>
+    <span class="hljs-keyword">if</span>(conn-&gt;olen + len &lt;= MILL_UNIX_BUFLEN) {
+        <span class="hljs-built_in">memcpy</span>(&amp;conn-&gt;obuf[conn-&gt;olen], buf, len);
+        conn-&gt;olen += len;
+        errno = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">return</span> len;
+    }
+
+    <span class="hljs-comment">// &#x5982;&#x679C;&#x8F93;&#x51FA;&#x7F13;&#x51B2;&#x5269;&#x4F59;&#x7A7A;&#x95F4;&#x4E0D;&#x80FD;&#x5BB9;&#x7EB3;&#x5F85;&#x53D1;&#x9001;&#x6570;&#x636E;&#xFF0C;&#x5219;&#x5148;&#x53D1;&#x9001;&#x8F93;&#x51FA;&#x7F13;&#x51B2;&#x4E2D;&#x6570;&#x636E;&#x817E;&#x7A7A;&#x95F4;</span>
+    unixflush(s, deadline);
+    <span class="hljs-keyword">if</span>(errno != <span class="hljs-number">0</span>)
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+
+    <span class="hljs-comment">// unixflush&#x4E0D;&#x4E00;&#x5B9A;&#x628A;&#x6570;&#x636E;&#x53D1;&#x9001;&#x5B8C;&#xFF08;&#x8D85;&#x65F6;&#x8FD4;&#x56DE;&#x60C5;&#x51B5;&#x4E0B;&#xFF09;&#xFF0C;&#x9700;&#x518D;&#x6B21;&#x68C0;&#x67E5;&#x5269;&#x4F59;&#x7A7A;&#x95F4;&#x662F;&#x5426;&#x80FD;&#x5BB9;&#x7EB3;&#x5F85;&#x53D1;&#x9001;&#x6570;&#x636E;&#xFF0C;</span>
+    <span class="hljs-comment">// &#x80FD;&#x5BB9;&#x7EB3;&#x5219;&#x76F4;&#x63A5;&#x5C06;&#x5F85;&#x53D1;&#x9001;&#x6570;&#x636E;&#x62F7;&#x8D1D;&#x5230;&#x8F93;&#x51FA;&#x7F13;&#x51B2;&#x533A;&#x4E2D;</span>
+    <span class="hljs-keyword">if</span>(conn-&gt;olen + len &lt;= MILL_UNIX_BUFLEN) {
+        <span class="hljs-built_in">memcpy</span>(&amp;conn-&gt;obuf[conn-&gt;olen], buf, len);
+        conn-&gt;olen += len;
+        errno = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">return</span> len;
+    }
+
+    <span class="hljs-comment">// &#x7ECF;&#x8FC7;&#x4E0A;&#x8FF0;unixflush&#x5904;&#x7406;&#x540E;&#xFF0C;&#x53D1;&#x9001;&#x7F13;&#x51B2;&#x533A;&#x8FD8;&#x662F;&#x65E0;&#x6CD5;&#x5BB9;&#x7EB3;&#x4E0B;&#x5F85;&#x53D1;&#x9001;&#x6570;&#x636E;&#xFF0C;&#x5219;&#x76F4;&#x63A5;&#x5C31;&#x5730;&#x53D1;&#x9001;&#x5F85;&#x53D1;&#x9001;&#x6570;&#x636E;</span>
+    <span class="hljs-keyword">char</span> *pos = (<span class="hljs-keyword">char</span>*)buf;
+    <span class="hljs-keyword">size_t</span> remaining = len;
+    <span class="hljs-keyword">while</span>(remaining) {
+        <span class="hljs-keyword">ssize_t</span> sz = send(conn-&gt;fd, pos, remaining, <span class="hljs-number">0</span>);
+        <span class="hljs-keyword">if</span>(sz == <span class="hljs-number">-1</span>) {
+            <span class="hljs-comment">/* Operating systems are inconsistent w.r.t. returning EPIPE and
+               ECONNRESET. Let&apos;s paper over it like this. */</span>
+            <span class="hljs-keyword">if</span>(errno == EPIPE) {
+                errno = ECONNRESET;
+                <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+            }
+            <span class="hljs-keyword">if</span>(errno != EAGAIN &amp;&amp; errno != EWOULDBLOCK)
+                <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">int</span> rc = fdwait(conn-&gt;fd, FDW_OUT, deadline);
+            <span class="hljs-keyword">if</span>(rc == <span class="hljs-number">0</span>) {
+                errno = ETIMEDOUT;
+                <span class="hljs-keyword">return</span> len - remaining;
+            }
+            <span class="hljs-keyword">continue</span>;
+        }
+        pos += sz;
+        remaining -= sz;
+    }
+    errno = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">return</span> len;
+}
+
+<span class="hljs-comment">// unix socket &#x5C06;&#x53D1;&#x9001;&#x7F13;&#x51B2;&#x533A;&#x4E2D;&#x7684;&#x6570;&#x636E;&#x53D1;&#x9001;&#x51FA;&#x53BB;&#xFF08;&#x975E;&#x963B;&#x585E;&#x65B9;&#x5F0F;&#xFF0C;&#x8D85;&#x65F6;&#x8FD4;&#x56DE;&#x505C;&#x6B62;&#x53D1;&#x9001;&#xFF09;</span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">mill_unixflush_</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> mill_unixsock_ *s, int64_t deadline)</span> </span>{
+    <span class="hljs-keyword">if</span>(s-&gt;type != MILL_UNIXCONN)
+        mill_panic(<span class="hljs-string">&quot;trying to send to an unconnected socket&quot;</span>);
+    <span class="hljs-keyword">struct</span> mill_unixconn *conn = (<span class="hljs-keyword">struct</span> mill_unixconn*)s;
+    <span class="hljs-keyword">if</span>(!conn-&gt;olen) {
+        errno = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">return</span>;
+    }
+    <span class="hljs-keyword">char</span> *pos = conn-&gt;obuf;
+    <span class="hljs-keyword">size_t</span> remaining = conn-&gt;olen;
+    <span class="hljs-keyword">while</span>(remaining) {
+        <span class="hljs-keyword">ssize_t</span> sz = send(conn-&gt;fd, pos, remaining, <span class="hljs-number">0</span>);
+        <span class="hljs-keyword">if</span>(sz == <span class="hljs-number">-1</span>) {
+            <span class="hljs-comment">/* Operating systems are inconsistent w.r.t. returning EPIPE and
+               ECONNRESET. Let&apos;s paper over it like this. */</span>
+            <span class="hljs-keyword">if</span>(errno == EPIPE) {
+                errno = ECONNRESET;
+                <span class="hljs-keyword">return</span>;
+            }
+            <span class="hljs-keyword">if</span>(errno != EAGAIN &amp;&amp; errno != EWOULDBLOCK)
+                <span class="hljs-keyword">return</span>;
+            <span class="hljs-keyword">int</span> rc = fdwait(conn-&gt;fd, FDW_OUT, deadline);
+            <span class="hljs-keyword">if</span>(rc == <span class="hljs-number">0</span>) {
+                errno = ETIMEDOUT;
+                <span class="hljs-keyword">return</span>;
+            }
+            <span class="hljs-keyword">continue</span>;
+        }
+        pos += sz;
+        remaining -= sz;
+    }
+    conn-&gt;olen = <span class="hljs-number">0</span>;
+    errno = <span class="hljs-number">0</span>;
+}
+
+<span class="hljs-comment">// unix socket recv&#xFF08;&#x975E;&#x963B;&#x585E;&#x65B9;&#x5F0F;&#xFF09;</span>
+<span class="hljs-keyword">size_t</span> mill_unixrecv_(<span class="hljs-keyword">struct</span> mill_unixsock_ *s, <span class="hljs-keyword">void</span> *buf, <span class="hljs-keyword">size_t</span> len, <span class="hljs-keyword">int64_t</span> deadline) {
+    <span class="hljs-keyword">if</span>(s-&gt;type != MILL_UNIXCONN)
+        mill_panic(<span class="hljs-string">&quot;trying to receive from an unconnected socket&quot;</span>);
+    <span class="hljs-keyword">struct</span> mill_unixconn *conn = (<span class="hljs-keyword">struct</span> mill_unixconn*)s;
+
+    <span class="hljs-comment">// &#x5982;&#x679C;&#x63A5;&#x6536;&#x7F13;&#x51B2;&#x533A;&#x4E2D;&#x6709;&#x8DB3;&#x591F;&#x7684;&#x6570;&#x636E;&#xFF0C;&#x76F4;&#x63A5;&#x62F7;&#x8D1D;&#x5230;&#x7528;&#x6237;&#x6307;&#x5B9A;buf&#x5373;&#x53EF;</span>
+    <span class="hljs-keyword">if</span>(conn-&gt;ilen &gt;= len) {
+        <span class="hljs-built_in">memcpy</span>(buf, &amp;conn-&gt;ibuf[conn-&gt;ifirst], len);
+        conn-&gt;ifirst += len;
+        conn-&gt;ilen -= len;
+        errno = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">return</span> len;
+    }
+
+    <span class="hljs-comment">// &#x5982;&#x679C;&#x63A5;&#x6536;&#x7F13;&#x51B2;&#x533A;&#x4E2D;&#x6CA1;&#x6709;&#x8DB3;&#x591F;&#x7684;&#x6570;&#x636E;&#xFF0C;&#x5219;&#x5148;&#x62F7;&#x8D1D;&#x6709;&#x7684;&#x6570;&#x636E;&#x5230;&#x7528;&#x6237;&#x6307;&#x5B9A;buf&#xFF0C;&#x518D;&#x7EE7;&#x7EED;&#x63A5;&#x6536;&#x5269;&#x4F59;&#x6570;&#x636E;</span>
+    <span class="hljs-keyword">char</span> *pos = (<span class="hljs-keyword">char</span>*)buf;
+    <span class="hljs-keyword">size_t</span> remaining = len;
+    <span class="hljs-built_in">memcpy</span>(pos, &amp;conn-&gt;ibuf[conn-&gt;ifirst], conn-&gt;ilen);
+    pos += conn-&gt;ilen;
+    remaining -= conn-&gt;ilen;
+    conn-&gt;ifirst = <span class="hljs-number">0</span>;
+    conn-&gt;ilen = <span class="hljs-number">0</span>;
+
+    <span class="hljs-comment">// &#x7EE7;&#x7EED;&#x8BFB;&#x53D6;&#x5269;&#x4F59;&#x6570;&#x636E;</span>
+    mill_assert(remaining);
+    <span class="hljs-keyword">while</span>(<span class="hljs-number">1</span>) {
+        <span class="hljs-keyword">if</span>(remaining &gt; MILL_UNIX_BUFLEN) {
+            <span class="hljs-comment">// &#x5982;&#x679C;&#x8FD8;&#x6709;&#x5F88;&#x591A;&#x6570;&#x636E;&#x8981;&#x8BFB;&#xFF0C;&#x4E3A;&#x51CF;&#x5C11;&#x7CFB;&#x7EDF;&#x8C03;&#x7528;&#x6B21;&#x6570;&#x76F4;&#x63A5;&#x5C06;&#x6570;&#x636E;&#x8BFB;&#x53D6;&#x5230;&#x7528;&#x6237;&#x6307;&#x5B9A;buf</span>
+            <span class="hljs-keyword">ssize_t</span> sz = recv(conn-&gt;fd, pos, remaining, <span class="hljs-number">0</span>);
+            <span class="hljs-keyword">if</span>(!sz) {
+                errno = ECONNRESET;
+                <span class="hljs-keyword">return</span> len - remaining;
+            }
+            <span class="hljs-keyword">if</span>(sz == <span class="hljs-number">-1</span>) {
+                <span class="hljs-keyword">if</span>(errno != EAGAIN &amp;&amp; errno != EWOULDBLOCK)
+                    <span class="hljs-keyword">return</span> len - remaining;
+                sz = <span class="hljs-number">0</span>;
+            }
+            <span class="hljs-keyword">if</span>((<span class="hljs-keyword">size_t</span>)sz == remaining) {
+                errno = <span class="hljs-number">0</span>;
+                <span class="hljs-keyword">return</span> len;
+            }
+            pos += sz;
+            remaining -= sz;
+        }
+        <span class="hljs-keyword">else</span> {
+            <span class="hljs-comment">// &#x5982;&#x679C;&#x8981;&#x63A5;&#x6536;&#x7684;&#x5269;&#x4F59;&#x6570;&#x636E;&#x4E0D;&#x591A;&#x4E86;&#xFF0C;&#x5219;&#x63A5;&#x6536;&#x5230;&#x63A5;&#x6536;&#x7F13;&#x51B2;&#x533A;&#x4E2D;&#xFF0C;&#x518D;&#x62F7;&#x8D1D;&#x5230;&#x7528;&#x6237;&#x6307;&#x5B9A;buf</span>
+            <span class="hljs-comment">// &#x63A5;&#x6536;MILL_UNIX_BUFLEN&#x7684;&#x6570;&#x636E;&#xFF0C;&#x76EE;&#x7684;&#x662F;&#x51CF;&#x5C11;&#x4E4B;&#x540E;mill_recv&#x53EF;&#x80FD;&#x5F15;&#x53D1;&#x7684;recv&#x7CFB;&#x7EDF;&#x8C03;&#x7528;&#x7684;&#x6B21;&#x6570;</span>
+            <span class="hljs-keyword">ssize_t</span> sz = recv(conn-&gt;fd, conn-&gt;ibuf, MILL_UNIX_BUFLEN, <span class="hljs-number">0</span>);
+            <span class="hljs-keyword">if</span>(!sz) {
+                errno = ECONNRESET;
+                <span class="hljs-keyword">return</span> len - remaining;
+            }
+            <span class="hljs-keyword">if</span>(sz == <span class="hljs-number">-1</span>) {
+                <span class="hljs-keyword">if</span>(errno != EAGAIN &amp;&amp; errno != EWOULDBLOCK)
+                    <span class="hljs-keyword">return</span> len - remaining;
+                sz = <span class="hljs-number">0</span>;
+            }
+            <span class="hljs-keyword">if</span>((<span class="hljs-keyword">size_t</span>)sz &lt; remaining) {
+                <span class="hljs-built_in">memcpy</span>(pos, conn-&gt;ibuf, sz);
+                pos += sz;
+                remaining -= sz;
+                conn-&gt;ifirst = <span class="hljs-number">0</span>;
+                conn-&gt;ilen = <span class="hljs-number">0</span>;
+            }
+            <span class="hljs-keyword">else</span> {
+                <span class="hljs-built_in">memcpy</span>(pos, conn-&gt;ibuf, remaining);
+                conn-&gt;ifirst = remaining;
+                conn-&gt;ilen = sz - remaining;
+                errno = <span class="hljs-number">0</span>;
+                <span class="hljs-keyword">return</span> len;
+            }
+        }
+
+        <span class="hljs-comment">// &#x7EE7;&#x7EED;&#x7B49;&#x5F85;&#x540E;&#x7EED;&#x6570;&#x636E;&#x53EF;&#x8BFB;&#x4E8B;&#x4EF6;&#x5230;&#x8FBE;&#xFF0C;&#x7136;&#x540E;&#x8BFB;&#x53D6;&#xFF08;&#x82E5;&#x8D85;&#x65F6;&#x5219;&#x8FD4;&#x56DE;&#x505C;&#x6B62;&#x63A5;&#x6536;&#xFF09;</span>
+        <span class="hljs-keyword">int</span> res = fdwait(conn-&gt;fd, FDW_IN, deadline);
+        <span class="hljs-keyword">if</span>(!res) {
+            errno = ETIMEDOUT;
+            <span class="hljs-keyword">return</span> len - remaining;
+        }
+    }
+}
+
+<span class="hljs-comment">// unix socket recv &#x8BFB;&#x53D6;len bytes&#x5230;buf&#xFF0C;&#x8BFB;&#x53D6;&#x5230;&#x6307;&#x5B9A;delimiter&#x4F1A;&#x505C;&#x6B62;&#x8BFB;&#x53D6;&#xFF08;&#x975E;&#x963B;&#x585E;&#x65B9;&#x5F0F;&#xFF09;</span>
+<span class="hljs-keyword">size_t</span> mill_unixrecvuntil_(<span class="hljs-keyword">struct</span> mill_unixsock_ *s, <span class="hljs-keyword">void</span> *buf, <span class="hljs-keyword">size_t</span> len,
+      <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> *delims, <span class="hljs-keyword">size_t</span> delimcount, <span class="hljs-keyword">int64_t</span> deadline) {
+    <span class="hljs-keyword">if</span>(s-&gt;type != MILL_UNIXCONN)
+        mill_panic(<span class="hljs-string">&quot;trying to receive from an unconnected socket&quot;</span>);
+    <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span> *pos = (<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span>*)buf;
+    <span class="hljs-keyword">size_t</span> i;
+    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">0</span>; i != len; ++i, ++pos) {
+        <span class="hljs-keyword">size_t</span> res = unixrecv(s, pos, <span class="hljs-number">1</span>, deadline);
+        <span class="hljs-keyword">if</span>(res == <span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">size_t</span> j;
+            <span class="hljs-keyword">for</span>(j = <span class="hljs-number">0</span>; j != delimcount; ++j)
+                <span class="hljs-keyword">if</span>(*pos == delims[j])
+                    <span class="hljs-keyword">return</span> i + <span class="hljs-number">1</span>;
+        }
+        <span class="hljs-keyword">if</span> (errno != <span class="hljs-number">0</span>)
+            <span class="hljs-keyword">return</span> i + res;
+    }
+    errno = ENOBUFS;
+    <span class="hljs-keyword">return</span> len;
+}
+
+<span class="hljs-comment">// &#x5173;&#x95ED;socket&#xFF0C;&#x5199;&#x5173;&#x95ED;&#x6216;&#x8005;&#x8BFB;&#x5173;&#x95ED;&#x6216;&#x8005;both</span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">mill_unixshutdown_</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> mill_unixsock_ *s, <span class="hljs-keyword">int</span> how)</span> </span>{
+    mill_assert(s-&gt;type == MILL_UNIXCONN);
+    <span class="hljs-keyword">struct</span> mill_unixconn *c = (<span class="hljs-keyword">struct</span> mill_unixconn*)s;
+    <span class="hljs-keyword">int</span> rc = shutdown(c-&gt;fd, how);
+    mill_assert(rc == <span class="hljs-number">0</span> || errno == ENOTCONN);
+}
+
+<span class="hljs-comment">// &#x5173;&#x95ED;unix socket&#xFF08;&#x7EDF;&#x4E00;&#x5904;&#x7406;&#x76D1;&#x542C;socket&#x548C;&#x8FDE;&#x63A5;socket&#xFF09;</span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">mill_unixclose_</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> mill_unixsock_ *s)</span> </span>{
+    <span class="hljs-keyword">if</span>(s-&gt;type == MILL_UNIXLISTENER) {
+        <span class="hljs-keyword">struct</span> mill_unixlistener *l = (<span class="hljs-keyword">struct</span> mill_unixlistener*)s;
+        fdclean(l-&gt;fd);
+        <span class="hljs-keyword">int</span> rc = close(l-&gt;fd);
+        mill_assert(rc == <span class="hljs-number">0</span>);
+        <span class="hljs-built_in">free</span>(l);
+        <span class="hljs-keyword">return</span>;
+    }
+    <span class="hljs-keyword">if</span>(s-&gt;type == MILL_UNIXCONN) {
+        <span class="hljs-keyword">struct</span> mill_unixconn *c = (<span class="hljs-keyword">struct</span> mill_unixconn*)s;
+        fdclean(c-&gt;fd);
+        <span class="hljs-keyword">int</span> rc = close(c-&gt;fd);
+        mill_assert(rc == <span class="hljs-number">0</span>);
+        <span class="hljs-built_in">free</span>(c);
+        <span class="hljs-keyword">return</span>;
+    }
+    mill_assert(<span class="hljs-number">0</span>);
+}
+</code></pre>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="network-udp.html" class="navigation navigation-prev " aria-label="Previous page: network: udp">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="network-file.html" class="navigation navigation-next " aria-label="Next page: network: file">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"description":"libmill是一个基于c语言开发的go风格协程库，实现了go风格的协程操作、chan操作、非阻塞的网络io操作等等，是一个不错的linux平台下c风格协程库实现。如果你想从0到1的快速了解如何开发一个协程库，libmill将是一个非常不错的案例；如果你想更深入地了解go，libmill里面也借鉴了go的一些设计思想；或者你想在生产环境中使用，开发者也提供了一个更健壮的版本libdill。","title":"network: unix","level":"6.4","depth":1,"next":{"title":"network: file","level":"6.5","depth":1,"path":"io-multiplexing/network-file.md","ref":"io-multiplexing/network-file.md","articles":[]},"previous":{"title":"network: udp","level":"6.3","depth":1,"path":"io-multiplexing/network-udp.md","ref":"io-multiplexing/network-udp.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"io-multiplexing/network-unix.md","mtime":"2021-03-25T18:20:16.960Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-03-25T19:09:21.649Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

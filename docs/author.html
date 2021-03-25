@@ -1,0 +1,640 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>作者 · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="我是一名90后开发者，现在腾讯担任后台开发工程师。对我来说，开发者除了日常开发，它也应该包含了开源协同、交流分享、知识传承的含义。自己也喜欢钻研、交流技术，从自由软件、开源协同、会议、博客中也学到很多，自己也希望在工作之余分享些对技术的学习、思考。18年初学习go时完成了libmill的源码分析，并整理成笔记的形式，现系统性梳理下分享给大家。">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="basics/server-programming-model.html" />
+    
+    
+    <link rel="prev" href="./" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    序言
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.2" data-path="author.html">
+            
+                <a href="author.html">
+            
+                    
+                    作者
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">Part I - 系统基础</li>
+        
+        
+    
+        <li class="chapter " data-level="2.1" data-path="basics/server-programming-model.html">
+            
+                <a href="basics/server-programming-model.html">
+            
+                    
+                    服务编程模型
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" data-path="basics/process-thread-coroutine.html">
+            
+                <a href="basics/process-thread-coroutine.html">
+            
+                    
+                    进程, 线程, 协程
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3" data-path="basics/libmill-intro.html">
+            
+                <a href="basics/libmill-intro.html">
+            
+                    
+                    libmill协程库
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.4" data-path="basics/libdill-intro.html">
+            
+                <a href="basics/libdill-intro.html">
+            
+                    
+                    libdill协程库
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.5" data-path="basics/stack-memory.html">
+            
+                <a href="basics/stack-memory.html">
+            
+                    
+                    栈空间分配
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.6" data-path="basics/context-switching.html">
+            
+                <a href="basics/context-switching.html">
+            
+                    
+                    上下文切换
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.7" data-path="basics/context-switching-cost.html">
+            
+                <a href="basics/context-switching-cost.html">
+            
+                    
+                    上下文切换开销
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.8" data-path="basics/thread-model.html">
+            
+                <a href="basics/thread-model.html">
+            
+                    
+                    线程模型
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">Part II - 源码分析</li>
+        
+        
+    
+
+    
+        
+        <li class="header">chan：通过通信来共享</li>
+        
+        
+    
+        <li class="chapter " data-level="4.1" data-path="libmill-chan.html">
+            
+                <a href="libmill-chan.html">
+            
+                    
+                    chan: 通过通信来共享
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">coroutine: 高效轻量级并发</li>
+        
+        
+    
+        <li class="chapter " data-level="5.1" data-path="coroutine-libmill.html">
+            
+                <a href="coroutine-libmill.html">
+            
+                    
+                    coroutine: libmill.h
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.2" data-path="coroutine-cr.html">
+            
+                <a href="coroutine-cr.html">
+            
+                    
+                    coroutine: cr.h/cr.c
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.3" data-path="coroutine-mfork.html">
+            
+                <a href="coroutine-mfork.html">
+            
+                    
+                    coroutine: mfork
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.4" data-path="coroutine-stack.html">
+            
+                <a href="coroutine-stack.html">
+            
+                    
+                    coroutine: stack
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">网络IO: 多路复用Hook系统调用</li>
+        
+        
+    
+        <li class="chapter " data-level="6.1" data-path="io-multiplexing/network-ip.html">
+            
+                <a href="io-multiplexing/network-ip.html">
+            
+                    
+                    network: ip
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.2" data-path="io-multiplexing/network-tcp.html">
+            
+                <a href="io-multiplexing/network-tcp.html">
+            
+                    
+                    network: tcp
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.3" data-path="io-multiplexing/network-udp.html">
+            
+                <a href="io-multiplexing/network-udp.html">
+            
+                    
+                    network: udp
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.4" data-path="io-multiplexing/network-unix.html">
+            
+                <a href="io-multiplexing/network-unix.html">
+            
+                    
+                    network: unix
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.5" data-path="io-multiplexing/network-file.html">
+            
+                <a href="io-multiplexing/network-file.html">
+            
+                    
+                    network: file
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.6" data-path="io-multiplexing/network-poller.html">
+            
+                <a href="io-multiplexing/network-poller.html">
+            
+                    
+                    network: poller
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">常用数据结构</li>
+        
+        
+    
+        <li class="chapter " data-level="7.1" data-path="datatypes/datatype-iterator.html">
+            
+                <a href="datatypes/datatype-iterator.html">
+            
+                    
+                    通用链表及迭代器实现
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="7.2" data-path="datatypes/datatype-list.html">
+            
+                <a href="datatypes/datatype-list.html">
+            
+                    
+                    双向链表: list
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="7.3" data-path="datatypes/datatype-slist.html">
+            
+                <a href="datatypes/datatype-slist.html">
+            
+                    
+                    单向链表: slist
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">高精度定时器</li>
+        
+        
+    
+        <li class="chapter " data-level="8.1" data-path="timer/libmill-timer.html">
+            
+                <a href="timer/libmill-timer.html">
+            
+                    
+                    定时器: timer
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">调试说明</li>
+        
+        
+    
+        <li class="chapter " data-level="9.1" data-path="debugging/libmill-debugging.html">
+            
+                <a href="debugging/libmill-debugging.html">
+            
+                    
+                    如何调试libmill
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">常用辅助方法</li>
+        
+        
+    
+        <li class="chapter " data-level="10.1" data-path="utils/libmill-utils.html">
+            
+                <a href="utils/libmill-utils.html">
+            
+                    
+                    常用工具函数：函数+宏
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="." >作者</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="&#x4F5C;&#x8005;">&#x4F5C;&#x8005;</h1>
+<ul>
+<li>&#x5F20;&#x6770;&#xFF0C;&#x817E;&#x8BAF;&#x9AD8;&#x7EA7;&#x5DE5;&#x7A0B;&#x5E08;&#xFF0C;hit.zhangjie@gmail.com</li>
+</ul>
+<p><img src="assets/image%20%286%29.png" alt="&#x4F5C;&#x8005;&#xFF1A;&#x5F20;&#x6770;&#xFF0C;&#x817E;&#x8BAF;&#x9AD8;&#x7EA7;&#x5DE5;&#x7A0B;&#x5E08;"></p>
+<ul>
+<li>&#x5F20;&#x5143;&#x5B9D;&#xFF0C;XX&#x9AD8;&#x7EA7;&#x6363;&#x4E71;&#x55B5;&#xFF0C;zyb@earth.galacy</li>
+<li>&#x5F20;&#x5C0F;&#x4E03;&#xFF0C;XX&#x9AD8;&#x7EA7;&#x62C6;&#x5BB6;&#x6C6A;&#xFF0C;zxq@earth.galacy</li>
+</ul>
+<p>ps&#xFF1A;&#x987D;&#x76AE;&#x4E00;&#x4E0B;&#xFF0C;&#x611F;&#x8C22;&#x5143;&#x5B9D;&#x3001;&#x5C0F;&#x4E03;&#x4E24;&#x4F4D;&#x7231;&#x5BA0;&#x7684;&#x966A;&#x4F34; :)</p>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="./" class="navigation navigation-prev " aria-label="Previous page: 序言">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="basics/server-programming-model.html" class="navigation navigation-next " aria-label="Next page: 服务编程模型">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"description":"我是一名90后开发者，现在腾讯担任后台开发工程师。对我来说，开发者除了日常开发，它也应该包含了开源协同、交流分享、知识传承的含义。自己也喜欢钻研、交流技术，从自由软件、开源协同、会议、博客中也学到很多，自己也希望在工作之余分享些对技术的学习、思考。18年初学习go时完成了libmill的源码分析，并整理成笔记的形式，现系统性梳理下分享给大家。","title":"作者","level":"1.2","depth":1,"next":{"title":"服务编程模型","level":"2.1","depth":1,"path":"basics/server-programming-model.md","ref":"basics/server-programming-model.md","articles":[]},"previous":{"title":"序言","level":"1.1","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"author.md","mtime":"2021-03-25T18:20:16.896Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-03-25T19:09:21.649Z"},"basePath":".","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="gitbook/gitbook.js"></script>
+    <script src="gitbook/theme.js"></script>
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

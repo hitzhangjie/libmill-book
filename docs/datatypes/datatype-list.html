@@ -1,0 +1,739 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>双向链表: list · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="libmill是一个基于c语言开发的go风格协程库，实现了go风格的协程操作、chan操作、非阻塞的网络io操作等等，是一个不错的linux平台下c风格协程库实现。如果你想从0到1的快速了解如何开发一个协程库，libmill将是一个非常不错的案例；如果你想更深入地了解go，libmill里面也借鉴了go的一些设计思想；或者你想在生产环境中使用，开发者也提供了一个更健壮的版本libdill。">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="datatype-slist.html" />
+    
+    
+    <link rel="prev" href="datatype-iterator.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    序言
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="../author.html">
+            
+                <a href="../author.html">
+            
+                    
+                    作者
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">Part I - 系统基础</li>
+        
+        
+    
+        <li class="chapter " data-level="2.1" data-path="../basics/server-programming-model.html">
+            
+                <a href="../basics/server-programming-model.html">
+            
+                    
+                    服务编程模型
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" data-path="../basics/process-thread-coroutine.html">
+            
+                <a href="../basics/process-thread-coroutine.html">
+            
+                    
+                    进程, 线程, 协程
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3" data-path="../basics/libmill-intro.html">
+            
+                <a href="../basics/libmill-intro.html">
+            
+                    
+                    libmill协程库
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.4" data-path="../basics/libdill-intro.html">
+            
+                <a href="../basics/libdill-intro.html">
+            
+                    
+                    libdill协程库
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.5" data-path="../basics/stack-memory.html">
+            
+                <a href="../basics/stack-memory.html">
+            
+                    
+                    栈空间分配
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.6" data-path="../basics/context-switching.html">
+            
+                <a href="../basics/context-switching.html">
+            
+                    
+                    上下文切换
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.7" data-path="../basics/context-switching-cost.html">
+            
+                <a href="../basics/context-switching-cost.html">
+            
+                    
+                    上下文切换开销
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.8" data-path="../basics/thread-model.html">
+            
+                <a href="../basics/thread-model.html">
+            
+                    
+                    线程模型
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">Part II - 源码分析</li>
+        
+        
+    
+
+    
+        
+        <li class="header">chan：通过通信来共享</li>
+        
+        
+    
+        <li class="chapter " data-level="4.1" data-path="../libmill-chan.html">
+            
+                <a href="../libmill-chan.html">
+            
+                    
+                    chan: 通过通信来共享
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">coroutine: 高效轻量级并发</li>
+        
+        
+    
+        <li class="chapter " data-level="5.1" data-path="../coroutine-libmill.html">
+            
+                <a href="../coroutine-libmill.html">
+            
+                    
+                    coroutine: libmill.h
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.2" data-path="../coroutine-cr.html">
+            
+                <a href="../coroutine-cr.html">
+            
+                    
+                    coroutine: cr.h/cr.c
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.3" data-path="../coroutine-mfork.html">
+            
+                <a href="../coroutine-mfork.html">
+            
+                    
+                    coroutine: mfork
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.4" data-path="../coroutine-stack.html">
+            
+                <a href="../coroutine-stack.html">
+            
+                    
+                    coroutine: stack
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">网络IO: 多路复用Hook系统调用</li>
+        
+        
+    
+        <li class="chapter " data-level="6.1" data-path="../io-multiplexing/network-ip.html">
+            
+                <a href="../io-multiplexing/network-ip.html">
+            
+                    
+                    network: ip
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.2" data-path="../io-multiplexing/network-tcp.html">
+            
+                <a href="../io-multiplexing/network-tcp.html">
+            
+                    
+                    network: tcp
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.3" data-path="../io-multiplexing/network-udp.html">
+            
+                <a href="../io-multiplexing/network-udp.html">
+            
+                    
+                    network: udp
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.4" data-path="../io-multiplexing/network-unix.html">
+            
+                <a href="../io-multiplexing/network-unix.html">
+            
+                    
+                    network: unix
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.5" data-path="../io-multiplexing/network-file.html">
+            
+                <a href="../io-multiplexing/network-file.html">
+            
+                    
+                    network: file
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.6" data-path="../io-multiplexing/network-poller.html">
+            
+                <a href="../io-multiplexing/network-poller.html">
+            
+                    
+                    network: poller
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">常用数据结构</li>
+        
+        
+    
+        <li class="chapter " data-level="7.1" data-path="datatype-iterator.html">
+            
+                <a href="datatype-iterator.html">
+            
+                    
+                    通用链表及迭代器实现
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="7.2" data-path="datatype-list.html">
+            
+                <a href="datatype-list.html">
+            
+                    
+                    双向链表: list
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="7.3" data-path="datatype-slist.html">
+            
+                <a href="datatype-slist.html">
+            
+                    
+                    单向链表: slist
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">高精度定时器</li>
+        
+        
+    
+        <li class="chapter " data-level="8.1" data-path="../timer/libmill-timer.html">
+            
+                <a href="../timer/libmill-timer.html">
+            
+                    
+                    定时器: timer
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">调试说明</li>
+        
+        
+    
+        <li class="chapter " data-level="9.1" data-path="../debugging/libmill-debugging.html">
+            
+                <a href="../debugging/libmill-debugging.html">
+            
+                    
+                    如何调试libmill
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">常用辅助方法</li>
+        
+        
+    
+        <li class="chapter " data-level="10.1" data-path="../utils/libmill-utils.html">
+            
+                <a href="../utils/libmill-utils.html">
+            
+                    
+                    常用工具函数：函数+宏
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >双向链表: list</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="&#x53CC;&#x5411;&#x94FE;&#x8868;-list">&#x53CC;&#x5411;&#x94FE;&#x8868;: list</h1>
+<p><strong>1 list.h</strong></p>
+<p>mill_list&#x662F;&#x4E00;&#x4E2A;&#x53CC;&#x5411;&#x94FE;&#x8868;&#xFF0C;&#x94FE;&#x8868;&#x5185;&#x90E8;&#x7684;&#x94FE;&#x63A5;&#x901A;&#x8FC7;mill_list_item&#x6765;&#x7EF4;&#x62A4;&#xFF0C;mill_list_item&#x4E0E;mill_cont&#x76F8;&#x5F53;&#x4E8E;&#x5B9E;&#x73B0;&#x4E86;list&#x4E2D;&#x7684;iterator&#x3002;</p>
+<pre><code class="lang-c"><span class="hljs-keyword">struct</span> mill_list_item {
+    <span class="hljs-keyword">struct</span> mill_list_item *next;
+    <span class="hljs-keyword">struct</span> mill_list_item *prev;
+};
+
+<span class="hljs-keyword">struct</span> mill_list {
+    <span class="hljs-keyword">struct</span> mill_list_item *first;
+    <span class="hljs-keyword">struct</span> mill_list_item *last;
+};
+
+<span class="hljs-comment">/* Initialise the list. To statically initialise the list use = {0}. */</span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">mill_list_init</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> mill_list *self)</span></span>;
+
+<span class="hljs-comment">/* True is the list has no items. */</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> mill_list_empty(self) (!((self)-&gt;first))</span>
+
+<span class="hljs-comment">/* Returns iterator to the first item in the list or NULL if
+   the list is empty. */</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> mill_list_begin(self) ((self)-&gt;first)</span>
+
+<span class="hljs-comment">/* Returns iterator to one past the item pointed to by &apos;it&apos;. */</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> mill_list_next(it) ((it)-&gt;next)</span>
+
+<span class="hljs-comment">/* Adds the item to the list before the item pointed to by &apos;it&apos;.
+   If &apos;it&apos; is NULL the item is inserted to the end of the list. */</span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">mill_list_insert</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> mill_list *self, <span class="hljs-keyword">struct</span> mill_list_item *item, <span class="hljs-keyword">struct</span> mill_list_item *it)</span></span>;
+
+<span class="hljs-comment">/* Removes the item from the list and returns pointer to the next item in the
+   list. Item must be part of the list. */</span>
+<span class="hljs-function"><span class="hljs-keyword">struct</span> mill_list_item *<span class="hljs-title">mill_list_erase</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> mill_list *self, <span class="hljs-keyword">struct</span> mill_list_item *item)</span></span>;
+</code></pre>
+<p>&#x5F53;&#x6211;&#x4EEC;&#x521B;&#x5EFA;&#x4E00;&#x4E2A;list&#x65F6;&#xFF0C;&#x6211;&#x4EEC;&#x521B;&#x5EFA;&#x4E00;&#x4E2A;struct mill_list&#x53D8;&#x91CF;&#xFF0C;&#x5F53;&#x6211;&#x4EEC;&#x8981;&#x63D2;&#x5165;&#x5143;&#x7D20;&#x5230;list&#x4E2D;&#x65F6;&#xFF0C;&#x5B9E;&#x9645;&#x4E0A;&#x63D2;&#x5165;&#x7684;&#x662F;&#x4E00;&#x4E2A;mill_list_item&#xFF0C;&#x5F53;&#x6211;&#x4EEC;&#x8981;&#x904D;&#x5386;&#x4E00;&#x4E2A;list&#x65F6;&#x5B9E;&#x9645;&#x4E0A;&#x662F;&#x901A;&#x8FC7;mill_list.first/last&#x4EE5;&#x53CA;mill_list_item.next/prev&#x6765;&#x8FDB;&#x884C;&#x904D;&#x5386;&#x3002;</p>
+<p>&#x4E0D;&#x7981;&#x8981;&#x95EE;&#xFF0C;&#x6211;&#x4EEC;&#x8981;&#x4FDD;&#x5B58;&#x7684;&#x94FE;&#x8868;&#x5143;&#x7D20;&#x80AF;&#x5B9A;&#x4E0D;&#x53EA;&#x662F;mill_list_item&#x554A;&#xFF1F;struct&#x5143;&#x7D20;&#x662F;&#x4E0D;&#x662F;&#x8FD8;&#x8981;&#x5305;&#x62EC;&#x5176;&#x4ED6;&#x6210;&#x5458;&#xFF1F;&#x662F;&#x3002;&#x8FD9;&#x91CC;&#x5C31;&#x8981;&#x63D0;&#x5230;<strong>mill_cont</strong>&#x8FD9;&#x4E2A;&#x51FD;&#x6570;&#x4E86;&#xFF0C;&#x8BE5;&#x65B9;&#x6CD5;&#x53EF;&#x4EE5;&#x83B7;&#x53D6;&#x5305;&#x542B;&#x67D0;&#x4E2A;member&#x7684;struct&#x7ED3;&#x6784;&#x4F53;&#x7684;&#x5730;&#x5740;&#xFF0C;&#x5982;&#x679C;&#x5728;&#x81EA;&#x5B9A;&#x4E49;struct&#x4E2D;&#x989D;&#x5916;&#x589E;&#x52A0;&#x4E00;&#x4E2A;&#x6210;&#x5458;mill_list_item&#xFF0C;&#x4FDD;&#x5B58;&#x94FE;&#x63A5;&#x5173;&#x7CFB;&#x7684;&#x65F6;&#x5019;&#x4F7F;&#x7528;mill_list_item&#x6210;&#x5458;&#xFF0C;&#x8BBF;&#x95EE;&#x81EA;&#x5B9A;&#x4E49;struct&#x5B8C;&#x6574;&#x4FE1;&#x606F;&#x7684;&#x65F6;&#x5019;&#x518D;&#x901A;&#x8FC7;&#x8BE5;&#x6210;&#x5458;&#x4EE5;&#x53CA;mill_cont&#x6765;&#x83B7;&#x53D6;&#x81EA;&#x5B9A;&#x4E49;&#x7ED3;&#x6784;&#x4F53;&#x5730;&#x5740;&#xFF0C;&#x8FDB;&#x800C;&#x89E3;&#x5F15;&#x7528;&#x8BBF;&#x95EE;&#xFF0C;&#x8FD9;&#x6837;&#x95EE;&#x9898;&#x5C31;&#x89E3;&#x51B3;&#x4E86;&#xFF1F;</p>
+<p>&#x6211;&#x4EEC;&#x8981;&#x5B58;&#x50A8;&#x7684;&#x7ED3;&#x6784;&#x4F53;&#x4EE5;struct Student&#x4E3A;&#x4F8B;&#xFF0C;&#x6765;&#x6F14;&#x793A;&#x4E00;&#x4E0B;&#x4E0A;&#x8FF0;&#x64CD;&#x4F5C;&#xFF1A;</p>
+<pre><code class="lang-c"><span class="hljs-comment">// &#x81EA;&#x5B9A;&#x4E49;struct</span>
+<span class="hljs-keyword">struct</span> Student {
+    <span class="hljs-keyword">char</span> *name;
+    <span class="hljs-keyword">int</span> age;
+    <span class="hljs-keyword">int</span> sex;
+    <span class="hljs-keyword">struct</span> list_mill_item item;
+};
+
+<span class="hljs-comment">// &#x521B;&#x5EFA;&#x94FE;&#x8868;</span>
+<span class="hljs-keyword">struct</span> mill_list students = {<span class="hljs-number">0</span>};
+
+<span class="hljs-comment">// &#x6DFB;&#x52A0;&#x5143;&#x7D20;&#x5230;&#x94FE;&#x8868;</span>
+<span class="hljs-keyword">struct</span> Student stu_x = {.name=<span class="hljs-string">&quot;x&quot;</span>, .age=<span class="hljs-number">10</span>, .sex=<span class="hljs-number">0</span>};
+<span class="hljs-keyword">struct</span> Student stu_y = {.name=<span class="hljs-string">&quot;y&quot;</span>, .age=<span class="hljs-number">11</span>, .sex=<span class="hljs-number">1</span>};
+
+mill_list_init(&amp;students, &amp;stu_x-&gt;item, <span class="hljs-literal">NULL</span>);
+mill_list_init(&amp;students, &amp;stu_y-&gt;item, <span class="hljs-literal">NULL</span>);
+
+<span class="hljs-comment">// &#x904D;&#x5386;&#x94FE;&#x8868;&#x5143;&#x7D20;</span>
+<span class="hljs-keyword">struct</span> mill_list_item *iter = students.first;
+<span class="hljs-keyword">while</span>(iter) {
+    <span class="hljs-keyword">struct</span> Student *stu = (<span class="hljs-keyword">struct</span> Student *)mill_cont(iter, <span class="hljs-keyword">struct</span> Student, item);
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;student name:%s, age:%d, sex:%d\n&quot;</span>, stu-&gt;name, stu-&gt;age, stu-&gt;sex);
+
+    iter = iter-&gt;next;
+}
+</code></pre>
+<p><strong>2 list.c</strong></p>
+<pre><code class="lang-c"><span class="hljs-comment">//&#x521D;&#x59CB;&#x5316;&#x4E00;&#x4E2A;&#x7A7A;&#x94FE;&#x8868;</span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">mill_list_init</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> mill_list *self)</span>
+</span>{
+    self-&gt;first = <span class="hljs-literal">NULL</span>;
+    self-&gt;last = <span class="hljs-literal">NULL</span>;
+}
+
+<span class="hljs-comment">// &#x5728;&#x94FE;&#x8868;self&#x4E2D;&#x5728;&#x5143;&#x7D20;it&#x524D;&#x9762;&#x63D2;&#x5165;item</span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">mill_list_insert</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> mill_list *self, <span class="hljs-keyword">struct</span> mill_list_item *item, <span class="hljs-keyword">struct</span> mill_list_item *it)</span>
+</span>{
+    item-&gt;prev = it ? it-&gt;prev : self-&gt;last;
+    item-&gt;next = it;
+    <span class="hljs-keyword">if</span>(item-&gt;prev)
+        item-&gt;prev-&gt;next = item;
+    <span class="hljs-keyword">if</span>(item-&gt;next)
+        item-&gt;next-&gt;prev = item;
+    <span class="hljs-keyword">if</span>(!self-&gt;first || self-&gt;first == it)
+        self-&gt;first = item;
+    <span class="hljs-keyword">if</span>(!it)
+        self-&gt;last = item;
+}
+
+<span class="hljs-comment">// &#x4ECE;&#x94FE;&#x8868;self&#x4E2D;&#x5220;&#x9664;&#x5143;&#x7D20;item</span>
+<span class="hljs-function"><span class="hljs-keyword">struct</span> mill_list_item *<span class="hljs-title">mill_list_erase</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> mill_list *self, <span class="hljs-keyword">struct</span> mill_list_item *item)</span>
+</span>{
+    <span class="hljs-keyword">struct</span> mill_list_item *next;
+
+    <span class="hljs-keyword">if</span>(item-&gt;prev)
+        item-&gt;prev-&gt;next = item-&gt;next;
+    <span class="hljs-keyword">else</span>
+        self-&gt;first = item-&gt;next;
+    <span class="hljs-keyword">if</span>(item-&gt;next)
+        item-&gt;next-&gt;prev = item-&gt;prev;
+    <span class="hljs-keyword">else</span>
+        self-&gt;last = item-&gt;prev;
+
+    next = item-&gt;next;
+
+    item-&gt;prev = <span class="hljs-literal">NULL</span>;
+    item-&gt;next = <span class="hljs-literal">NULL</span>;
+
+    <span class="hljs-keyword">return</span> next;
+}
+</code></pre>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="datatype-iterator.html" class="navigation navigation-prev " aria-label="Previous page: 通用链表及迭代器实现">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="datatype-slist.html" class="navigation navigation-next " aria-label="Next page: 单向链表: slist">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"description":"libmill是一个基于c语言开发的go风格协程库，实现了go风格的协程操作、chan操作、非阻塞的网络io操作等等，是一个不错的linux平台下c风格协程库实现。如果你想从0到1的快速了解如何开发一个协程库，libmill将是一个非常不错的案例；如果你想更深入地了解go，libmill里面也借鉴了go的一些设计思想；或者你想在生产环境中使用，开发者也提供了一个更健壮的版本libdill。","title":"双向链表: list","level":"7.2","depth":1,"next":{"title":"单向链表: slist","level":"7.3","depth":1,"path":"datatypes/datatype-slist.md","ref":"datatypes/datatype-slist.md","articles":[]},"previous":{"title":"通用链表及迭代器实现","level":"7.1","depth":1,"path":"datatypes/datatype-iterator.md","ref":"datatypes/datatype-iterator.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"datatypes/datatype-list.md","mtime":"2021-03-25T18:20:16.898Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-03-25T19:09:21.649Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

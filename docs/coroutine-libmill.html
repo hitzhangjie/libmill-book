@@ -1,0 +1,929 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>coroutine: libmill.h · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="libmill是一个基于c语言开发的go风格协程库，实现了go风格的协程操作、chan操作、非阻塞的网络io操作等等，是一个不错的linux平台下c风格协程库实现。如果你想从0到1的快速了解如何开发一个协程库，libmill将是一个非常不错的案例；如果你想更深入地了解go，libmill里面也借鉴了go的一些设计思想；或者你想在生产环境中使用，开发者也提供了一个更健壮的版本libdill。">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="coroutine-cr.html" />
+    
+    
+    <link rel="prev" href="libmill-chan.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    序言
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="author.html">
+            
+                <a href="author.html">
+            
+                    
+                    作者
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">Part I - 系统基础</li>
+        
+        
+    
+        <li class="chapter " data-level="2.1" data-path="basics/server-programming-model.html">
+            
+                <a href="basics/server-programming-model.html">
+            
+                    
+                    服务编程模型
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" data-path="basics/process-thread-coroutine.html">
+            
+                <a href="basics/process-thread-coroutine.html">
+            
+                    
+                    进程, 线程, 协程
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3" data-path="basics/libmill-intro.html">
+            
+                <a href="basics/libmill-intro.html">
+            
+                    
+                    libmill协程库
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.4" data-path="basics/libdill-intro.html">
+            
+                <a href="basics/libdill-intro.html">
+            
+                    
+                    libdill协程库
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.5" data-path="basics/stack-memory.html">
+            
+                <a href="basics/stack-memory.html">
+            
+                    
+                    栈空间分配
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.6" data-path="basics/context-switching.html">
+            
+                <a href="basics/context-switching.html">
+            
+                    
+                    上下文切换
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.7" data-path="basics/context-switching-cost.html">
+            
+                <a href="basics/context-switching-cost.html">
+            
+                    
+                    上下文切换开销
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.8" data-path="basics/thread-model.html">
+            
+                <a href="basics/thread-model.html">
+            
+                    
+                    线程模型
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">Part II - 源码分析</li>
+        
+        
+    
+
+    
+        
+        <li class="header">chan：通过通信来共享</li>
+        
+        
+    
+        <li class="chapter " data-level="4.1" data-path="libmill-chan.html">
+            
+                <a href="libmill-chan.html">
+            
+                    
+                    chan: 通过通信来共享
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">coroutine: 高效轻量级并发</li>
+        
+        
+    
+        <li class="chapter active" data-level="5.1" data-path="coroutine-libmill.html">
+            
+                <a href="coroutine-libmill.html">
+            
+                    
+                    coroutine: libmill.h
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.2" data-path="coroutine-cr.html">
+            
+                <a href="coroutine-cr.html">
+            
+                    
+                    coroutine: cr.h/cr.c
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.3" data-path="coroutine-mfork.html">
+            
+                <a href="coroutine-mfork.html">
+            
+                    
+                    coroutine: mfork
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.4" data-path="coroutine-stack.html">
+            
+                <a href="coroutine-stack.html">
+            
+                    
+                    coroutine: stack
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">网络IO: 多路复用Hook系统调用</li>
+        
+        
+    
+        <li class="chapter " data-level="6.1" data-path="io-multiplexing/network-ip.html">
+            
+                <a href="io-multiplexing/network-ip.html">
+            
+                    
+                    network: ip
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.2" data-path="io-multiplexing/network-tcp.html">
+            
+                <a href="io-multiplexing/network-tcp.html">
+            
+                    
+                    network: tcp
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.3" data-path="io-multiplexing/network-udp.html">
+            
+                <a href="io-multiplexing/network-udp.html">
+            
+                    
+                    network: udp
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.4" data-path="io-multiplexing/network-unix.html">
+            
+                <a href="io-multiplexing/network-unix.html">
+            
+                    
+                    network: unix
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.5" data-path="io-multiplexing/network-file.html">
+            
+                <a href="io-multiplexing/network-file.html">
+            
+                    
+                    network: file
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.6" data-path="io-multiplexing/network-poller.html">
+            
+                <a href="io-multiplexing/network-poller.html">
+            
+                    
+                    network: poller
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">常用数据结构</li>
+        
+        
+    
+        <li class="chapter " data-level="7.1" data-path="datatypes/datatype-iterator.html">
+            
+                <a href="datatypes/datatype-iterator.html">
+            
+                    
+                    通用链表及迭代器实现
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="7.2" data-path="datatypes/datatype-list.html">
+            
+                <a href="datatypes/datatype-list.html">
+            
+                    
+                    双向链表: list
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="7.3" data-path="datatypes/datatype-slist.html">
+            
+                <a href="datatypes/datatype-slist.html">
+            
+                    
+                    单向链表: slist
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">高精度定时器</li>
+        
+        
+    
+        <li class="chapter " data-level="8.1" data-path="timer/libmill-timer.html">
+            
+                <a href="timer/libmill-timer.html">
+            
+                    
+                    定时器: timer
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">调试说明</li>
+        
+        
+    
+        <li class="chapter " data-level="9.1" data-path="debugging/libmill-debugging.html">
+            
+                <a href="debugging/libmill-debugging.html">
+            
+                    
+                    如何调试libmill
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">常用辅助方法</li>
+        
+        
+    
+        <li class="chapter " data-level="10.1" data-path="utils/libmill-utils.html">
+            
+                <a href="utils/libmill-utils.html">
+            
+                    
+                    常用工具函数：函数+宏
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="." >coroutine: libmill.h</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="coroutine-libmillh">coroutine: libmill.h</h1>
+<p><strong>file: libmill.h</strong></p>
+<p><strong>0 ABI&#x7248;&#x672C;</strong></p>
+<pre><code class="lang-c"><span class="hljs-comment">// ABI&#x5E94;&#x7528;&#x7A0B;&#x5E8F;&#x4E8C;&#x8FDB;&#x5236;&#x63A5;&#x53E3;</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> MILL_VERSION_CURRENT 19         <span class="hljs-comment">// &#x4E3B;&#x7248;&#x672C;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> MILL_VERSION_REVISION 1         <span class="hljs-comment">// &#x4FEE;&#x8BA2;&#x7248;&#x672C;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> MILL_VERSION_AGE 1              <span class="hljs-comment">// &#x652F;&#x6301;&#x8FC7;&#x53BB;&#x7684;&#x51E0;&#x4E2A;&#x7248;&#x672C;</span></span>
+</code></pre>
+<p><strong>1 &#x7B26;&#x53F7;&#x53EF;&#x89C1;&#x6027;</strong></p>
+<p>libmill&#x8FD9;&#x91CC;&#x662F;&#x8981;&#x7F16;&#x8BD1;&#x6210;&#x5171;&#x4EAB;&#x5E93;&#x7684;&#xFF0C;&#x5171;&#x4EAB;&#x5E93;&#x5E94;&#x8BE5;&#x5C06;&#x5B9E;&#x73B0;&#x76F8;&#x5173;&#x7684;&#x7EC6;&#x8282;&#x5C4F;&#x853D;&#xFF0C;&#x53EA;&#x66B4;&#x9732;&#x63A5;&#x53E3;&#x7ED9;&#x5916;&#x90E8;&#x8C03;&#x7528;&#x5C31;&#x597D;&#xFF0C;&#x56E0;&#x6B64;&#x5728;&#x5171;&#x4EAB;&#x5E93;&#x4E2D;&#x6709;&#x4E2A;&#x201C;<strong>&#x7B26;&#x53F7;&#x53EF;&#x89C1;&#x6027;</strong>&#x201D;&#x7684;&#x95EE;&#x9898;&#xFF08;&#x53EF;&#x53C2;&#x8003;&#x4E0B;&#x9762;&#x7684;&#x5F15;&#x6587;&#xFF09;&#x3002;&#x8BE5;&#x5DE5;&#x7A0B;&#x5728;&#x5728;Makefile&#x91CC;&#x901A;&#x8FC7;&#x7F16;&#x8BD1;&#x5668;&#x9009;&#x9879;<code>-fvisibility inlines=hidden</code>&#x6765;&#x8BBE;&#x7F6E;&#x9ED8;&#x8BA4;&#x5BF9;&#x5916;&#x9690;&#x85CF;&#x5DE5;&#x7A0B;&#x4E2D;&#x7684;&#x7B26;&#x53F7;&#xFF0C;&#x5BF9;&#x4E8E;&#x63D0;&#x4F9B;&#x7ED9;&#x5916;&#x90E8;&#x4F7F;&#x7528;&#x7684;&#x63A5;&#x53E3;&#x4F7F;&#x7528;&#x53EF;&#x89C1;&#x6027;&#x5C5E;&#x6027;<code>__attribute__((visibility(&quot;default&quot;)))</code>&#x6765;&#x5355;&#x72EC;&#x8BBE;&#x7F6E;&#x5176;&#x53EF;&#x89C1;&#x6027;&#x3002;</p>
+<blockquote>
+<p>Functions with default visibility have a global scope and can be called from other shared objects. Functions with hidden visibility have a local scope and cannot be called from other shared objects. Visibility can be controlled by using either compiler options or visibility attributes. &#x66F4;&#x591A;&#x5173;&#x4E8E;&#x7B26;&#x53F7;&#x53EF;&#x89C1;&#x6027;&#x7684;&#x63CF;&#x8FF0;&#xFF0C;&#x53EF;&#x4EE5;&#x53C2;&#x8003;&#xFF1A;<a href="https://www.ibm.com/support/knowledgecenter/en/SSB23S_1.1.0.14/gtpl2/export.html" target="_blank">&#x70B9;&#x51FB;&#x67E5;&#x770B;</a>&#x3002;</p>
+</blockquote>
+<pre><code class="lang-c"><span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> !defined __GNUC__ &amp;&amp; !defined __clang__</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">error</span> <span class="hljs-string">&quot;Unsupported compiler!&quot;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span>
+
+<span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> defined MILL_NO_EXPORTS</span>
+<span class="hljs-meta">#   <span class="hljs-meta-keyword">define</span> MILL_EXPORT</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">else</span></span>
+<span class="hljs-meta">#   <span class="hljs-meta-keyword">if</span> defined _WIN32</span>
+<span class="hljs-meta">#      ......</span>
+<span class="hljs-meta">#   <span class="hljs-meta-keyword">else</span></span>
+<span class="hljs-meta">#      <span class="hljs-meta-keyword">if</span> defined __SUNPRO_C</span>
+<span class="hljs-meta">#          ......</span>
+<span class="hljs-meta">#      <span class="hljs-meta-keyword">elif</span> (defined __GNUC__ &amp;&amp; __GNUC__ &gt;= 4) || defined __INTEL_COMPILER || defined __clang__</span>
+<span class="hljs-meta">#          <span class="hljs-meta-keyword">define</span> MILL_EXPORT __attribute__ ((visibility(<span class="hljs-string">&quot;default&quot;</span>)))</span>
+<span class="hljs-meta">#      <span class="hljs-meta-keyword">else</span></span>
+<span class="hljs-meta">#          <span class="hljs-meta-keyword">define</span> MILL_EXPORT</span>
+<span class="hljs-meta">#      <span class="hljs-meta-keyword">endif</span></span>
+<span class="hljs-meta">#   <span class="hljs-meta-keyword">endif</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span>
+</code></pre>
+<p>&#x5982;&#x679C;&#x51FD;&#x6570;&#x540D;&#x524D;&#x6709;&#x5B8F;<strong>MILL_EXPORT</strong>&#xFF0C;&#x8868;&#x793A;&#x8BE5;&#x51FD;&#x6570;&#x5177;&#x6709;&#x9ED8;&#x8BA4;&#x53EF;&#x89C1;&#x6027;&#xFF0C;&#x53EF;&#x5728;libmill.so&#x5916;&#x7684;&#x4EE3;&#x7801;&#x4E2D;&#x88AB;&#x8C03;&#x7528;&#x3002;&#x8FD9;&#x91CC;&#x6211;&#x4EEC;&#x4E3E;&#x4E2A;&#x4E24;&#x5B57;&#x6765;&#x8BF4;&#x660E;&#x4E00;&#x4E0B;&#xFF1A;</p>
+<pre><code class="lang-c"><span class="hljs-comment">// mill_concat_&#x53EF;&#x89C1;&#x6027;&#x4E3A;Makefile&#x4E2D;&#x6307;&#x5B9A;&#x7684;hidden&#xFF0C;&#x53EA;&#x80FD;&#x5728;&#x5F53;&#x524D;so&#x4E2D;&#x4F7F;&#x7528;&#xFF0C;&#x5BF9;&#x5916;&#x4E0D;&#x53EF;&#x89C1;</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> mill_concat_(x,y) x##y</span>
+
+<span class="hljs-comment">// mill_now_&#x3001;mill_mfork_&#x53EF;&#x89C1;&#x6027;&#x4E3A;default&#xFF0C;&#x5BF9;&#x5916;&#x53EF;&#x89C1;&#xFF0C;&#x53EF;&#x5728;so&#x5916;&#x90E8;&#x8C03;&#x7528;</span>
+<span class="hljs-function">MILL_EXPORT int64_t <span class="hljs-title">mill_now_</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span></span>;
+<span class="hljs-function">MILL_EXPORT pid_t <span class="hljs-title">mill_mfork_</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span></span>;
+</code></pre>
+<p>libmill.h&#x4E2D;&#x6D89;&#x53CA;&#x5230;&#x5927;&#x91CF;&#x7684;&#x51FD;&#x6570;&#x540D;&#x5BFC;&#x51FA;&#x7684;&#x95EE;&#x9898;&#xFF0C;&#x8FD9;&#x91CC;&#x7531;&#x4E8E;&#x7BC7;&#x5E45;&#x7684;&#x539F;&#x56E0;&#x4E0D;&#x518D;&#x4E00;&#x4E00;&#x5217;&#x51FA;&#x3002;</p>
+<p><strong>2 &#x5B9A;&#x65F6;&#x5668;&#x7CBE;&#x5EA6;</strong></p>
+<p>&#x83B7;&#x53D6;&#x7CFB;&#x7EDF;&#x65F6;&#x95F4;&#x51FD;&#x6570;<strong>gettimeofday</strong>&#x8FD8;&#x662F;&#x6BD4;&#x8F83;&#x8017;&#x65F6;&#x7684;&#xFF0C;&#x5BF9;&#x4E8E;&#x9891;&#x7E41;&#x9700;&#x8981;&#x83B7;&#x53D6;&#x7CFB;&#x7EDF;&#x65F6;&#x95F4;&#x7684;&#x60C5;&#x666F;&#x4E0B;&#xFF0C;&#x9700;&#x8981;&#x5BF9;&#x83B7;&#x53D6;&#x5230;&#x7684;&#x7CFB;&#x7EDF;&#x65F6;&#x95F4;&#x505A;&#x4E00;&#x5B9A;&#x7684;cache&#x3002;&#x4E3A;&#x4E86;&#x4FDD;&#x8BC1;&#x65F6;&#x95F4;&#x7CBE;&#x5EA6;&#xFF0C;&#x8FD9;&#x91CC;&#x7684;cache&#x66F4;&#x65B0;&#x65F6;&#x95F4;&#x5FC5;&#x987B;&#x8981;&#x63A7;&#x5236;&#x597D;&#x3002;</p>
+<p>&#x5982;&#x4F55;&#x51B3;&#x5B9A;&#x4F55;&#x65F6;&#x66F4;&#x65B0;cache&#x7684;&#x7CFB;&#x7EDF;&#x65F6;&#x95F4;&#x5462;&#xFF1F;<strong>rdtsc</strong>&#xFF08;read timestamp counter&#xFF09;&#x6307;&#x4EE4;&#x6267;&#x884C;&#x53EA;&#x9700;&#x8981;&#x51E0;&#x4E2A;&#x65F6;&#x949F;&#x5468;&#x671F;&#xFF0C;&#x5B83;&#x8FD4;&#x56DE;&#x7CFB;&#x7EDF;&#x542F;&#x52A8;&#x540E;&#x7ECF;&#x8FC7;&#x7684;&#x65F6;&#x949F;&#x5468;&#x671F;&#x6570;&#x3002;&#x8FD9;&#x91CC;&#x53EF;&#x4EE5;&#x6839;&#x636E;CPU&#x9891;&#x7387;&#x6307;&#x5B9A;&#x4E00;&#x4E2A;&#x65F6;&#x949F;&#x5468;&#x671F;&#x6570;&#x91CF;&#x4F5C;&#x4E3A;&#x9608;&#x503C;&#xFF0C;&#x5F53;&#x524D;&#x540E;&#x4E24;&#x6B21;rdtsc&#x8BFB;&#x53D6;&#x5230;&#x7684;&#x65F6;&#x949F;&#x5468;&#x671F;&#x6570;&#x7684;&#x5DEE;&#x503C;&#x8D85;&#x8FC7;&#x8FD9;&#x4E2A;&#x9608;&#x503C;&#x518D;&#x8C03;&#x7528;gettimeofday&#x6765;&#x66F4;&#x65B0;&#x7CFB;&#x7EDF;&#x65F6;&#x95F4;&#x3002;&#x8FD9;&#x91CC;libmill&#x4E2D;&#x7684;&#x5B9A;&#x65F6;&#x5668;timer&#x5C31;&#x662F;&#x8FD9;&#x4E48;&#x5B9E;&#x73B0;&#x7684;&#x3002;</p>
+<p>&#x4E0B;&#x9762;&#x662F;<strong>rdtsc</strong>&#x6307;&#x4EE4;&#x7684;&#x7B80;&#x8981;&#x8BF4;&#x660E;&#xFF0C;&#x8BE6;&#x60C5;&#x8BF7;&#x67E5;&#x770B;&#xFF1A;<a href="https://en.wikipedia.org/wiki/Time_Stamp_Counter" target="_blank">wiki rdtsc</a>&#x3002;</p>
+<blockquote>
+<p>The Time Stamp Counter (TSC) is a 64-bit register present on all x86 processors since the Pentium. It counts the number of cycles since reset. The instruction RDTSC returns the TSC in EDX:EAX. In x86-64 mode, RDTSC also clears the higher 32 bits of RAX and RDX. Its opcode is 0F 31.[1] Pentium competitors such as the Cyrix 6x86 did not always have a TSC and may consider RDTSC an illegal instruction. Cyrix included a Time Stamp Counter in their MII.</p>
+</blockquote>
+<p>&#x8BE5;&#x5934;&#x6587;&#x4EF6;&#x6D89;&#x53CA;&#x6E90;&#x7801;&#x8F83;&#x591A;&#xFF0C;&#x8FD9;&#x91CC;&#x53EA;&#x5217;&#x51FA;&#x4E86;&#x6BD4;&#x8F83;&#x5173;&#x952E;&#x7684;&#x4EE3;&#x7801;&#xFF0C;&#x611F;&#x5174;&#x8DA3;&#x7684;&#x53EF;&#x4EE5;&#x67E5;&#x770B;&#x6E90;&#x4EE3;&#x7801;&#x6765;&#x4E86;&#x89E3;&#x66F4;&#x591A;&#x7EC6;&#x8282;&#x3002;</p>
+<p><strong>3 mill_fdwait&#x5173;&#x6CE8;&#x7684;io&#x4E8B;&#x4EF6;</strong></p>
+<pre><code class="lang-c"><span class="hljs-comment">// mill_fdwait&#x5173;&#x6CE8;&#x7684;&#x8BFB;&#x5199;&#x9519;&#x8BEF;&#x4E8B;&#x4EF6;</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> MILL_FDW_IN_ 1</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> MILL_FDW_OUT_ 2</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> MILL_FDW_ERR_ 4</span>
+</code></pre>
+<p><strong>4 &#x534F;&#x7A0B;&#x4E0A;&#x4E0B;&#x6587;&#x7684;&#x4FDD;&#x5B58;&#x548C;&#x5207;&#x6362;</strong></p>
+<p><strong>4.0 &#x534F;&#x7A0B;&#x4E0A;&#x4E0B;&#x6587;</strong></p>
+<pre><code class="lang-c"><span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> defined __x86_64__</span>
+<span class="hljs-keyword">typedef</span> <span class="hljs-keyword">uint64_t</span> *mill_ctx;
+<span class="hljs-meta">#<span class="hljs-meta-keyword">else</span></span>
+<span class="hljs-keyword">typedef</span> sigjmp_buf *mill_ctx;
+<span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span>
+</code></pre>
+<p><strong>4.1 &#x534F;&#x7A0B;&#x4E0A;&#x4E0B;&#x6587;&#x7684;&#x4FDD;&#x5B58;</strong></p>
+<pre><code class="lang-c"><span class="hljs-comment">// x86_64&#x5E73;&#x53F0;&#x4E0B;&#x534F;&#x7A0B;&#x4E0A;&#x4E0B;&#x6587;&#x4FDD;&#x5B58;&#x5B9E;&#x73B0;</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> defined(__x86_64__)</span>
+......
+<span class="hljs-comment">// &#x4FDD;&#x5B58;&#x5F53;&#x524D;&#x534F;&#x7A0B;&#x8FD0;&#x884C;&#x65F6;&#x4E0A;&#x4E0B;&#x6587;&#xFF08;&#x5C31;&#x662F;&#x4FDD;&#x5B58;&#x5904;&#x7406;&#x5668;&#x786C;&#x4EF6;&#x4E0A;&#x4E0B;&#x6587;&#x5230;&#x6307;&#x5B9A;&#x5185;&#x5B58;&#x533A;&#x57DF;ctx&#x4E2D;&#x5907;&#x7528;&#xFF09;</span>
+<span class="hljs-comment">//</span>
+<span class="hljs-comment">// &#x8FD9;&#x91CC;&#x4F7F;&#x7528;&#x5B8F;&#x6765;&#x5B9E;&#x73B0;&#x53EF;&#x4EE5;&#x907F;&#x514D;&#x51FD;&#x6570;&#x8C03;&#x7528;&#x5806;&#x6808;&#x521B;&#x5EFA;&#x3001;&#x9500;&#x6BC1;&#x5E26;&#x6765;&#x7684;&#x5F00;&#x9500;&#xFF0C;&#x5B9E;&#x73B0;&#x66F4;&#x9AD8;&#x6548;&#x5730;&#x534F;&#x7A0B;&#x5207;&#x6362;&#xFF0C;</span>
+<span class="hljs-comment">// linux gcc&#x5185;&#x8054;&#x6C47;&#x7F16;&#xFF0C;&#x6C47;&#x7F16;&#x76F8;&#x5173;&#x53C2;&#x6570;&#x53EF;&#x4EE5;&#x5206;&#x4E3A;&#x201C;&#x6307;&#x4EE4;&#x90E8;&#x201D;&#x3001;&#x201C;&#x8F93;&#x51FA;&#x90E8;&#x201D;&#x3001;&#x201C;&#x8F93;&#x5165;&#x90E8;&#x201D;&#x3001;&#x201C;&#x7834;&#x574F;&#x90E8;&#x201D;&#xFF0C;</span>
+<span class="hljs-comment">// &#x8FD9;&#x91CC;&#x5C06;&#x5185;&#x5B58;&#x53D8;&#x91CF;ctx&#x7684;&#x503C;&#x4F20;&#x5165;&#x5BC4;&#x5B58;&#x5668;rdx&#xFF0C;&#x5E76;&#x5C06;&#x6700;&#x540E;rax&#x5BC4;&#x5B58;&#x5668;&#x7684;&#x503C;&#x8D4B;&#x503C;&#x7ED9;&#x53D8;&#x91CF;ret&#xFF0C;</span>
+<span class="hljs-comment">// &#x6307;&#x4EE4;&#x5C06;rax&#x6E05;&#x96F6;&#xFF0C;&#x5C06;rbx&#x3001;r12&#x3001;rsp&#x3001;r13&#x3001;r14&#x3001;r15&#x3001;rcx&#x3001;rdi&#x3001;rsi&#x4F9D;&#x6B21;&#x4FDD;&#x5B58;&#x5230;ctx&#x4E3A;&#x8D77;&#x59CB;&#x5730;&#x5740;&#x7684;&#x5185;&#x5B58;&#x4E2D;</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> mill_setjmp_(ctx) ({\
+    int ret;\
+    asm(<span class="hljs-string">&quot;lea     LJMPRET%=(%%rip), %%rcx\n\t&quot;</span>\  <span class="hljs-comment">//==&gt;&#x8FD4;&#x56DE;&#x5730;&#x5740;(LJMPRET&#x6807;&#x53F7;&#x5904;)&#x9001;&#x5165;%%rcx</span></span>
+        <span class="hljs-string">&quot;xor     %%rax, %%rax\n\t&quot;</span>\
+        <span class="hljs-string">&quot;mov     %%rbx, (%%rdx)\n\t&quot;</span>\
+        <span class="hljs-string">&quot;mov     %%rbp, 8(%%rdx)\n\t&quot;</span>\
+        <span class="hljs-string">&quot;mov     %%r12, 16(%%rdx)\n\t&quot;</span>\
+        <span class="hljs-string">&quot;mov     %%rsp, 24(%%rdx)\n\t&quot;</span>\
+        <span class="hljs-string">&quot;mov     %%r13, 32(%%rdx)\n\t&quot;</span>\
+        <span class="hljs-string">&quot;mov     %%r14, 40(%%rdx)\n\t&quot;</span>\
+        <span class="hljs-string">&quot;mov     %%r15, 48(%%rdx)\n\t&quot;</span>\
+        <span class="hljs-string">&quot;mov     %%rcx, 56(%%rdx)\n\t&quot;</span>\         <span class="hljs-comment">//==&gt;rcx&#x53C8;&#x5B58;&#x50A8;&#x5230;56(%%rdx)</span>
+        <span class="hljs-string">&quot;mov     %%rdi, 64(%%rdx)\n\t&quot;</span>\
+        <span class="hljs-string">&quot;mov     %%rsi, 72(%%rdx)\n\t&quot;</span>\
+        <span class="hljs-string">&quot;LJMPRET%=:\n\t&quot;</span>\
+        : <span class="hljs-string">&quot;=a&quot;</span> (ret)\
+        : <span class="hljs-string">&quot;d&quot;</span> (ctx)\
+        : <span class="hljs-string">&quot;memory&quot;</span>, <span class="hljs-string">&quot;rcx&quot;</span>, <span class="hljs-string">&quot;r8&quot;</span>, <span class="hljs-string">&quot;r9&quot;</span>, <span class="hljs-string">&quot;r10&quot;</span>, <span class="hljs-string">&quot;r11&quot;</span>,\
+          <span class="hljs-string">&quot;xmm0&quot;</span>, <span class="hljs-string">&quot;xmm1&quot;</span>, <span class="hljs-string">&quot;xmm2&quot;</span>, <span class="hljs-string">&quot;xmm3&quot;</span>, <span class="hljs-string">&quot;xmm4&quot;</span>, <span class="hljs-string">&quot;xmm5&quot;</span>, <span class="hljs-string">&quot;xmm6&quot;</span>, <span class="hljs-string">&quot;xmm7&quot;</span>,\
+          <span class="hljs-string">&quot;xmm8&quot;</span>, <span class="hljs-string">&quot;xmm9&quot;</span>, <span class="hljs-string">&quot;xmm10&quot;</span>, <span class="hljs-string">&quot;xmm11&quot;</span>, <span class="hljs-string">&quot;xmm12&quot;</span>, <span class="hljs-string">&quot;xmm13&quot;</span>, <span class="hljs-string">&quot;xmm14&quot;</span>, <span class="hljs-string">&quot;xmm15&quot;</span>\
+          MILL_CLOBBER\
+          );\
+    ret;\
+})
+</code></pre>
+<p><strong>4.2 &#x534F;&#x7A0B;&#x4E0A;&#x4E0B;&#x6587;&#x7684;&#x6062;&#x590D;</strong></p>
+<pre><code class="lang-c"><span class="hljs-comment">// x86_64&#x5E73;&#x53F0;&#x4E0B;&#x534F;&#x7A0B;&#x4E0A;&#x4E0B;&#x6587;&#x6062;&#x590D;&#x5B9E;&#x73B0;</span>
+
+<span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> defined(__x86_64__)</span>
+......
+<span class="hljs-comment">// &#x6062;&#x590D;&#x534F;&#x7A0B;&#x4E0A;&#x4E0B;&#x6587;&#x4FE1;&#x606F;&#x5230;&#x5904;&#x7406;&#x5668;&#x4E2D;&#xFF08;&#x4ECE;ctx&#x5F00;&#x59CB;&#x7684;&#x5185;&#x5B58;&#x533A;&#x57DF;&#x4E2D;&#x52A0;&#x8F7D;&#x4E4B;&#x524D;&#x4FDD;&#x5B58;&#x7684;&#x5904;&#x7406;&#x5668;&#x786C;&#x4EF6;&#x4E0A;&#x4E0B;&#x6587;&#xFF09;</span>
+<span class="hljs-comment">//</span>
+<span class="hljs-comment">// &#x8981;&#x6062;&#x590D;&#x67D0;&#x4E2A;&#x534F;&#x7A0B;cr&#x7684;&#x8FD0;&#x884C;&#x65F6;&#xFF0C;&#x5148;&#x83B7;&#x53D6;&#x5176;&#x6302;&#x8D77;&#x4E4B;&#x524D;&#x4FDD;&#x5B58;&#x7684;&#x4E0A;&#x4E0B;&#x6587;cr-&gt;ctx&#xFF0C;&#x7136;&#x540E;mill_longjmp(ctx)&#x5373;&#x53EF;&#xFF0C;</span>
+<span class="hljs-comment">// &#x5C06;ctx&#x503C;&#x52A0;&#x8F7D;&#x5230;rax&#xFF0C;&#x91C7;&#x7528;&#x76F8;&#x5BF9;&#x5BFB;&#x5740;&#x4F9D;&#x6B21;&#x52A0;&#x8F7D;ctx&#x4E3A;&#x8D77;&#x59CB;&#x5730;&#x5740;&#x7684;&#x5185;&#x5B58;&#x533A;&#x57DF;&#x4E2D;&#x4FDD;&#x5B58;&#x7684;&#x4E0A;&#x4E0B;&#x6587;&#x4FE1;&#x606F;&#x5230;&#x5BC4;&#x5B58;&#x5668;&#xFF0C;</span>
+<span class="hljs-comment">// &#x6700;&#x540E;&#x56DE;&#x590D;&#x6267;&#x884C;</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> mill_longjmp_(ctx) \
+    asm(<span class="hljs-string">&quot;movq   (%%rax), %%rbx\n\t&quot;</span>\
+        <span class="hljs-string">&quot;movq   8(%%rax), %%rbp\n\t&quot;</span>\
+        <span class="hljs-string">&quot;movq   16(%%rax), %%r12\n\t&quot;</span>\
+        <span class="hljs-string">&quot;movq   24(%%rax), %%rdx\n\t&quot;</span>\
+        <span class="hljs-string">&quot;movq   32(%%rax), %%r13\n\t&quot;</span>\
+        <span class="hljs-string">&quot;movq   40(%%rax), %%r14\n\t&quot;</span>\
+        <span class="hljs-string">&quot;mov    %%rdx, %%rsp\n\t&quot;</span>\
+        <span class="hljs-string">&quot;movq   48(%%rax), %%r15\n\t&quot;</span>\
+        <span class="hljs-string">&quot;movq   56(%%rax), %%rdx\n\t&quot;</span>\     <span class="hljs-comment">//==&gt;56(%%rax)&#x4E2D;&#x5730;&#x5740;&#x4E3A;&#x8FD4;&#x56DE;&#x5730;&#x5740;&#xFF0C;&#x9001;&#x5165;%%rdx</span></span>
+        <span class="hljs-string">&quot;movq   64(%%rax), %%rdi\n\t&quot;</span>\
+        <span class="hljs-string">&quot;movq   72(%%rax), %%rsi\n\t&quot;</span>\
+        <span class="hljs-string">&quot;jmp    *%%rdx\n\t&quot;</span>\
+        : : <span class="hljs-string">&quot;a&quot;</span> (ctx) : <span class="hljs-string">&quot;rdx&quot;</span> \
+    )
+<span class="hljs-meta">#<span class="hljs-meta-keyword">else</span></span>
+<span class="hljs-comment">// &#x975E;x86_64&#x8981;&#x501F;&#x52A9;sigsetjmp\siglongjmp&#x6765;&#x5B9E;&#x73B0;&#x534F;&#x7A0B;&#x4E0A;&#x4E0B;&#x6587;&#x5207;&#x6362;</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> mill_setjmp_(ctx) \
+    sigsetjmp(*ctx, 0)</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> mill_longjmp_(ctx) \
+    siglongjmp(*ctx, 1)</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span>
+</code></pre>
+<p><strong>5 go(func)&#x5B9E;&#x73B0;</strong></p>
+<p>go(func)&#x7684;&#x4F5C;&#x7528;&#x662F;&#x6302;&#x8D77;&#x5F53;&#x524D;&#x534F;&#x7A0B;&#xFF0C;&#x5E76;&#x5728;&#x4E00;&#x4E2A;&#x65B0;&#x521B;&#x5EFA;&#x7684;&#x534F;&#x7A0B;&#x4E2D;&#x8FD0;&#x884C;&#x6307;&#x5B9A;&#x7684;&#x51FD;&#x6570;func&#xFF0C;func&#x6267;&#x884C;&#x5B8C;&#x6210;&#x540E;&#x518D;&#x9500;&#x6BC1;&#x65B0;&#x521B;&#x5EFA;&#x7684;&#x534F;&#x7A0B;&#xFF0C;&#x5E76;&#x91CD;&#x65B0;&#x8C03;&#x5EA6;&#x5176;&#x4ED6;&#x534F;&#x7A0B;&#x8FD0;&#x884C;&#xFF08;&#x4E5F;&#x5305;&#x62EC;&#x5F53;&#x524D;&#x534F;&#x7A0B;&#xFF09;&#x3002;</p>
+<p>mill<em>go</em>(fn)&#x7684;&#x5B9E;&#x73B0;&#xFF0C;&#x6211;&#x82B1;&#x4E86;&#x4E0D;&#x5C11;&#x65F6;&#x95F4;&#x624D;&#x770B;&#x61C2;&#xFF0C;&#x8FD9;&#x91CC;&#x8FD8;&#x8981;&#x611F;&#x8C22;libmill&#x8D21;&#x732E;&#x8005;<a href="https://github.com/raedwulf" target="_blank"><strong>raedwulf</strong></a>&#x5BF9;&#x6211;&#x7684;&#x5E2E;&#x52A9;&#xFF0C;&#x901A;&#x8FC7;&#x4EA4;&#x6D41;&#x4ED6;&#x4E00;&#x4E0B;&#x5C31;&#x660E;&#x767D;&#x4E86;&#x6211;&#x56F0;&#x60D1;&#x7684;&#x6E90;&#x5934;&#x5E76;&#x7ED9;&#x6211;&#x6307;&#x51FA;&#x4E86;&#x4E0D;&#x8BE5;&#x5FFD;&#x7565;&#x7684;&#x5173;&#x952E;4&#x884C;&#x4EE3;&#x7801;&#xFF01;</p>
+<pre><code class="lang-c">...
+
+<span class="hljs-keyword">int</span> mill_anchor[mill_unoptimisable1_];\
+mill_unoptimisable2_ = &amp;mill_anchor;\
+<span class="hljs-keyword">char</span> mill_filler[(<span class="hljs-keyword">char</span>*)&amp;mill_anchor - (<span class="hljs-keyword">char</span>*)(mill_sp)];\
+mill_unoptimisable2_ = &amp;mill_filler;\
+
+...
+</code></pre>
+<p>&#x8FD9;4&#x884C;&#x4EE3;&#x7801;&#x786E;&#x5B9E;&#x4EE4;&#x4EBA;&#x56F0;&#x60D1;&#xFF0C;Stack Overflow&#x4E0A;&#x7684;&#x670B;&#x53CB;&#x4EEC;&#x770B;&#x5230;&#x63D0;&#x95EE;&#x7684;&#x8FD9;&#x4E2A;&#x95EE;&#x9898;&#x751A;&#x81F3;&#x7ED9;&#x8E29;&#x4E86;&#x597D;&#x51E0;&#x6B21;&#xFF0C;&#x540C;&#x4E8B;&#x770B;&#x540E;&#x4E5F;&#x89C9;&#x5F97;&#x6709;&#x70B9;&#x65E0;&#x5398;&#x5934;&#xFF0C;&#x4E5F;&#x96BE;&#x602A;&#x88AB;raedwulf&#x620F;&#x79F0;&#x4E3A;black magic around c language&#xFF01;</p>
+<pre><code class="lang-c"><span class="hljs-comment">// go()&#x7684;&#x5B9E;&#x73B0;</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> mill_go_(fn) \
+    do {\
+        void *mill_sp;\
+        <span class="hljs-comment">// &#x83B7;&#x53D6;&#x5F53;&#x524D;&#x6B63;&#x5728;&#x8FD0;&#x884C;&#x7684;&#x534F;&#x7A0B;&#x4E0A;&#x4E0B;&#x6587;&#xFF0C;&#x5E76;&#x53CA;&#x65F6;&#x8FDB;&#x884C;&#x4FDD;&#x5B58;&#xFF0C;&#x56E0;&#x4E3A;&#x6211;&#x4EEC;&#x9A6C;&#x4E0A;&#x8981;&#x8C03;&#x6574;&#x6808;&#x5E27;&#x4E86;</span></span>
+        mill_ctx ctx = mill_getctx_();\
+        <span class="hljs-keyword">if</span>(!mill_setjmp_(ctx)) {\
+            <span class="hljs-comment">// &#x4E3A;&#x5373;&#x5C06;&#x65B0;&#x521B;&#x5EFA;&#x7684;&#x534F;&#x7A0B;&#x5206;&#x914D;&#x5BF9;&#x5E94;&#x7684;&#x5185;&#x5B58;&#x7A7A;&#x95F4;&#xFF0C;&#x5E76;&#x8FD4;&#x56DE;stack&#x90E8;&#x5206;&#x7684;&#x5F53;&#x524D;&#x6808;&#x9876;&#xFF08;&#x7B49;&#x4E8E;&#x6808;&#x5E95;&#xFF09;&#x4F4D;&#x7F6E;</span>
+            mill_sp = mill_prologue_(MILL_HERE_);\
+            <span class="hljs-comment">// &#x4E0B;&#x9762;4&#x884C;&#x4EE3;&#x7801;&#x56F0;&#x6270;&#x4E86;&#x6211;&#x5F88;&#x4E45;&#xFF0C;&#x539F;&#x56E0;&#x8FD8;&#x662F;&#x5BF9;linux c&#x3001;gcc&#x3001;&#x6808;&#x5E27;&#x5206;&#x914D;&#x4E0D;&#x591F;&#x7CBE;&#x901A;&#x3002;</span>
+            <span class="hljs-comment">// - &#x6808;&#x5E27;&#x4E2D;&#x7684;&#x7A7A;&#x95F4;&#x5206;&#x914D;&#xFF0C;&#x5BF9;&#x4E8E;&#x7F16;&#x8BD1;&#x65F6;&#x53EF;&#x786E;&#x5B9A;&#x5C3A;&#x5BF8;&#x7684;&#x5C31;&#x7F16;&#x8BD1;&#x65F6;&#x5206;&#x914D;&#xFF0C;&#x901A;&#x8FC7;sub &lt;size&gt;,%rsp&#x6765;&#x5B9E;&#x73B0;&#xFF1B;</span>
+            <span class="hljs-comment">// - &#x6808;&#x5E27;&#x4E2D;&#x7684;&#x7A7A;&#x95F4;&#x5206;&#x914D;&#xFF0C;&#x8FD0;&#x884C;&#x65F6;&#x624D;&#x53EF;&#x4EE5;&#x786E;&#x5B9A;&#x7684;&#x5C31;&#x9700;&#x8981;&#x8FD0;&#x884C;&#x65F6;&#x5206;&#x914D;&#xFF0C;&#x901A;&#x8FC7;alloca(size)&#x6765;&#x5B9E;&#x73B0;&#xFF1B;</span>
+            <span class="hljs-comment">// &#x6CE8;&#x610F;&#xFF1A;</span>
+            <span class="hljs-comment">// - gcc&#x5728;x86_64&#x4E0B;alloca&#x7684;&#x5DE5;&#x4F5C;&#x4E3B;&#x8981;&#x662F;sub &lt;size&gt;,%rsp&#x5916;&#x52A0;&#x4E00;&#x4E9B;&#x5185;&#x5B58;&#x5BF9;&#x9F50;&#x7684;&#x64CD;&#x4F5C;&#xFF0C;alloca&#x5728;&#x5F53;</span>
+            <span class="hljs-comment">//   &#x524D;&#x6808;&#x5E27;&#x4E2D;&#x5206;&#x914D;&#x7A7A;&#x95F4;&#x5E76;&#x8FD4;&#x56DE;&#x7A7A;&#x95F4;&#x8D77;&#x59CB;&#x5730;&#x5740;&#xFF0C;&#x4F46;&#x662F;&#x4E0D;&#x68C0;&#x67E5;&#x6808;&#x662F;&#x5426;&#x8D8A;&#x754C;&#xFF1B;</span>
+            <span class="hljs-comment">// - &#x53E6;&#x5916;&#x6307;&#x9488;&#x8FD0;&#x7B97;&#x662F;&#x65E0;&#x7B26;&#x53F7;&#x8BA1;&#x7B97;&#xFF0C;&#x5C0F;&#x5730;&#x5740;&#x51CF;&#x53BB;&#x5927;&#x5730;&#x5740;&#x7684;&#x7ED3;&#x679C;&#x4F1A;&#x5728;&#x6574;&#x4E2A;&#x865A;&#x62DF;&#x5185;&#x5B58;&#x5730;&#x5740;&#x7A7A;&#x95F4;&#x4E2D;&#x6EDA;&#x52A8;&#xFF1B;</span>
+            <span class="hljs-comment">// - mill_filler&#x6570;&#x7EC4;&#x7684;&#x5206;&#x914D;&#x662F;&#x7531;alloca&#x5B8C;&#x6210;&#xFF0C;&#x5206;&#x914D;&#x5B8C;&#x6210;&#x540E;rsp&#x5C06;&#x88AB;&#x8C03;&#x6574;&#x4E3A;mill_sp&#x6307;&#x5411;&#x7684;&#x5185;&#x5B58;&#x7A7A;&#x95F4;&#xFF1B;</span>
+            <span class="hljs-comment">// - &#x65B0;&#x7684;&#x534F;&#x7A0B;&#x5C06;&#x4EE5;mill_sp&#x4F5C;&#x4E3A;&#x5F53;&#x524D;&#x6808;&#x9876;&#x8FD0;&#x884C;&#xFF0C;&#x7B49;&#x5F53;&#x524D;&#x534F;&#x7A0B;&#x6062;&#x590D;&#x4E0A;&#x4E0B;&#x6587;&#x5E76;&#x8FD0;&#x884C;&#x65F6;&#xFF0C;&#x5176;&#x6839;&#x672C;&#x610F;&#x8BC6;&#x4E0D;</span>
+            <span class="hljs-comment">//   &#x5230;&#x8BE5;&#x6240;&#x8C13;&#x7684;mill_filler&#x7684;&#x5B58;&#x5728;&#xFF0C;&#x56E0;&#x4E3A;&#x4FDD;&#x5B58;&#x5176;&#x4E0A;&#x4E0B;&#x6587;&#x64CD;&#x4F5C;&#x662F;&#x65E9;&#x4E8E;&#x6808;&#x8C03;&#x6574;&#x64CD;&#x4F5C;&#x7684;&#xFF1B;</span>
+            <span class="hljs-keyword">int</span> mill_anchor[mill_unoptimisable1_];\
+            mill_unoptimisable2_ = &amp;mill_anchor;\
+            <span class="hljs-keyword">char</span> mill_filler[(<span class="hljs-keyword">char</span>*)&amp;mill_anchor - (<span class="hljs-keyword">char</span>*)(mill_sp)];\
+            mill_unoptimisable2_ = &amp;mill_filler;\
+            <span class="hljs-comment">// &#x5728;&#x65B0;&#x521B;&#x5EFA;&#x7684;&#x534F;&#x7A0B;&#x6808;&#x7A7A;&#x95F4;&#x4E2D;&#x8C03;&#x7528;&#x51FD;&#x6570;fn</span>
+            fn;\
+            <span class="hljs-comment">// fn&#x6267;&#x884C;&#x7ED3;&#x675F;&#x540E;&#x91CA;&#x653E;&#x5360;&#x7528;&#x7684;&#x534F;&#x7A0B;&#x5185;&#x5B58;&#x7A7A;&#x95F4;&#xFF0C;&#x5E76;mill_suspend&#x8BA9;&#x51FA;cpu&#x7ED9;&#x5176;&#x4ED6;&#x534F;&#x7A0B;</span>
+            mill_epilogue_();\
+        }\
+    } <span class="hljs-keyword">while</span>(<span class="hljs-number">0</span>)
+</code></pre>
+<p><strong>6 chan&#x5B9E;&#x73B0;</strong></p>
+<p><strong>6.0 &#x5E38;&#x7528;&#x6570;&#x636E;&#x7ED3;&#x6784;</strong></p>
+<pre><code class="lang-c"><span class="hljs-comment">// &#x8FD9;&#x91CC;&#x53EA;&#x662F;&#x58F0;&#x660E;&#xFF0C;&#x5B9A;&#x4E49;&#x5728;cr.h&#x4E2D;</span>
+<span class="hljs-keyword">struct</span> mill_chan_;
+
+<span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span>{
+    <span class="hljs-keyword">void</span> *f1; 
+    <span class="hljs-keyword">void</span> *f2; 
+    <span class="hljs-keyword">void</span> *f3; 
+    <span class="hljs-keyword">void</span> *f4; 
+    <span class="hljs-keyword">void</span> *f5; 
+    <span class="hljs-keyword">void</span> *f6; 
+    <span class="hljs-keyword">int</span> f7; 
+    <span class="hljs-keyword">int</span> f8; 
+    <span class="hljs-keyword">int</span> f9;
+} mill_clause_;
+
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> MILL_CLAUSELEN_ (sizeof(mill_clause_))</span>
+</code></pre>
+<p><strong>6.1 &#x53D1;&#x9001;&#x6570;&#x636E;&#x5230;chan</strong></p>
+<pre><code class="lang-c"><span class="hljs-comment">// &#x53D1;&#x9001;type&#x7C7B;&#x578B;&#x7684;&#x6570;&#x636E;value&#x5230;channel</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> mill_chs__(channel, type, value) \
+    do {\
+        type mill_val = (value);\
+        mill_chs_((channel), &amp;mill_val, sizeof(type), MILL_HERE_);\
+    } while(0)</span>
+</code></pre>
+<p><strong>6.2 &#x4ECE;chan&#x63A5;&#x6536;&#x6570;&#x636E;</strong></p>
+<pre><code class="lang-c"><span class="hljs-comment">// &#x4ECE;channel&#x63A5;&#x6536;type&#x7C7B;&#x578B;&#x7684;&#x6570;&#x636E;</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> mill_chr__(channel, type) \
+    (*(type*)mill_chr_((channel), sizeof(type), MILL_HERE_))</span>
+</code></pre>
+<p><strong>6.3 chan&#x64CD;&#x4F5C;&#x7ED3;&#x675F;</strong></p>
+<pre><code class="lang-c"><span class="hljs-comment">// &#x7528;type&#x7C7B;&#x578B;&#x6570;&#x636E;value&#x6765;&#x6807;&#x8BB0;channel&#x64CD;&#x4F5C;&#x7ED3;&#x675F;</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> mill_chdone__(channel, type, value) \
+    do {\
+        type mill_val = (value);\
+        mill_chdone_((channel), &amp;mill_val, sizeof(type), MILL_HERE_);\
+    } while(0)</span>
+</code></pre>
+<p><strong>7 choose&#x4ECE;&#x53E5;&#x5B9E;&#x73B0;</strong></p>
+<p><strong>7.1 &#x4ECE;&#x53E5;&#x521D;&#x59CB;&#x5316;</strong></p>
+<pre><code class="lang-c"><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> mill_choose_init__ \
+    {\
+        mill_choose_init_(MILL_HERE_);\
+        int mill_idx = -2;\
+        while(1) {\
+            <span class="hljs-meta-keyword">if</span>(mill_idx != -2) {\
+                <span class="hljs-meta-keyword">if</span>(0)</span>
+</code></pre>
+<p><strong>7.2 &#x8BFB;&#x5C31;&#x7EEA;&#x4E8B;&#x4EF6;</strong></p>
+<pre><code class="lang-c"><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> mill_choose_in__(chan, type, name, idx) \
+                    break;\
+                }\
+                goto mill_concat_(mill_label, idx);\
+            }\
+            char mill_concat_(mill_clause, idx)[MILL_CLAUSELEN_];\
+            mill_choose_in_(\
+                &amp;mill_concat_(mill_clause, idx)[0],\
+                (chan),\
+                sizeof(type),\
+                idx);\
+            <span class="hljs-meta-keyword">if</span>(0) {\
+                type name;\
+                mill_concat_(mill_label, idx):\
+                <span class="hljs-meta-keyword">if</span>(mill_idx == idx) {\
+                    name = *(type*)mill_choose_val_(sizeof(type));\
+                    goto mill_concat_(mill_dummylabel, idx);\
+                    mill_concat_(mill_dummylabel, idx)</span>
+</code></pre>
+<p><strong>7.3 &#x5199;&#x5C31;&#x7EEA;&#x4E8B;&#x4EF6;</strong></p>
+<pre><code class="lang-c"><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> mill_choose_out__(chan, type, val, idx) \
+                    break;\
+                }\
+                goto mill_concat_(mill_label, idx);\
+            }\
+            char mill_concat_(mill_clause, idx)[MILL_CLAUSELEN_];\
+            type mill_concat_(mill_val, idx) = (val);\
+            mill_choose_out_(\
+                &amp;mill_concat_(mill_clause, idx)[0],\
+                (chan),\
+                &amp;mill_concat_(mill_val, idx),\
+                sizeof(type),\
+                idx);\
+            <span class="hljs-meta-keyword">if</span>(0) {\
+                mill_concat_(mill_label, idx):\
+                <span class="hljs-meta-keyword">if</span>(mill_idx == idx) {\
+                    goto mill_concat_(mill_dummylabel, idx);\
+                    mill_concat_(mill_dummylabel, idx)</span>
+</code></pre>
+<p><strong>7.3 deadline&#x5B9E;&#x73B0;</strong></p>
+<pre><code class="lang-c"><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> mill_choose_deadline__(ddline, idx) \
+                    break;\
+                }\
+                goto mill_concat_(mill_label, idx);\
+            }\
+            mill_choose_deadline_(ddline);\
+            <span class="hljs-meta-keyword">if</span>(0) {\
+                mill_concat_(mill_label, idx):\
+                <span class="hljs-meta-keyword">if</span>(mill_idx == -1) {\
+                    goto mill_concat_(mill_dummylabel, idx);\
+                    mill_concat_(mill_dummylabel, idx)</span>
+</code></pre>
+<p><strong>7.4 otherwise&#x5B9E;&#x73B0;</strong></p>
+<pre><code class="lang-c"><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> mill_choose_otherwise__(idx) \
+                    break;\
+                }\
+                goto mill_concat_(mill_label, idx);\
+            }\
+            mill_choose_otherwise_();\
+            <span class="hljs-meta-keyword">if</span>(0) {\
+                mill_concat_(mill_label, idx):\
+                <span class="hljs-meta-keyword">if</span>(mill_idx == -1) {\
+                    goto mill_concat_(mill_dummylabel, idx);\
+                    mill_concat_(mill_dummylabel, idx)</span>
+</code></pre>
+<p><strong>7.5 &#x4ECE;&#x53E5;&#x7ED3;&#x675F;</strong></p>
+<pre><code class="lang-c"><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> mill_choose_end__ \
+                    break;\
+                }\
+            }\
+            mill_idx = mill_choose_wait_();\
+        }</span>
+</code></pre>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="libmill-chan.html" class="navigation navigation-prev " aria-label="Previous page: chan: 通过通信来共享">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="coroutine-cr.html" class="navigation navigation-next " aria-label="Next page: coroutine: cr.h/cr.c">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"description":"libmill是一个基于c语言开发的go风格协程库，实现了go风格的协程操作、chan操作、非阻塞的网络io操作等等，是一个不错的linux平台下c风格协程库实现。如果你想从0到1的快速了解如何开发一个协程库，libmill将是一个非常不错的案例；如果你想更深入地了解go，libmill里面也借鉴了go的一些设计思想；或者你想在生产环境中使用，开发者也提供了一个更健壮的版本libdill。","title":"coroutine: libmill.h","level":"5.1","depth":1,"next":{"title":"coroutine: cr.h/cr.c","level":"5.2","depth":1,"path":"coroutine-cr.md","ref":"coroutine-cr.md","articles":[]},"previous":{"title":"chan: 通过通信来共享","level":"4.1","depth":1,"path":"libmill-chan.md","ref":"libmill-chan.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"coroutine-libmill.md","mtime":"2021-03-25T18:20:16.897Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-03-25T19:09:21.649Z"},"basePath":".","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="gitbook/gitbook.js"></script>
+    <script src="gitbook/theme.js"></script>
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

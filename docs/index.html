@@ -1,0 +1,645 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>序言 · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="libmill是一个基于c语言开发的go风格协程库，实现了go风格的协程操作、chan操作、非阻塞的网络io操作等等，是一个不错的linux平台下c风格协程库实现。如果你想从0到1的快速了解如何开发一个协程库，libmill将是一个非常不错的案例；如果你想更深入地了解go，libmill里面也借鉴了go的一些设计思想；或者你想在生产环境中使用，开发者也提供了一个更健壮的版本libdill。">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="author.html" />
+    
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter active" data-level="1.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    序言
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="author.html">
+            
+                <a href="author.html">
+            
+                    
+                    作者
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">Part I - 系统基础</li>
+        
+        
+    
+        <li class="chapter " data-level="2.1" data-path="basics/server-programming-model.html">
+            
+                <a href="basics/server-programming-model.html">
+            
+                    
+                    服务编程模型
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" data-path="basics/process-thread-coroutine.html">
+            
+                <a href="basics/process-thread-coroutine.html">
+            
+                    
+                    进程, 线程, 协程
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3" data-path="basics/libmill-intro.html">
+            
+                <a href="basics/libmill-intro.html">
+            
+                    
+                    libmill协程库
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.4" data-path="basics/libdill-intro.html">
+            
+                <a href="basics/libdill-intro.html">
+            
+                    
+                    libdill协程库
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.5" data-path="basics/stack-memory.html">
+            
+                <a href="basics/stack-memory.html">
+            
+                    
+                    栈空间分配
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.6" data-path="basics/context-switching.html">
+            
+                <a href="basics/context-switching.html">
+            
+                    
+                    上下文切换
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.7" data-path="basics/context-switching-cost.html">
+            
+                <a href="basics/context-switching-cost.html">
+            
+                    
+                    上下文切换开销
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.8" data-path="basics/thread-model.html">
+            
+                <a href="basics/thread-model.html">
+            
+                    
+                    线程模型
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">Part II - 源码分析</li>
+        
+        
+    
+
+    
+        
+        <li class="header">chan：通过通信来共享</li>
+        
+        
+    
+        <li class="chapter " data-level="4.1" data-path="libmill-chan.html">
+            
+                <a href="libmill-chan.html">
+            
+                    
+                    chan: 通过通信来共享
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">coroutine: 高效轻量级并发</li>
+        
+        
+    
+        <li class="chapter " data-level="5.1" data-path="coroutine-libmill.html">
+            
+                <a href="coroutine-libmill.html">
+            
+                    
+                    coroutine: libmill.h
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.2" data-path="coroutine-cr.html">
+            
+                <a href="coroutine-cr.html">
+            
+                    
+                    coroutine: cr.h/cr.c
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.3" data-path="coroutine-mfork.html">
+            
+                <a href="coroutine-mfork.html">
+            
+                    
+                    coroutine: mfork
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.4" data-path="coroutine-stack.html">
+            
+                <a href="coroutine-stack.html">
+            
+                    
+                    coroutine: stack
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">网络IO: 多路复用Hook系统调用</li>
+        
+        
+    
+        <li class="chapter " data-level="6.1" data-path="io-multiplexing/network-ip.html">
+            
+                <a href="io-multiplexing/network-ip.html">
+            
+                    
+                    network: ip
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.2" data-path="io-multiplexing/network-tcp.html">
+            
+                <a href="io-multiplexing/network-tcp.html">
+            
+                    
+                    network: tcp
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.3" data-path="io-multiplexing/network-udp.html">
+            
+                <a href="io-multiplexing/network-udp.html">
+            
+                    
+                    network: udp
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.4" data-path="io-multiplexing/network-unix.html">
+            
+                <a href="io-multiplexing/network-unix.html">
+            
+                    
+                    network: unix
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.5" data-path="io-multiplexing/network-file.html">
+            
+                <a href="io-multiplexing/network-file.html">
+            
+                    
+                    network: file
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.6" data-path="io-multiplexing/network-poller.html">
+            
+                <a href="io-multiplexing/network-poller.html">
+            
+                    
+                    network: poller
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">常用数据结构</li>
+        
+        
+    
+        <li class="chapter " data-level="7.1" data-path="datatypes/datatype-iterator.html">
+            
+                <a href="datatypes/datatype-iterator.html">
+            
+                    
+                    通用链表及迭代器实现
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="7.2" data-path="datatypes/datatype-list.html">
+            
+                <a href="datatypes/datatype-list.html">
+            
+                    
+                    双向链表: list
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="7.3" data-path="datatypes/datatype-slist.html">
+            
+                <a href="datatypes/datatype-slist.html">
+            
+                    
+                    单向链表: slist
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">高精度定时器</li>
+        
+        
+    
+        <li class="chapter " data-level="8.1" data-path="timer/libmill-timer.html">
+            
+                <a href="timer/libmill-timer.html">
+            
+                    
+                    定时器: timer
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">调试说明</li>
+        
+        
+    
+        <li class="chapter " data-level="9.1" data-path="debugging/libmill-debugging.html">
+            
+                <a href="debugging/libmill-debugging.html">
+            
+                    
+                    如何调试libmill
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">常用辅助方法</li>
+        
+        
+    
+        <li class="chapter " data-level="10.1" data-path="utils/libmill-utils.html">
+            
+                <a href="utils/libmill-utils.html">
+            
+                    
+                    常用工具函数：函数+宏
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="." >序言</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="&#x5E8F;&#x8A00;">&#x5E8F;&#x8A00;</h1>
+<p>[libmill](<a href="http://libmill.org/" target="_blank">http://libmill.org/</a>), &#x662F;<strong>Martin Sustrik</strong>&#x53D1;&#x8D77;&#x7684;&#x4E00;&#x4E2A;&#x57FA;&#x4E8E;linux c&#x8BED;&#x8A00;&#x5F00;&#x53D1;&#x7684;go&#x98CE;&#x683C;&#x534F;&#x7A0B;&#x5E93;&#xFF0C;&#x5B9E;&#x73B0;&#x4E86;&#x7C7B;&#x4F3C;go&#x98CE;&#x683C;&#x7684;&#x5E38;&#x89C1;&#x7F16;&#x7801;&#x64CD;&#x4F5C;&#xFF0C;&#x5982;&#x652F;&#x6301;&#x534F;&#x7A0B;&#x3001;chan&#x3001;&#x975E;&#x963B;&#x585E;&#x7684;&#x7F51;&#x7EDC;IO&#x7B49;&#x7B49;&#xFF0C;&#x662F;&#x4E00;&#x4E2A;&#x4E0D;&#x9519;&#x7684;linux&#x5E73;&#x53F0;&#x4E0B;c&#x98CE;&#x683C;&#x534F;&#x7A0B;&#x5E93;&#x5B9E;&#x73B0;&#xFF0C;&#x4EE3;&#x7801;&#x8BE6;&#x89C1;[libmill-source](<a href="https://github.com/sustrik/libmill" target="_blank">https://github.com/sustrik/libmill</a>)&#x3002;</p>
+<ul>
+<li>&#x5982;&#x679C;&#x4F60;&#x60F3;&#x4ECE;0&#x5230;1&#x7684;&#x5FEB;&#x901F;&#x4E86;&#x89E3;&#x5982;&#x4F55;&#x5F00;&#x53D1;&#x4E00;&#x4E2A;&#x534F;&#x7A0B;&#x5E93;&#xFF0C;libmill&#x5C06;&#x662F;&#x4E00;&#x4E2A;&#x975E;&#x5E38;&#x4E0D;&#x9519;&#x7684;&#x6848;&#x4F8B;&#xFF1B;</li>
+<li>&#x5982;&#x679C;&#x4F60;&#x60F3;&#x66F4;&#x6DF1;&#x5165;&#x5730;&#x4E86;&#x89E3;go&#xFF0C;libmill&#x91CC;&#x9762;&#x4E5F;&#x501F;&#x9274;&#x4E86;go&#x7684;&#x4E00;&#x4E9B;&#x8BBE;&#x8BA1;&#x601D;&#x60F3;&#xFF1B;</li>
+<li>&#x6216;&#x8005;&#x4F60;&#x60F3;&#x5728;&#x751F;&#x4EA7;&#x73AF;&#x5883;&#x4E2D;&#x4F7F;&#x7528;&#xFF0C;&#x5F00;&#x53D1;&#x8005;&#x4E5F;&#x63D0;&#x4F9B;&#x4E86;&#x4E00;&#x4E2A;&#x66F4;&#x5065;&#x58EE;&#x7684;&#x7248;&#x672C;[libdill](<a href="http://libdill.org/" target="_blank">http://libdill.org/</a>)&#x53EF;&#x4F9B;&#x9009;&#x62E9;&#x3002;</li>
+</ul>
+<p>&#x6709;&#x4E9B;&#x8BFB;&#x8005;&#x53EF;&#x80FD;&#x4F1A;&#x6709;&#x8FD9;&#x6837;&#x7684;&#x7591;&#x95EE;&#xFF0C;&#x7B14;&#x8005;&#x4E3A;&#x4EC0;&#x4E48;&#x4E0D;&#x76F4;&#x63A5;&#x5B66;&#x4E60;go&#xFF0C;&#x53CD;&#x5012;&#x8981;&#x82B1;&#x65F6;&#x95F4;&#x9700;&#x5B66;&#x4E60;libmill&#x5462;&#xFF1F;</p>
+<ul>
+<li>&#x4E00;&#xFF0C;&#x6E90;&#x4E8E;&#x6211;&#x5BF9;c&#x8BED;&#x8A00;&#x7684;&#x67D0;&#x79CD;&#x504F;&#x7231;&#x3002;&#x7F16;&#x7A0B;&#x8BED;&#x8A00;&#x5F52;&#x6839;&#x7A76;&#x5E95;&#x662F;&#x6765;&#x89E3;&#x51B3;&#x95EE;&#x9898;&#x7684;&#xFF0C;&#x4E0D;&#x7BA1;&#x662F;&#x5BF9;&#x8BA4;&#x8BC6;&#x4E16;&#x754C;&#x3001;&#x95EE;&#x9898;&#x8FDB;&#x884C;&#x66F4;&#x597D;&#x7684;&#x62BD;&#x8C61;&#x3001;&#x5EFA;&#x6A21;&#xFF0C;&#x8FD8;&#x662F;&#x66F4;&#x8D34;&#x8FD1;&#x6700;&#x4F73;&#x5B9E;&#x8DF5;&#x7B49;&#x7B49;&#xFF0C;&#x5C42;&#x51FA;&#x4E0D;&#x51FA;&#x7684;&#x9AD8;&#x7EA7;&#x8BED;&#x8A00;&#x5F15;&#x5165;&#x4E86;&#x8D8A;&#x6765;&#x8D8A;&#x591A;&#x7684;&#x7279;&#x6027;&#x3002;&#x7136;&#x800C;&#xFF0C;&#x6211;&#x4EEC;&#x771F;&#x7684;&#x9700;&#x8981;&#x8FD9;&#x4E9B;&#x5417;&#xFF1F;It depends&#x3002;</li>
+<li>&#x4E8C;&#xFF0C;&#x90A3;&#x6BB5;&#x65F6;&#x95F4;&#x4E5F;&#x662F;&#x521A;&#x5F00;&#x59CB;&#x63A5;&#x89E6;go&#x8BED;&#x8A00;&#xFF0C;&#x67D0;&#x79CD;&#x7A0B;&#x5EA6;&#x8FD8;&#x5B58;&#x5728;&#x4E00;&#x70B9;&#x62B5;&#x89E6;&#x5FC3;&#x7406;&#x3002;&#x6BD4;&#x5982;&#x58F0;&#x660E;&#x53D8;&#x91CF;&#x65F6;&#x6570;&#x636E;&#x7C7B;&#x578B;&#x8981;&#x653E;&#x5728;&#x53D8;&#x91CF;&#x540D;&#x540E;&#x9762;&#xFF0C;&#x51FD;&#x6570;&#x8FD4;&#x56DE;&#x503C;&#x5217;&#x8868;&#x653E;&#x5728;&#x53C2;&#x6570;&#x5217;&#x8868;&#x540E;&#x9762;&#xFF0C;&#x7B49;&#x7B49;&#x3002;&#x56E0;&#x4E3A;&#x8FD9;&#x6837;&#x7684;&#x62B5;&#x89E6;&#x5FC3;&#x7406;&#xFF0C;&#x6211;&#x4E5F;&#x66FE;&#x8D28;&#x7591;&#x8FC7;go&#x7684;&#x8BBE;&#x8BA1;&#xFF0C;&#x4EE5;&#x53CA;&#x81EA;&#x5DF1;&#x8981;&#x4E0D;&#x8981;&#x7B2C;&#x4E00;&#x4F18;&#x5148;&#x7EA7;&#x82B1;&#x65F6;&#x95F4;&#x53BB;&#x638C;&#x63E1;&#x5B83;&#x3002;</li>
+<li>&#x6700;&#x540E;&#xFF0C;libmill&#x662F;&#x57FA;&#x4E8E;go&#x8BED;&#x8A00;&#x5B9E;&#x73B0;&#x8FDB;&#x884C;&#x8BBE;&#x8BA1;&#x7684;&#xFF0C;&#x5728;&#x4F7F;&#x7528;&#x4E60;&#x60EF;&#x4E0A;&#x5F88;&#x76F8;&#x4F3C;&#xFF0C;&#x4E5F;&#x53EF;&#x4EE5;&#x8D77;&#x5230;&#x89E6;&#x7C7B;&#x65C1;&#x901A;&#x7684;&#x6548;&#x679C;&#xFF1B;</li>
+</ul>
+<p>&#x4E0B;&#x56FE;&#x4E2D;&#x7C7B;&#x6BD4;&#x4E86;go&#x8BED;&#x8A00;&#x548C;libmill&#x7684;&#x4E00;&#x4E9B;&#x5E38;&#x89C1;&#x64CD;&#x4F5C;&#xFF0C;&#x76F8;&#x6BD4;&#x770B;&#x540E;&#x66F4;&#x80FD;&#x8BA4;&#x540C;libmill&#x662F;&#x4E00;&#x4E2A;go&#x98CE;&#x683C;&#x534F;&#x7A0B;&#x5E93;&#x3002;</p>
+<p><img src="assets/image%20%282%29.png" alt="go&#x98CE;&#x683C;&#x534F;&#x7A0B;&#x5E93;libmill"></p>
+<p>&#x201C;<strong>&#x4EFB;&#x4F55;&#x6BD4;c&#x8BED;&#x8A00;&#x66F4;&#x4F4E;&#x7EA7;&#x7684;&#x8BED;&#x8A00;&#x90FD;&#x4E0D;&#x8DB3;&#x4EE5;&#x5B8C;&#x6574;&#x5730;&#x63CF;&#x8FF0;&#x4E00;&#x4E2A;&#x8BA1;&#x7B97;&#x673A;&#x7CFB;&#x7EDF;&#xFF0C;&#x4EFB;&#x4F55;&#x6BD4;c&#x8BED;&#x8A00;&#x66F4;&#x9AD8;&#x7EA7;&#x7684;&#x8BED;&#x8A00;&#x90FD;&#x53EF;&#x4EE5;&#x7528;c&#x8BED;&#x8A00;&#x6765;&#x5B9E;&#x73B0;</strong>&#x201D;&#xFF0C;&#x6211;&#x5BF9;c&#x7684;&#x8BC4;&#x4EF7;&#x4E5F;&#x5927;&#x81F4;&#x5982;&#x6B64;&#x3002;&#x4E0E;&#x5176;&#x4E3A;&#x4E86;go&#x7684;&#x4E2A;&#x522B;&#x7279;&#x6027;&#x53BB;&#x5B66;&#x4E60;&#x4E00;&#x95E8;&#x8BED;&#x8A00;&#xFF0C;&#x6211;&#x66F4;&#x613F;&#x610F;&#x82B1;&#x70B9;&#x65F6;&#x95F4;&#x5148;&#x7814;&#x7A76;&#x4E0B;c&#x5982;&#x4F55;&#x6765;&#x5B9E;&#x73B0;&#x8FD9;&#x6837;&#x7684;&#x7279;&#x6027;&#x3002;&#x6B63;&#x662F;&#x5728;&#x8FD9;&#x79CD;&#x601D;&#x8DEF;&#x4E0B;&#xFF0C;&#x6211;&#x63A5;&#x89E6;&#x5230;&#x4E86;libmill&#x7B49;&#x4E00;&#x4F17;c&#x3001;c++&#x534F;&#x7A0B;&#x5E93;&#x5B9E;&#x73B0;&#xFF0C;libtask&#x3001;boost coroutine&#x3001;libco&#x7B49;&#xFF0C;libmill&#x7684;&#x5B9E;&#x73B0;&#x76F8;&#x5BF9;&#x6765;&#x8BF4;&#x66F4;&#x4F18;&#x96C5;&#x3002;</p>
+<p>&#x5F53;&#x7136;&#x4E86;&#xFF0C;&#x6162;&#x6162;&#x5730;&#x968F;&#x7740;&#x81EA;&#x5DF1;&#x5BF9;go&#x7684;&#x5B66;&#x4E60;&#x9010;&#x6E10;&#x52A0;&#x6DF1;&#xFF0C;&#x6211;&#x66F4;&#x613F;&#x610F;&#x5C06;go&#x4F5C;&#x4E3A;&#x4E3B;&#x529B;&#x5F00;&#x53D1;&#x8BED;&#x8A00;&#x3002;go&#x8FD0;&#x884C;&#x65F6;&#x5B9E;&#x73B0;&#x6709;&#x4E9B;&#x590D;&#x6742;&#xFF0C;&#x5BF9;libmill&#x7684;&#x7814;&#x7A76;&#x53CD;&#x800C;&#x8BA9;&#x81EA;&#x5DF1;&#x5B66;&#x4E60;&#x8D77;&#x6765;&#x66F4;&#x52A0;&#x8F7B;&#x8F66;&#x719F;&#x8DEF;&#x3002;&#x6B64;&#x5916;&#xFF0C;&#x5728;linux c&#x5F00;&#x53D1;&#x65F6;&#xFF0C;&#x4E5F;&#x591A;&#x4E86;&#x4E2A;&#x4E0D;&#x9519;&#x7684;&#x9009;&#x62E9;&#x3002;</p>
+<p>&#x8FD9;&#x5927;&#x81F4;&#x5C31;&#x662F;&#x6211;&#x65E9;&#x671F;&#x5B66;&#x4E60;libmill&#x3001;go&#x7684;&#x4E00;&#x4E2A;&#x7ECF;&#x5386;&#x3002;&#x7406;&#x89E3;&#x4E86;&#x8FD9;&#x4E2A;go&#x98CE;&#x683C;&#x534F;&#x7A0B;&#x5E93;&#x7684;&#x5B9E;&#x73B0;&#xFF0C;&#x4E5F;&#x770B;&#x5230;&#x4E86;&#x597D;&#x7684;&#x8BBE;&#x8BA1;&#x601D;&#x60F3;&#xFF0C;&#x770B;&#x5927;&#x795E;&#x7684;&#x4EE3;&#x7801;&#x5C31;&#x662F;&#x6709;&#x79CD;&#x201C;<strong>&#x542C;&#x541B;&#x4E00;&#x5E2D;&#x8BDD;&#xFF0C;&#x80DC;&#x8BFB;&#x5341;&#x5E74;&#x4E66;</strong>&#x201D;&#x7684;&#x611F;&#x89C9;&#xFF0C;&#x5DE7;&#x5999;&#x7684;&#x8BBE;&#x8BA1;&#x3001;&#x9ED1;&#x9B54;&#x6CD5;&#x822C;&#x7684;c idioms&#x2026;&#x2026;</p>
+<p>&#x5982;&#x679C;&#x8BFB;&#x8005;&#x80FD;&#x591F;&#x575A;&#x6301;&#x770B;&#x5B8C;&#x672C;&#x4E66;&#xFF0C;&#x5C24;&#x5176;&#x662F;go&#x521D;&#x5B66;&#x8005;&#xFF0C;&#x5E94;&#x8BE5;&#x80FD;&#x5E2E;&#x52A9;&#x52A0;&#x6DF1;&#x5BF9;&#x8BA1;&#x7B97;&#x673A;&#x7CFB;&#x7EDF;&#x3001;&#x534F;&#x7A0B;&#x3001;go&#x8FD0;&#x884C;&#x65F6;&#x7B49;&#x7684;&#x4E00;&#x4E9B;&#x8BA4;&#x8BC6;&#xFF0C;&#x6211;&#x8BA4;&#x4E3A;&#x8FD8;&#x662F;&#x6709;&#x4E00;&#x5B9A;&#x7684;&#x5B66;&#x4E60;&#x4EF7;&#x503C;&#x7684;&#x3002;</p>
+<p>&#x5982;&#x679C;&#x60A8;&#x89C9;&#x5F97;&#x8FD9;&#x4E9B;&#x6587;&#x7AE0;&#x5BF9;&#x60A8;&#x3001;&#x5BF9;&#x8EAB;&#x8FB9;&#x670B;&#x53CB;&#x6709;&#x5E2E;&#x52A9;&#xFF0C;&#x4E5F;&#x8BF7;&#x5E2E;&#x52A9;&#x8F6C;&#x53D1;&#x3001;&#x4F20;&#x64AD;&#xFF0C;&#x5982;&#x80FD;&#x518D;&#x7ECF;&#x6D4E;&#x4E0A;&#x652F;&#x6301;&#x4E00;&#x4E0B;&#xFF0C;&#x90A3;&#x5BF9;&#x6211;&#x548C;&#x63A5;&#x4E0B;&#x6765;&#x7684;&#x521B;&#x4F5C;&#x5DE5;&#x4F5C;&#x6765;&#x8BF4;&#xFF0C;&#x4E5F;&#x662F;&#x4E00;&#x79CD;&#x83AB;&#x5927;&#x7684;&#x9F13;&#x52B1;&#x3002;</p>
+<p><img src="assets/image.png" alt="&#x60A8;&#x7684;&#x652F;&#x6301;&#xFF0C;&#x662F;&#x6211;&#x4E0D;&#x7AED;&#x521B;&#x9020;&#x7684;&#x52A8;&#x529B;"></p>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                
+                <a href="author.html" class="navigation navigation-next navigation-unique" aria-label="Next page: 作者">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"description":"libmill是一个基于c语言开发的go风格协程库，实现了go风格的协程操作、chan操作、非阻塞的网络io操作等等，是一个不错的linux平台下c风格协程库实现。如果你想从0到1的快速了解如何开发一个协程库，libmill将是一个非常不错的案例；如果你想更深入地了解go，libmill里面也借鉴了go的一些设计思想；或者你想在生产环境中使用，开发者也提供了一个更健壮的版本libdill。","title":"序言","level":"1.1","depth":1,"next":{"title":"作者","level":"1.2","depth":1,"path":"author.md","ref":"author.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"README.md","mtime":"2021-03-25T18:20:16.895Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-03-25T19:09:21.649Z"},"basePath":".","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="gitbook/gitbook.js"></script>
+    <script src="gitbook/theme.js"></script>
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

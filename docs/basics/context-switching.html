@@ -1,0 +1,815 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>上下文切换 · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="context-switching-cost.html" />
+    
+    
+    <link rel="prev" href="stack-memory.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    序言
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="../author.html">
+            
+                <a href="../author.html">
+            
+                    
+                    作者
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">Part I - 系统基础</li>
+        
+        
+    
+        <li class="chapter " data-level="2.1" data-path="server-programming-model.html">
+            
+                <a href="server-programming-model.html">
+            
+                    
+                    服务编程模型
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" data-path="process-thread-coroutine.html">
+            
+                <a href="process-thread-coroutine.html">
+            
+                    
+                    进程, 线程, 协程
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3" data-path="libmill-intro.html">
+            
+                <a href="libmill-intro.html">
+            
+                    
+                    libmill协程库
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.4" data-path="libdill-intro.html">
+            
+                <a href="libdill-intro.html">
+            
+                    
+                    libdill协程库
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.5" data-path="stack-memory.html">
+            
+                <a href="stack-memory.html">
+            
+                    
+                    栈空间分配
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="2.6" data-path="context-switching.html">
+            
+                <a href="context-switching.html">
+            
+                    
+                    上下文切换
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.7" data-path="context-switching-cost.html">
+            
+                <a href="context-switching-cost.html">
+            
+                    
+                    上下文切换开销
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.8" data-path="thread-model.html">
+            
+                <a href="thread-model.html">
+            
+                    
+                    线程模型
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">Part II - 源码分析</li>
+        
+        
+    
+
+    
+        
+        <li class="header">chan：通过通信来共享</li>
+        
+        
+    
+        <li class="chapter " data-level="4.1" data-path="../libmill-chan.html">
+            
+                <a href="../libmill-chan.html">
+            
+                    
+                    chan: 通过通信来共享
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">coroutine: 高效轻量级并发</li>
+        
+        
+    
+        <li class="chapter " data-level="5.1" data-path="../coroutine-libmill.html">
+            
+                <a href="../coroutine-libmill.html">
+            
+                    
+                    coroutine: libmill.h
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.2" data-path="../coroutine-cr.html">
+            
+                <a href="../coroutine-cr.html">
+            
+                    
+                    coroutine: cr.h/cr.c
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.3" data-path="../coroutine-mfork.html">
+            
+                <a href="../coroutine-mfork.html">
+            
+                    
+                    coroutine: mfork
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.4" data-path="../coroutine-stack.html">
+            
+                <a href="../coroutine-stack.html">
+            
+                    
+                    coroutine: stack
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">网络IO: 多路复用Hook系统调用</li>
+        
+        
+    
+        <li class="chapter " data-level="6.1" data-path="../io-multiplexing/network-ip.html">
+            
+                <a href="../io-multiplexing/network-ip.html">
+            
+                    
+                    network: ip
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.2" data-path="../io-multiplexing/network-tcp.html">
+            
+                <a href="../io-multiplexing/network-tcp.html">
+            
+                    
+                    network: tcp
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.3" data-path="../io-multiplexing/network-udp.html">
+            
+                <a href="../io-multiplexing/network-udp.html">
+            
+                    
+                    network: udp
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.4" data-path="../io-multiplexing/network-unix.html">
+            
+                <a href="../io-multiplexing/network-unix.html">
+            
+                    
+                    network: unix
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.5" data-path="../io-multiplexing/network-file.html">
+            
+                <a href="../io-multiplexing/network-file.html">
+            
+                    
+                    network: file
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.6" data-path="../io-multiplexing/network-poller.html">
+            
+                <a href="../io-multiplexing/network-poller.html">
+            
+                    
+                    network: poller
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">常用数据结构</li>
+        
+        
+    
+        <li class="chapter " data-level="7.1" data-path="../datatypes/datatype-iterator.html">
+            
+                <a href="../datatypes/datatype-iterator.html">
+            
+                    
+                    通用链表及迭代器实现
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="7.2" data-path="../datatypes/datatype-list.html">
+            
+                <a href="../datatypes/datatype-list.html">
+            
+                    
+                    双向链表: list
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="7.3" data-path="../datatypes/datatype-slist.html">
+            
+                <a href="../datatypes/datatype-slist.html">
+            
+                    
+                    单向链表: slist
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">高精度定时器</li>
+        
+        
+    
+        <li class="chapter " data-level="8.1" data-path="../timer/libmill-timer.html">
+            
+                <a href="../timer/libmill-timer.html">
+            
+                    
+                    定时器: timer
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">调试说明</li>
+        
+        
+    
+        <li class="chapter " data-level="9.1" data-path="../debugging/libmill-debugging.html">
+            
+                <a href="../debugging/libmill-debugging.html">
+            
+                    
+                    如何调试libmill
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">常用辅助方法</li>
+        
+        
+    
+        <li class="chapter " data-level="10.1" data-path="../utils/libmill-utils.html">
+            
+                <a href="../utils/libmill-utils.html">
+            
+                    
+                    常用工具函数：函数+宏
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >上下文切换</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="&#x4E0A;&#x4E0B;&#x6587;&#x5207;&#x6362;">&#x4E0A;&#x4E0B;&#x6587;&#x5207;&#x6362;</h1>
+<h2 id="&#x4E0A;&#x4E0B;&#x6587;&#xFF0C;&#x6307;&#x7684;&#x662F;&#x4EC0;&#x4E48;&#x5462;&#xFF1F;">&#x4E0A;&#x4E0B;&#x6587;&#xFF0C;&#x6307;&#x7684;&#x662F;&#x4EC0;&#x4E48;&#x5462;&#xFF1F;</h2>
+<p>&#x4E00;&#x4E2A;&#x4EFB;&#x52A1;&#x7684;&#x6267;&#x884C;&#xFF0C;&#x672C;&#x8D28;&#x4E0A;&#x5C31;&#x662F;CPU&#x6267;&#x884C;&#x5176;&#x6307;&#x4EE4;&#x7684;&#x8FC7;&#x7A0B;&#xFF0C;&#x6BCF;&#x6267;&#x884C;&#x4E00;&#x6761;&#x6307;&#x4EE4;&#xFF0C;CPU&#x5185;&#x90E8;&#x5BC4;&#x5B58;&#x5668;&#x72B6;&#x6001;&#x90FD;&#x4F1A;&#x53D1;&#x751F;&#x4E00;&#x70B9;&#x6539;&#x53D8;&#xFF0C;CPU&#x5185;&#x90E8;&#x5BC4;&#x5B58;&#x5668;&#x7684;&#x72B6;&#x6001;&#xFF0C;&#x5176;&#x5B9E;&#x5C31;&#x6807;&#x8BC6;&#x4E86;&#x4EFB;&#x52A1;&#x5F53;&#x524D;&#x7684;&#x4E00;&#x4E2A;&#x6267;&#x884C;&#x72B6;&#x6001;&#x3002;&#x8FD9;&#x91CC;&#x8BB0;&#x5F55;&#x4EFB;&#x52A1;&#x72B6;&#x6001;&#x7684;CPU&#x5BC4;&#x5B58;&#x5668;&#x4FE1;&#x606F;&#x5C31;&#x662F;&#x6211;&#x4EEC;&#x5E38;&#x8BF4;&#x7684;&#x4E0A;&#x4E0B;&#x6587;&#x3002;</p>
+<h2 id="&#x4E0A;&#x4E0B;&#x6587;&#xFF0C;&#x5982;&#x4F55;&#x8868;&#x793A;&#x5462;&#xFF1F;">&#x4E0A;&#x4E0B;&#x6587;&#xFF0C;&#x5982;&#x4F55;&#x8868;&#x793A;&#x5462;&#xFF1F;</h2>
+<p>&#x73B0;&#x5728;&#xFF0C;&#x6211;&#x4EEC;&#x4E86;&#x89E3;&#x4E86;&#x4E0A;&#x4E0B;&#x6587;&#x5176;&#x5B9E;&#x5C31;&#x662F;&#x8BB0;&#x5F55;&#x4EFB;&#x52A1;&#x6267;&#x884C;&#x72B6;&#x6001;&#x7684;&#x5BC4;&#x5B58;&#x5668;&#x4FE1;&#x606F;&#x3002;&#x90A3;&#x8868;&#x793A;&#x4E00;&#x4E2A;&#x4E0A;&#x4E0B;&#x6587;&#xFF0C;&#x9700;&#x8981;&#x7528;&#x5230;CPU&#x4E2D;&#x7684;&#x54EA;&#x4E9B;&#x5BC4;&#x5B58;&#x5668;&#x5462;&#xFF1F;&#x5168;&#x90E8;&#x5417;&#xFF1F;&#x8FD8;&#x662F;&#x4E00;&#x90E8;&#x5206;&#xFF1F;</p>
+<p>CPU&#x4E2D;&#x7684;&#x5BC4;&#x5B58;&#x5668;&#x6570;&#x91CF;&#x6709;&#x591A;&#x5C11;&#x5462;&#xFF0C;&#x8FD9;&#x4E2A;&#x80AF;&#x5B9A;&#x8DDF;&#x5177;&#x4F53;&#x578B;&#x53F7;&#x7684;CPU&#x6709;&#x5173;&#x7CFB;&#x3002;&#x53C2;&#x8003;Intel&#x624B;&#x518C;&#xFF0C;<a href="https://software.intel.com/content/www/us/en/develop/articles/intel-sdm.html" target="_blank">https://software.intel.com/content/www/us/en/develop/articles/intel-sdm.html</a>&#x3002;&#x5BC4;&#x5B58;&#x5668;&#x79CD;&#x7C7B;&#x5927;&#x81F4;&#x4E0A;&#x5305;&#x62EC;&#xFF1A;&#x901A;&#x7528;&#x76EE;&#x7684;&#x5BC4;&#x5B58;&#x5668;&#xFF08;AX\BX\CX\DX...)&#xFF0C;&#x6BB5;&#x5BC4;&#x5B58;&#x5668;(CS\DS\SS...)&#xFF0C;&#x6807;&#x8BC6;&#x5BC4;&#x5B58;&#x5668;(EFLAGS)&#xFF0C;&#x6307;&#x4EE4;(IR)&#x53CA;&#x6307;&#x4EE4;&#x6307;&#x9488;&#x5BC4;&#x5B58;&#x5668;(IP)&#xFF0C;&#x5F53;&#x7136;&#x8FD8;&#x6709;&#x4E00;&#x4E9B;&#x5176;&#x4ED6;&#x7684;&#xFF0C;&#x6BD4;&#x5982;SP\GDTR\LDTR\CR3&#x7B49;&#x7B49;&#x3002;</p>
+<p>&#x5BF9;&#x4E8E;&#x8868;&#x5F81;&#x4EFB;&#x52A1;&#x5F53;&#x524D;&#x7684;&#x6267;&#x884C;&#x72B6;&#x6001;&#x800C;&#x8A00;&#xFF0C;&#x5176;&#x5B9E;&#x662F;&#x4E0D;&#x9700;&#x8981;&#x4F7F;&#x7528;&#x5230;&#x6240;&#x6709;&#x7684;&#x5BC4;&#x5B58;&#x5668;&#x7684;&#xFF0C;&#x56E0;&#x4E3A;&#x6709;&#x4E9B;&#x5BC4;&#x5B58;&#x5668;&#x7684;&#x503C;&#x662F;&#x4ECE;&#x8FDB;&#x7A0B;&#x5185;&#x5B58;&#x5730;&#x5740;&#x7A7A;&#x95F4;&#x4E2D;&#x52A0;&#x8F7D;&#x51FA;&#x6765;&#x7684;&#xFF0C;&#x6216;&#x8005;&#x4ECE;&#x5185;&#x6838;&#x6570;&#x636E;&#x7ED3;&#x6784;&#x4E2D;&#x52A0;&#x8F7D;&#x51FA;&#x6765;&#x7684;&#xFF0C;&#x6211;&#x4EEC;&#x53EA;&#x9700;&#x8981;&#x90A3;&#x4E9B;&#x8868;&#x5F81;&#x4EFB;&#x52A1;&#x5F53;&#x524D;&#x6267;&#x884C;&#x72B6;&#x6001;&#x7684;&#x5BC4;&#x5B58;&#x5668;&#x5C31;&#x53EF;&#x4EE5;&#x4E86;&#xFF0C;&#x6BD4;&#x5982;&#x5E38;&#x89C1;&#x7684;CS:IP&#xFF0C;&#x5B83;&#x8BB0;&#x5F55;&#x4E86;&#x4EFB;&#x52A1;&#x8981;&#x6267;&#x884C;&#x7684;&#x4E0B;&#x4E00;&#x6761;&#x6307;&#x4EE4;&#x7684;&#x5730;&#x5740;&#xFF0C;CR3&#x662F;&#x8FDB;&#x7A0B;&#x9875;&#x8868;&#x8D77;&#x59CB;&#x5730;&#x5740;&#xFF0C;&#x7531;&#x5185;&#x6838;&#x4ECE;&#x7279;&#x5B9A;&#x6570;&#x636E;&#x7ED3;&#x6784;&#x4E2D;&#x8BFB;&#x53D6;&#x5E76;&#x52A0;&#x8F7D;&#x5230;CR3&#x5BC4;&#x5B58;&#x5668;&#xFF0C;&#x8FD9;&#x4E2A;&#x5C31;&#x4E0D;&#x9700;&#x8981;&#x4F5C;&#x4E3A;&#x4E0A;&#x4E0B;&#x6587;&#x4E2D;&#x7684;&#x4FE1;&#x606F;&#x3002;</p>
+<h2 id="&#x4E0A;&#x4E0B;&#x6587;&#xFF0C;jmpbuf">&#x4E0A;&#x4E0B;&#x6587;&#xFF0C;jmp_buf</h2>
+<p>&#x6211;&#x4EEC;&#x770B;&#x4E0B;Linux&#x4E2D;&#x5982;&#x4F55;&#x6807;&#x8BC6;&#x8FDB;&#x7A0B;&#x4E0A;&#x4E0B;&#x6587;&#x4FE1;&#x606F;&#x3002;&#x719F;&#x6089;Linux&#x4E0B;c&#x8BED;&#x8A00;&#x5F00;&#x53D1;&#x7684;&#x540C;&#x5B66;&#xFF0C;&#x5E94;&#x8BE5;&#x77E5;&#x9053;setjmp, longjmp&#x8FD9;&#x4E24;&#x4E2A;&#x51FD;&#x6570;&#x3002;&#x524D;&#x8005;&#x5B9A;&#x4E49;&#x4E00;&#x4E2A;<code>jmp_buf</code>&#x7ED3;&#x6784;&#x4F53;&#xFF0C;&#x540E;&#x8005;&#x53EF;&#x4EE5;&#x5728;&#x5176;&#x4ED6;&#x51FD;&#x6570;&#x4E2D;&#x5B9E;&#x73B0;&#x8DE8;&#x51FD;&#x6570;&#x7684;&#x8DF3;&#x8F6C;&#xFF08;goto&#x53EA;&#x80FD;&#x5B9E;&#x73B0;&#x51FD;&#x6570;&#x95F4;&#x8DF3;&#x8F6C;&#xFF09;&#x3002;&#x8FD9;&#x91CC;&#x7684;jmp_buf&#x5176;&#x5B9E;&#x5C31;&#x662F;&#x8868;&#x793A;&#x7684;&#x4EFB;&#x52A1;&#x7684;&#x6808;&#x4E0A;&#x4E0B;&#x6587;&#x4FE1;&#x606F;&#xFF08;stack context&#xFF09;&#x3002;</p>
+<p>&#x4EE5;&#x4E0B;&#x662F;i386&#x67B6;&#x6784;&#x4E2D; <code>struct __jmp_buf</code> &#x7684;&#x5B9A;&#x4E49;&#xFF0C;x86_64&#x67B6;&#x6784;&#x5C31;&#x5148;&#x4E0D;&#x8D58;&#x8FF0;&#x4E86;&#x3002;</p>
+<pre><code class="lang-c"><span class="hljs-comment">// &#x5904;&#x7406;&#x5668;&#x67B6;&#x6784;&#xFF1A;i386 </span>
+<span class="hljs-comment">// Linux/arch/x86/um/shared/sysdep/archsetjmp_32.h</span>
+<span class="hljs-keyword">struct</span> __jmp_buf {
+<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> __ebx; <span class="hljs-comment">// &#x901A;&#x7528;&#x6570;&#x636E;&#x5BC4;&#x5B58;&#x5668;&#x4E4B;&#x4E00;</span>
+<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> __esp; <span class="hljs-comment">// &#x6808;&#x6307;&#x9488;&#x5BC4;&#x5B58;&#x5668;(&#x8FDB;&#x7A0B;&#x6808;&#x7A7A;&#x95F4;&#x7531;&#x9AD8;&#x5730;&#x5740;&#x5411;&#x4F4E;&#x5730;&#x5740;&#x65B9;&#x5411;&#x589E;&#x957F;)</span>
+<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> __ebp; <span class="hljs-comment">// &#x57FA;&#x5740;&#x6307;&#x9488;&#x5BC4;&#x5B58;&#x5668;(&#x8BB0;&#x5F55;&#x4E86;&#x5F53;&#x524D;&#x6808;&#x5E27;&#x7684;&#x8D77;&#x59CB;&#x5730;&#x5740;(&#x8FDB;&#x5165;&#x4E00;&#x4E2A;&#x51FD;&#x6570;&#x540E;&#x9996;&#x5148;&#x6267;&#x884C;&#x7684;&#x4FBF;&#x662F;push %ebp; mov %esp, %ebp))</span>
+<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> __esi; <span class="hljs-comment">// &#x6E90;&#x53D8;&#x5740;&#x5BC4;&#x5B58;&#x5668;</span>
+<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> __edi; <span class="hljs-comment">// &#x76EE;&#x7684;&#x53D8;&#x5740;&#x5BC4;&#x5B58;&#x5668;</span>
+<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> __eip; <span class="hljs-comment">// &#x6307;&#x4EE4;&#x6307;&#x9488;&#x5BC4;&#x5B58;&#x5668;(&#x7A0B;&#x5E8F;&#x8BA1;&#x6570;&#x5668;PC=CS:IP,&#x4E8C;&#x8005;&#x7ED3;&#x5408;&#x8D77;&#x6765;&#x786E;&#x5B9A;&#x4E0B;&#x4E00;&#x6761;&#x5F85;&#x6267;&#x884C;&#x7684;&#x673A;&#x5668;&#x6307;&#x4EE4;&#x5730;&#x5740;)</span>
+};
+<span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> __jmp_buf jmp_buf[<span class="hljs-number">1</span>];
+</code></pre>
+<p>&#x5982;&#x679C;&#x4E4B;&#x524D;&#x6709;&#x5199;&#x8FC7;&#x6C47;&#x7F16;&#x6216;&#x8005;&#x53CD;&#x6C47;&#x7F16;&#x7684;&#x7ECF;&#x5386;&#xFF0C;&#x5BF9;&#x8FD9;&#x4E9B;&#x5BC4;&#x5B58;&#x5668;&#x5E94;&#x8BE5;&#x4E0D;&#x4F1A;&#x592A;&#x964C;&#x751F;&#x3002;&#x51FD;&#x6570;&#x8C03;&#x7528;&#x5F00;&#x5934;&#x4E00;&#x822C;&#x5C31;&#x662F; &quot;push epb&quot;, &quot;mov ebp, esp&quot;, &quot;sub $size, esp&quot;&#x7684;&#x64CD;&#x4F5C;&#xFF0C;&#x51FD;&#x6570;&#x8FD4;&#x56DE;&#x524D;&#x4E5F;&#x5E38;&#x770B;&#x5230;ret&#x8FD9;&#x79CD;&#x5BF9;eip&#x8FDB;&#x884C;&#x4FEE;&#x6539;&#x7684;&#x6307;&#x4EE4;&#x3002;</p>
+<p>&#x7B80;&#x5355;&#x8BF4;&#xFF0C;&#x5176;&#x5B9E;&#x5C31;&#x662F;&#x8FD9;&#x4E9B;&#x5BC4;&#x5B58;&#x5668;&#x57FA;&#x672C;&#x63CF;&#x8FF0;&#x4E86;&#x4E00;&#x4E2A;&#x4EFB;&#x52A1;&#x7684;&#x5F53;&#x524D;&#x6267;&#x884C;&#x72B6;&#x6001;&#xFF0C;&#x5F53;&#x8FD9;&#x4E2A;&#x4EFB;&#x52A1;&#x88AB;&#x5207;&#x6362;&#x51FA;&#x53BB;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x9700;&#x8981;&#x4FDD;&#x5B58;&#x8FD9;&#x4E9B;&#x5BC4;&#x5B58;&#x5668;&#x4FE1;&#x606F;&#x5230;&#x8FDB;&#x7A0B;PCB&#xFF08;task_struct&#xFF09;&#x4E2D;&#xFF0C;&#x7B49;&#x4EFB;&#x52A1;&#x4E0B;&#x6B21;&#x91CD;&#x65B0;&#x88AB;&#x8C03;&#x5EA6;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x518D;&#x4ECE;&#x8FDB;&#x7A0B;PCB&#x4E2D;&#x8BFB;&#x53D6;&#x5E76;&#x8FD8;&#x539F;&#x5230;&#x5BC4;&#x5B58;&#x5668;&#xFF0C;&#x4EFB;&#x52A1;&#x5C31;&#x53EF;&#x4EE5;&#x4E0D;&#x95F4;&#x65AD;&#x5730;&#x7EE7;&#x7EED;&#x6267;&#x884C;&#x4E0B;&#x53BB;&#x3002;</p>
+<p>&#x73B0;&#x5728;&#xFF0C;&#x6211;&#x4EEC;&#x4ECB;&#x7ECD;&#x4E86;&#x4EFB;&#x52A1;&#x7684;&#x4E0A;&#x4E0B;&#x6587;&#x5982;&#x4F55;&#x8868;&#x793A;&#xFF0C;&#x4E5F;&#x4E86;&#x89E3;&#x4E86;&#x4E0A;&#x4E0B;&#x6587;&#x5982;&#x4F55;&#x4FDD;&#x5B58;&#x3001;&#x6062;&#x590D;&#xFF0C;&#x6211;&#x4EEC;&#x8FD8;&#x9700;&#x8981;&#x4E86;&#x89E3;&#x66F4;&#x591A;&#x4FE1;&#x606F;&#x3002;</p>
+<h2 id="&#x4E0A;&#x4E0B;&#x6587;&#xFF0C;sigjmpbuf">&#x4E0A;&#x4E0B;&#x6587;&#xFF0C;sigjmp_buf</h2>
+<p>&#x524D;&#x9762;&#x63D0;&#x8FC7;&#x4E86;jmp_buf&#xFF0C;jmp_buf&#x6709;&#x4E2A;&#x4E0D;&#x8DB3;&#x4E4B;&#x5904;&#xFF0C;&#x5C31;&#x662F;&#x5B83;&#x6CA1;&#x6709;&#x8003;&#x8651;&#x4FE1;&#x53F7;&#x5904;&#x7406;&#x63A9;&#x7801;&#x7684;&#x95EE;&#x9898;&#xFF0C;glibc&#x5728;&#x6B64;&#x57FA;&#x7840;&#x4E0A;&#x505A;&#x4E86;&#x6539;&#x8FDB;&#xFF0C;&#x5B9A;&#x4E49;&#x4E86;&#x4E00;&#x4E2A;&#x65B0;&#x7684;&#x7C7B;&#x578B;<code>sigjmp_buf</code>&#xFF0C;&#x5BF9;&#x5E94;&#x7684;&#x4E5F;&#x63D0;&#x4F9B;&#x4E86;&#x51FD;&#x6570;sigsetjmp/siglongjmp&#x3002;</p>
+<pre><code class="lang-c"><span class="hljs-keyword">struct</span> __jmp_buf_tag
+{
+<span class="hljs-comment">/* <span class="hljs-doctag">NOTE:</span> The machine-dependent definitions of `__sigsetjmp&apos;
+assume that a `jmp_buf&apos; begins with a `__jmp_buf&apos; and that
+`__mask_was_saved&apos; follows it. Do not move these members
+or add others before it. */</span>
+__jmp_buf __jmpbuf; <span class="hljs-comment">/* Calling environment. */</span>
+<span class="hljs-keyword">int</span> __mask_was_saved; <span class="hljs-comment">/* Saved the signal mask? */</span>
+<span class="hljs-keyword">__sigset_t</span> __saved_mask; <span class="hljs-comment">/* Saved signal mask. */</span>
+};
+<span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> __jmp_buf_tag jmp_buf[<span class="hljs-number">1</span>];
+</code></pre>
+<p>sigjmp_buf&#x4E0D;&#x4EC5;&#x4FDD;&#x5B58;&#x4E86;&#x5904;&#x7406;&#x5668;&#x786C;&#x4EF6;&#x4E0A;&#x4E0B;&#x6587;&#x4FE1;&#x606F;&#xFF08;jmp_buf&#xFF09;&#xFF0C;&#x8FD8;&#x4FDD;&#x5B58;&#x4E86;&#x4FE1;&#x53F7;&#x63A9;&#x7801;&#xFF0C;&#x8FD9;&#x4E9B;&#x5171;&#x540C;&#x6784;&#x6210;&#x4E86;&#x4EFB;&#x52A1;&#x7684;&#x4E0A;&#x4E0B;&#x6587;&#x4FE1;&#x606F;&#x3002;</p>
+<h2 id="&#x4E0A;&#x4E0B;&#x6587;&#xFF0C;ucontextt">&#x4E0A;&#x4E0B;&#x6587;&#xFF0C;ucontext_t</h2>
+<p>&#x5728;&#x7ECF;&#x5386;&#x4E86;jmp_buf&#x3001;sigjmp_buf&#x8FD9;&#x6837;&#x7684;&#x6539;&#x8FDB;&#x4E4B;&#x540E;&#xFF0C;&#x8FD8;&#x662F;&#x4E0D;&#x80FD;&#x5B8C;&#x5168;&#x6EE1;&#x8DB3;&#x8981;&#x6C42;&#xFF0C;&#x6211;&#x4EEC;&#x8FD8;&#x9700;&#x8981;&#x66F4;&#x52A0;&#x7CBE;&#x7EC6;&#x6709;&#x529B;&#x7684;&#x4E0A;&#x4E0B;&#x6587;&#x5207;&#x6362;&#x63A7;&#x5236;&#xFF0C;ucontext_t&#x8BDE;&#x751F;&#x4E86;&#x3002;</p>
+<p>&#x5728;System-V&#x7CFB;&#x7EDF;&#x4E2D;&#xFF0C;ucontext.h&#x63D0;&#x4F9B;&#x4E86;&#x4E24;&#x4E2A;&#x65B0;&#x7C7B;&#x578B;&#x548C;4&#x4E2A;&#x65B0;&#x51FD;&#x6570;&#x3002;</p>
+<p>&#x4E0A;&#x4E0B;&#x6587;&#x5BF9;&#x5E94;&#x7684;&#x7C7B;&#x578B;mcontext_t&#x662F;&#x4E0E;&#x673A;&#x5668;&#x76F8;&#x5173;&#x7684;&#x3001;&#x4E0D;&#x900F;&#x660E;&#x7684;&#xFF0C;&#x5B83;&#x4F5C;&#x4E3A;ucontext_t&#x7684;&#x4E00;&#x4E2A;&#x5185;&#x90E8;&#x6210;&#x5458;&#x3002;ucontext_t&#x5B9A;&#x4E49;&#x5219;&#x81F3;&#x5C11;&#x5305;&#x542B;&#x4E86;&#x5982;&#x4E0B;&#x5B57;&#x6BB5;&#xFF1A;</p>
+<pre><code class="lang-c"><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> ucontext {
+    <span class="hljs-comment">// pointer to the context that will be resumed when this context returns</span>
+    <span class="hljs-keyword">struct</span> ucontext *uc_link;
+
+    <span class="hljs-comment">// the set of signals that are blocked when this context is active</span>
+    <span class="hljs-keyword">sigset_t</span>         uc_sigmask;
+
+    <span class="hljs-comment">// the stack used by this context</span>
+    <span class="hljs-keyword">stack_t</span>          uc_stack;
+
+    <span class="hljs-comment">// a machine-specific representation of the saved context</span>
+    <span class="hljs-keyword">mcontext_t</span>       uc_mcontext;
+    ...
+} <span class="hljs-keyword">ucontext_t</span>;
+</code></pre>
+<p>&#x4E0A;&#x4E0B;&#x6587;&#x76F8;&#x5173;&#x7684;4&#x4E2A;&#x64CD;&#x4F5C;&#x51FD;&#x6570;&#xFF1A;</p>
+<pre><code class="lang-c">int  getcontext(ucontext_t *);
+int  setcontext(const ucontext_t *);
+void makecontext(ucontext_t *, (void *)(), int, ...);
+int  swapcontext(ucontext_t *, const ucontext_t *);
+</code></pre>
+<p>wikipedia&#x63D0;&#x4F9B;&#x4E86;&#x4E00;&#x4E2A;&#x975E;&#x5E38;&#x8D5E;&#x7684;&#x793A;&#x4F8B;&#xFF0C;&#x6765;&#x6F14;&#x793A;&#x5982;&#x4F55;&#x5B9E;&#x73B0;&#x4EFB;&#x52A1;&#x5207;&#x6362;&#xFF0C;&#x5982;&#x4E0B;&#x6240;&#x793A;&#x3002;&#x6CA1;&#x6709;&#x63A5;&#x89E6;&#x8FC7;&#x8FD9;&#x4E9B;&#x7684;&#x53EF;&#x80FD;&#x5F00;&#x59CB;&#x6709;&#x70B9;&#x61F5;&#xFF0C;&#x6211;&#x6765;&#x89E3;&#x91CA;&#x4E0B;&#x8FD9;&#x91CC;&#x7684;&#x903B;&#x8F91;&#x3002;</p>
+<p>&#x7A0B;&#x5E8F;&#x4E2D;&#x521B;&#x5EFA;&#x4E86;3&#x4E2A;ucontext_t&#x53D8;&#x91CF;&#xFF0C;main_context1&#x5728;68&#x884C;&#x88AB;&#x8BBE;&#x7F6E;&#xFF0C;loop&#x51FD;&#x6570;&#x9000;&#x51FA;&#x65F6;loop&#x51FD;&#x6570;&#x7ED1;&#x5B9A;&#x7684;loop_context&#x5C06;&#x88AB;&#x9500;&#x6BC1;&#xFF0C;&#x7A0B;&#x5E8F;&#x4E2D;&#x4F1A;&#x9690;&#x5F0F;&#x8C03;&#x7528;setcontext(loop_context.uc_link)&#x6765;&#x5207;&#x6362;&#x5230;&#x7236;&#x4E0A;&#x4E0B;&#x6587;&#x4E2D;&#x53BB;&#x6267;&#x884C;&#xFF0C;&#x5373;getcontext(&amp;main_context1)&#x5BF9;&#x5E94;&#x7684;&#x4E0B;&#x4E00;&#x6761;&#x6307;&#x4EE4;&#x5730;&#x5740;&#x5904;&#xFF08;70&#x884C;&#xFF09;&#x3002;</p>
+<p>main&#x51FD;&#x6570;&#x6267;&#x884C;&#x65F6;&#xFF0C;&#x4EC0;&#x4E48;&#x65F6;&#x5019;&#x6FC0;&#x6D3B;loop&#x51FD;&#x6570;&#x5462;&#xFF0C;&#x5728;while&#x5FAA;&#x73AF;&#x5185;swapcontext&#x7684;&#x65F6;&#x5019;&#xFF08;80&#x884C;&#xFF09;&#xFF0C;&#x6267;&#x884C;&#x5230;&#x8FD9;&#x91CC;&#x7684;&#x65F6;&#x5019;&#xFF0C;main&#x51FD;&#x6570;&#x5C06;&#x5F53;&#x524D;&#x4E0A;&#x4E0B;&#x6587;&#x4FE1;&#x606F;&#x5B58;&#x50A8;&#x5230;main_context2&#xFF0C;&#x5E76;&#x5207;&#x6362;&#x5230;loop_context&#x53BB;&#x6267;&#x884C;&#xFF0C;&#x6267;&#x884C;&#x4EC0;&#x4E48;&#x5462;&#xFF1F;50&#x884C;~61&#x884C;&#x5B9A;&#x4E49;&#x4E86;loop_context&#x7684;&#x7236;&#x4E0A;&#x4E0B;&#x6587;&#xFF0C;&#x4EE5;&#x53CA;loop_context&#x7ED1;&#x5B9A;&#x7684;&#x51FD;&#x6570;&#x6267;&#x884C;&#x65F6;&#x8981;&#x91C7;&#x7528;&#x7684;&#x6808;&#x7A7A;&#x95F4;&#xFF0C;&#x5F53;&#x7136;&#x8FD8;&#x7ED1;&#x5B9A;&#x4E86;&#x8981;&#x6267;&#x884C;&#x7684;&#x51FD;&#x6570;loop&#x4EE5;&#x53CA;&#x4F20;&#x9012;&#x7ED9;loop&#x7684;&#x53C2;&#x6570;&#x4FE1;&#x606F;&#x3002;loop&#x51FD;&#x6570;&#x5C06;&#x4F7F;&#x7528;&#x6570;&#x7EC4;iterator_stack[SIGSTKSZ]&#x4F5C;&#x4E3A;&#x81EA;&#x5DF1;&#x7684;&#x6808;&#x7A7A;&#x95F4;&#x3002;</p>
+<p>loop&#x6267;&#x884C;&#x8D77;&#x6765;&#x4E4B;&#x540E;&#xFF0C;&#x4F1A;&#x8FDB;&#x5165;&#x4E00;&#x4E2A;&#x5FAA;&#x73AF;&#xFF0C;&#x6BCF;&#x8F6E;&#x5FAA;&#x73AF;&#x4F1A;&#x66F4;&#x65B0;&#x4E00;&#x4E0B;&#x53D8;&#x91CF;i_from_iterator&#x7684;&#x503C;&#xFF0C;&#x7136;&#x540E;&#x5462;&#xFF0C;&#x5C31;&#x6267;&#x884C;&#x4E0A;&#x4E0B;&#x6587;&#x5207;&#x6362;swapcontext(loop_context, other_context)&#xFF0C;&#x8FD9;&#x91CC;&#x7684;other_context&#x521A;&#x597D;&#x662F;main_context2&#xFF0C;&#x5207;&#x8FC7;&#x53BB;&#x4E4B;&#x540E;&#x5C31;&#x662F;&#x6267;&#x884C;&#x8BED;&#x53E5;printf(&quot;%d\n&quot;, i_from_iterator)&#x6765;&#x5B8C;&#x6210;&#x53D8;&#x91CF;&#x7684;&#x6253;&#x5370;&#x3002;&#x7136;&#x540E;&#x8FDB;&#x5165;while(1)&#x5FAA;&#x73AF;&#xFF0C;&#x6B64;&#x65F6;&#x53C8;&#x4F1A;&#x6267;&#x884C;&#x4E0A;&#x4E0B;&#x6587;&#x5207;&#x6362;&#x7EE7;&#x7EED;&#x6267;&#x884C;loop&#x51FD;&#x6570;&#xFF0C;loop&#x51FD;&#x6570;&#x4ECE;&#x4E0A;&#x6B21;&#x505C;&#x4E0B;&#x6765;&#x7684;&#x5730;&#x65B9;&#x7EE7;&#x7EED;&#x6267;&#x884C;&#xFF0C;&#x8FD9;&#x6837;&#x8FDE;&#x7EED;&#x6253;&#x5370;&#x4E86;0~9&#x3002;</p>
+<p>&#x7136;&#x540E;&#xFF0C;loop&#x51FD;&#x6570;for&#x5FAA;&#x73AF;&#x7ED3;&#x675F;&#xFF0C;&#x9000;&#x51FA;&#x51FD;&#x6570;&#xFF0C;loop_context&#x7ED3;&#x675F;&#xFF0C;&#x6B64;&#x65F6;&#x51FD;&#x6570;&#x9000;&#x51FA;&#x524D;&#x4F1A;&#x9690;&#x5F0F;&#x8C03;&#x7528;setcontext&#x4EE5;&#x5207;&#x6362;&#x5230;&#x7236;&#x4E0A;&#x4E0B;&#x6587;main_context1&#x53BB;&#x6267;&#x884C;&#xFF0C;&#x7531;&#x4E8E;&#x524D;&#x9762;main&#x51FD;&#x6570;&#x6267;&#x884C;&#x65F6;&#x5DF2;&#x7ECF;&#x5C06;&#x53D8;&#x91CF;iterator_finished&#x66F4;&#x65B0;&#x4E3A;&#x4E86;1&#xFF0C;&#x6240;&#x4EE5;&#x6B64;&#x65F6;&#x5373;&#x4FBF;&#x4ECE;main_context1&#x7EE7;&#x7EED;&#x6267;&#x884C;&#xFF0C;&#x4E5F;&#x4E0D;&#x4F1A;&#x518D;&#x6B21;&#x8FDB;&#x5165;while&#x5FAA;&#x73AF;&#x518D;&#x6B21;&#x6267;&#x884C;loop&#x51FD;&#x6570;&#x3002;</p>
+<p>&#x7A0B;&#x5E8F;&#x6B63;&#x5E38;&#x7ED3;&#x675F;&#x3002;</p>
+<pre><code class="lang-c"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stdio.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stdlib.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;ucontext.h&gt;</span></span>
+
+<span class="hljs-comment">/* The three contexts:
+ *    (1) main_context1 : The point in main to which loop will return.
+ *    (2) main_context2 : The point in main to which control from loop will
+ *                        flow by switching contexts.
+ *    (3) loop_context  : The point in loop to which control from main will
+ *                        flow by switching contexts. */</span>
+<span class="hljs-keyword">ucontext_t</span> main_context1, main_context2, loop_context;
+
+<span class="hljs-comment">/* The iterator return value. */</span>
+<span class="hljs-keyword">volatile</span> <span class="hljs-keyword">int</span> i_from_iterator;
+
+<span class="hljs-comment">/* This is the iterator function. It is entered on the first call to
+ * swapcontext, and loops from 0 to 9. Each value is saved in i_from_iterator,
+ * and then swapcontext used to return to the main loop.  The main loop prints
+ * the value and calls swapcontext to swap back into the function. When the end
+ * of the loop is reached, the function exits, and execution switches to the
+ * context pointed to by main_context1. */</span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">loop</span><span class="hljs-params">(
+    ucontext_t *loop_context,
+    ucontext_t *other_context,
+    <span class="hljs-keyword">int</span> *i_from_iterator)</span>
+</span>{
+    <span class="hljs-keyword">int</span> i;
+
+    <span class="hljs-keyword">for</span> (i=<span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; ++i) {
+        <span class="hljs-comment">/* Write the loop counter into the iterator return location. */</span>
+        *i_from_iterator = i;
+
+        <span class="hljs-comment">/* Save the loop context (this point in the code) into &apos;&apos;loop_context&apos;&apos;,
+         * and switch to other_context. */</span>
+        swapcontext(loop_context, other_context);
+    }
+
+    <span class="hljs-comment">/* The function falls through to the calling context with an implicit
+     * &apos;&apos;setcontext(&amp;loop_context-&gt;uc_link);&apos;&apos; */</span>
+} 
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span>
+</span>{
+    <span class="hljs-comment">/* The stack for the iterator function. */</span>
+    <span class="hljs-keyword">char</span> iterator_stack[SIGSTKSZ];
+
+    <span class="hljs-comment">/* Flag indicating that the iterator has completed. */</span>
+    <span class="hljs-keyword">volatile</span> <span class="hljs-keyword">int</span> iterator_finished;
+
+    getcontext(&amp;loop_context);
+    <span class="hljs-comment">/* Initialise the iterator context. uc_link points to main_context1, the
+     * point to return to when the iterator finishes. */</span>
+    loop_context.uc_link          = &amp;main_context1;
+    loop_context.uc_stack.ss_sp   = iterator_stack;
+    loop_context.uc_stack.ss_size = <span class="hljs-keyword">sizeof</span>(iterator_stack);
+
+    <span class="hljs-comment">/* Fill in loop_context so that it makes swapcontext start loop. The
+     * (void (*)(void)) typecast is to avoid a compiler warning but it is
+     * not relevant to the behaviour of the function. */</span>
+    makecontext(&amp;loop_context, (<span class="hljs-keyword">void</span> (*)(<span class="hljs-keyword">void</span>)) loop,
+        <span class="hljs-number">3</span>, &amp;loop_context, &amp;main_context2, &amp;i_from_iterator);
+
+    <span class="hljs-comment">/* Clear the finished flag. */</span>      
+    iterator_finished = <span class="hljs-number">0</span>;
+
+    <span class="hljs-comment">/* Save the current context into main_context1. When loop is finished,
+     * control flow will return to this point. */</span>
+    getcontext(&amp;main_context1);
+
+    <span class="hljs-keyword">if</span> (!iterator_finished) {
+        <span class="hljs-comment">/* Set iterator_finished so that when the previous getcontext is
+         * returned to via uc_link, the above if condition is false and the
+         * iterator is not restarted. */</span>
+        iterator_finished = <span class="hljs-number">1</span>;
+
+        <span class="hljs-keyword">while</span> (<span class="hljs-number">1</span>) {
+            <span class="hljs-comment">/* Save this point into main_context2 and switch into the iterator.
+             * The first call will begin loop.  Subsequent calls will switch to
+             * the swapcontext in loop. */</span>
+            swapcontext(&amp;main_context2, &amp;loop_context);
+            <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d\n&quot;</span>, i_from_iterator);
+        }
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
+<p>&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x901A;&#x8FC7; <code>gcc -o main main.c</code> &#x7F16;&#x8BD1;&#x5E76;&#x4E14;&#x901A;&#x8FC7; <code>./main</code> &#x6765;&#x8FD0;&#x884C;&#xFF0C;&#x8FD0;&#x884C;&#x4F1A;&#x5F97;&#x5230;&#x5982;&#x4E0B;&#x7ED3;&#x679C;&#xFF1A;</p>
+<pre><code class="lang-text">$ ./main 
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+</code></pre>
+<p>&#x8FD9;&#x91CC;&#x7684;volatile qualifier&#x662F;&#x4E3A;&#x4E86;&#x907F;&#x514D;&#x7F16;&#x8BD1;&#x5668;&#x76F8;&#x5173;&#x7684;&#x4F18;&#x5316;&#xFF0C;&#x5728;&#x8FD9;&#x4E2A;&#x793A;&#x4F8B;&#x4E2D;&#x4F5C;&#x7528;&#x4E0D;&#x5927;&#xFF0C;&#x5982;&#x679C;&#x662F;&#x591A;&#x7EBF;&#x7A0B;+&#x5F3A;&#x4E00;&#x81F4;CPU&#x4E2D;&#x8FD8;&#x6709;&#x70B9;&#x7528;&#x3002;&#x5173;&#x4E8E;volatile&#x7684;&#x7EC6;&#x8282;&#x53EF;&#x4EE5;&#x53C2;&#x8003;&#x6211;&#x7684;&#x53E6;&#x4E00;&#x7BC7;&#x6587;&#x7AE0;&#xFF1A;<a href="https://hitzhangjie.github.io/blog/2019-01-07-%E4%BD%A0%E4%B8%8D%E8%AE%A4%E8%AF%86%E7%9A%84cc++-volatile/" target="_blank">https://hitzhangjie.github.io/blog/2019-01-07-%E4%BD%A0%E4%B8%8D%E8%AE%A4%E8%AF%86%E7%9A%84cc++-volatile/</a>&#x3002;</p>
+<p>&#x603B;&#x7ED3;&#x4E00;&#x4E0B;&#xFF0C;ucontext_t&#x63D0;&#x4F9B;&#x4E86;&#x66F4;&#x7075;&#x6D3B;&#x7684;&#x4E0A;&#x4E0B;&#x6587;&#x5207;&#x6362;&#x63A7;&#x5236;&#xFF0C;&#x662F;&#x6BD4;jmp_buf/sigjmp_buf&#x66F4;&#x597D;&#x7684;&#x9009;&#x62E9;&#x3002;ucontext_t&#x7684;&#x8BBE;&#x8BA1;&#x521D;&#x8877;&#xFF0C;&#x4E5F;&#x662F;&#x4E3A;&#x4E86;&#x652F;&#x6301;&#x5B9E;&#x73B0;&#x4E00;&#x4E9B;&#x66F4;&#x52A0;&#x9AD8;&#x7EA7;&#x7684;&#x6D41;&#x7A0B;&#x63A7;&#x5236;&#x3001;fiber&#x3001;coroutine&#x7B49;&#x3002;&#x6240;&#x4EE5;&#x534F;&#x7A0B;&#x5E76;&#x4E0D;&#x662F;&#x4EC0;&#x4E48;&#x65B0;&#x6982;&#x5FF5;&#xFF0C;&#x5B83;&#x53EA;&#x662F;&#x4E00;&#x79CD;&#x8C03;&#x5EA6;&#x5B9E;&#x4F53;&#x7C92;&#x5EA6;&#x5927;&#x5C0F;&#x7684;&#x5212;&#x5206;&#x65B9;&#x5F0F;&#x3002;</p>
+<p>&#x5982;&#x679C;&#x53EA;&#x5B9E;&#x73B0;&#x534F;&#x7A0B;&#x5176;&#x5B9E;&#x4E5F;&#x6CA1;&#x4EC0;&#x4E48;&#x5927;&#x7528;&#xFF0C;&#x8FD8;&#x9700;&#x8981;&#x5927;&#x91CF;&#x7684;&#x5176;&#x4ED6;&#x57FA;&#x7840;&#x8BBE;&#x65BD;&#xFF0C;&#x5982;&#x534F;&#x7A0B;&#x4E4B;&#x95F4;&#x5982;&#x4F55;&#x901A;&#x4FE1;&#xFF0C;&#x5982;&#x4F55;&#x505A;&#x5230;&#x540C;&#x6B65;&#x3001;&#x4E92;&#x65A5;&#xFF0C;&#x7B49;&#x7B49;&#xFF0C;&#x8FD9;&#x4E9B;&#x624D;&#x662F;&#x51B3;&#x5B9A;&#x597D;&#x7528;&#x4E0D;&#x597D;&#x7528;&#x7684;&#x95EE;&#x9898;&#x3002;&#x6240;&#x4EE5;&#x6211;&#x4EEC;&#x4E5F;&#x80FD;&#x7406;&#x89E3;&#x4E3A;&#x4EC0;&#x4E48;&#x534F;&#x7A0B;&#x5E93;&#x6709;&#x4E94;&#x82B1;&#x516B;&#x95E8;&#x7684;&#x5B9E;&#x73B0;&#xFF0C;&#x4F46;&#x662F;&#x6CA1;&#x6709;&#x54EA;&#x4E2A;&#x5F88;&#x51FA;&#x540D;&#x7684;&#xFF0C;&#x4F46;&#x662F;go&#x5374;&#x80FD;&#x72EC;&#x9886;&#x98CE;&#x9A9A;&#x3002;&#x5927;&#x81F4;&#x5C31;&#x662F;&#x8FD9;&#x4E2A;&#x539F;&#x56E0;&#x5427;&#x3002;</p>
+<p>&#x8A00;&#x5F52;&#x6B63;&#x4F20;&#xFF0C;&#x6211;&#x4EEC;&#x662F;&#x5426;&#x53EF;&#x4EE5;&#x76F4;&#x63A5;&#x5229;&#x7528;ucontext_t&#x6765;&#x5B9E;&#x73B0;&#x534F;&#x7A0B;&#x5462;&#xFF1F;&#x6211;&#x4EEC;&#x8FD8;&#x9700;&#x8981;&#x8003;&#x8651;&#x4E0B;&#x4E0A;&#x4E0B;&#x6587;&#x5207;&#x6362;&#x7684;&#x5F00;&#x9500;&#x624D;&#x80FD;&#x51B3;&#x5B9A;&#x3002;ucontext_t&#x7684;&#x76EE;&#x7684;&#x662F;&#x901A;&#x7528;&#xFF0C;&#x56E0;&#x6B64;&#x5176;&#x5185;&#x90E8;mcontext_t&#x5305;&#x542B;&#x4E86;&#x6240;&#x6709;&#x7684;CPU&#x5BC4;&#x5B58;&#x5668;&#x4FE1;&#x606F;&#xFF0C;&#x6709;&#x4E9B;&#x662F;&#x6CA1;&#x5FC5;&#x8981;&#x7684;&#xFF0C;&#x5982;&#x679C;&#x6BCF;&#x6B21;&#x4E0A;&#x4E0B;&#x6587;&#x5207;&#x6362;&#x90FD;&#x628A;&#x5BC4;&#x5B58;&#x5668;&#x4FE1;&#x606F;&#x4FDD;&#x5B58;&#x4E00;&#x4E0B;&#x3001;&#x6062;&#x590D;&#x4E00;&#x4E0B;&#xFF0C;&#x8FD9;&#x91CC;&#x7684;&#x5F00;&#x9500;&#x6211;&#x4EEC;&#x4EBA;&#x7C7B;&#x611F;&#x89C9;&#x4E0D;&#x5230;&#xFF0C;&#x4F46;&#x662F;&#x673A;&#x5668;&#x662F;&#x80FD;&#x611F;&#x89C9;&#x5230;&#x7684;&#xFF0C;&#x5FC5;&#x987B;&#x8981;&#x8003;&#x8651;&#x4E0B;&#xFF0C;&#x8FD9;&#x90E8;&#x5206;&#x5185;&#x5BB9;&#x6211;&#x4EEC;&#x5728;&#x4E0B;&#x4E00;&#x8282;&#x4ECB;&#x7ECD;&#x3002;</p>
+<p>&#x5F53;&#x524D;&#x6BD4;&#x8F83;&#x706B;&#x7684;libgo&#x534F;&#x7A0B;&#x5E93;&#xFF0C;&#x4E4B;&#x524D;&#x4E5F;&#x662F;&#x57FA;&#x4E8E;ucontext_t&#x6765;&#x5B9E;&#x73B0;&#x7684;&#xFF0C;&#x4E0D;&#x8FC7;&#x540E;&#x9762;&#x7684;&#x7248;&#x672C;&#x505A;&#x4E86;&#x4E9B;&#x4F18;&#x5316;&#xFF0C;&#x53BB;&#x6389;&#x4E86;&#x4E00;&#x4E9B;&#x5197;&#x4F59;&#x7684;&#x5BC4;&#x5B58;&#x5668;&#x7684;&#x4FDD;&#x5B58;&#x3001;&#x6062;&#x590D;&#x64CD;&#x4F5C;&#xFF0C;&#x53EF;&#x4EE5;&#x53C2;&#x8003;libgo patches setcontext/getcontext&#x3002;</p>
+<blockquote>
+<p>Google&apos;s Ian Lance Taylor explained in the commit improving libgo, &quot;Currently, goroutine switches are implemented with libc getcontext/setcontext functions, which saves/restores the machine register states and also the signal context. This does more than what we need, and performs an expensive syscall. This CL implements a simplified version of getcontext/setcontext, in assembly, that only saves/restores the necessary part, i.e. the callee-save registers, and the PC, SP. A simplified version of makecontext, written in C, is also added. Currently this is only implemented on Linux/AMD64.&quot;</p>
+</blockquote>
+<p>&#x53C2;&#x8003;&#x8D44;&#x6599;&#xFF1A;</p>
+<ol>
+<li>setcontext, <a href="https://en.wikipedia.org/wiki/Setcontext" target="_blank">https://en.wikipedia.org/wiki/Setcontext</a></li>
+<li>libgo cheaper context switch on x86_64,  <a href="https://gcc.gnu.org/legacy-ml/gcc-patches/2019-05/msg02155.html" target="_blank">https://gcc.gnu.org/legacy-ml/gcc-patches/2019-05/msg02155.html</a></li>
+<li>linux man(2)</li>
+</ol>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="stack-memory.html" class="navigation navigation-prev " aria-label="Previous page: 栈空间分配">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="context-switching-cost.html" class="navigation navigation-next " aria-label="Next page: 上下文切换开销">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"上下文切换","level":"2.6","depth":1,"next":{"title":"上下文切换开销","level":"2.7","depth":1,"path":"basics/context-switching-cost.md","ref":"basics/context-switching-cost.md","articles":[]},"previous":{"title":"栈空间分配","level":"2.5","depth":1,"path":"basics/stack-memory.md","ref":"basics/stack-memory.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"basics/context-switching.md","mtime":"2021-03-25T18:20:16.896Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-03-25T19:09:21.649Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

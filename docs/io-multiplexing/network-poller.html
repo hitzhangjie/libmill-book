@@ -1,0 +1,951 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>network: poller · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="libmill是一个基于c语言开发的go风格协程库，实现了go风格的协程操作、chan操作、非阻塞的网络io操作等等，是一个不错的linux平台下c风格协程库实现。如果你想从0到1的快速了解如何开发一个协程库，libmill将是一个非常不错的案例；如果你想更深入地了解go，libmill里面也借鉴了go的一些设计思想；或者你想在生产环境中使用，开发者也提供了一个更健壮的版本libdill。">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="../datatypes/datatype-iterator.html" />
+    
+    
+    <link rel="prev" href="network-file.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    序言
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="../author.html">
+            
+                <a href="../author.html">
+            
+                    
+                    作者
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">Part I - 系统基础</li>
+        
+        
+    
+        <li class="chapter " data-level="2.1" data-path="../basics/server-programming-model.html">
+            
+                <a href="../basics/server-programming-model.html">
+            
+                    
+                    服务编程模型
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" data-path="../basics/process-thread-coroutine.html">
+            
+                <a href="../basics/process-thread-coroutine.html">
+            
+                    
+                    进程, 线程, 协程
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3" data-path="../basics/libmill-intro.html">
+            
+                <a href="../basics/libmill-intro.html">
+            
+                    
+                    libmill协程库
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.4" data-path="../basics/libdill-intro.html">
+            
+                <a href="../basics/libdill-intro.html">
+            
+                    
+                    libdill协程库
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.5" data-path="../basics/stack-memory.html">
+            
+                <a href="../basics/stack-memory.html">
+            
+                    
+                    栈空间分配
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.6" data-path="../basics/context-switching.html">
+            
+                <a href="../basics/context-switching.html">
+            
+                    
+                    上下文切换
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.7" data-path="../basics/context-switching-cost.html">
+            
+                <a href="../basics/context-switching-cost.html">
+            
+                    
+                    上下文切换开销
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.8" data-path="../basics/thread-model.html">
+            
+                <a href="../basics/thread-model.html">
+            
+                    
+                    线程模型
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">Part II - 源码分析</li>
+        
+        
+    
+
+    
+        
+        <li class="header">chan：通过通信来共享</li>
+        
+        
+    
+        <li class="chapter " data-level="4.1" data-path="../libmill-chan.html">
+            
+                <a href="../libmill-chan.html">
+            
+                    
+                    chan: 通过通信来共享
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">coroutine: 高效轻量级并发</li>
+        
+        
+    
+        <li class="chapter " data-level="5.1" data-path="../coroutine-libmill.html">
+            
+                <a href="../coroutine-libmill.html">
+            
+                    
+                    coroutine: libmill.h
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.2" data-path="../coroutine-cr.html">
+            
+                <a href="../coroutine-cr.html">
+            
+                    
+                    coroutine: cr.h/cr.c
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.3" data-path="../coroutine-mfork.html">
+            
+                <a href="../coroutine-mfork.html">
+            
+                    
+                    coroutine: mfork
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.4" data-path="../coroutine-stack.html">
+            
+                <a href="../coroutine-stack.html">
+            
+                    
+                    coroutine: stack
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">网络IO: 多路复用Hook系统调用</li>
+        
+        
+    
+        <li class="chapter " data-level="6.1" data-path="network-ip.html">
+            
+                <a href="network-ip.html">
+            
+                    
+                    network: ip
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.2" data-path="network-tcp.html">
+            
+                <a href="network-tcp.html">
+            
+                    
+                    network: tcp
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.3" data-path="network-udp.html">
+            
+                <a href="network-udp.html">
+            
+                    
+                    network: udp
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.4" data-path="network-unix.html">
+            
+                <a href="network-unix.html">
+            
+                    
+                    network: unix
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.5" data-path="network-file.html">
+            
+                <a href="network-file.html">
+            
+                    
+                    network: file
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="6.6" data-path="network-poller.html">
+            
+                <a href="network-poller.html">
+            
+                    
+                    network: poller
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">常用数据结构</li>
+        
+        
+    
+        <li class="chapter " data-level="7.1" data-path="../datatypes/datatype-iterator.html">
+            
+                <a href="../datatypes/datatype-iterator.html">
+            
+                    
+                    通用链表及迭代器实现
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="7.2" data-path="../datatypes/datatype-list.html">
+            
+                <a href="../datatypes/datatype-list.html">
+            
+                    
+                    双向链表: list
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="7.3" data-path="../datatypes/datatype-slist.html">
+            
+                <a href="../datatypes/datatype-slist.html">
+            
+                    
+                    单向链表: slist
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">高精度定时器</li>
+        
+        
+    
+        <li class="chapter " data-level="8.1" data-path="../timer/libmill-timer.html">
+            
+                <a href="../timer/libmill-timer.html">
+            
+                    
+                    定时器: timer
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">调试说明</li>
+        
+        
+    
+        <li class="chapter " data-level="9.1" data-path="../debugging/libmill-debugging.html">
+            
+                <a href="../debugging/libmill-debugging.html">
+            
+                    
+                    如何调试libmill
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">常用辅助方法</li>
+        
+        
+    
+        <li class="chapter " data-level="10.1" data-path="../utils/libmill-utils.html">
+            
+                <a href="../utils/libmill-utils.html">
+            
+                    
+                    常用工具函数：函数+宏
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >network: poller</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="network-poller">network: poller</h1>
+<h4 id="poller">poller</h4>
+<p>libmill&#x91CC;&#x9762;&#x7F51;&#x7EDC;io&#x662F;&#x57FA;&#x4E8E;io&#x591A;&#x8DEF;&#x590D;&#x7528;&#x5B9E;&#x73B0;&#x7684;&#xFF0C;&#x5728;linux&#x5E73;&#x53F0;&#x4E0B;&#x9762;&#x57FA;&#x4E8E;epoll&#x5B9E;&#x73B0;&#xFF0C;&#x5728;&#x5176;&#x4ED6;&#x5E73;&#x53F0;&#x4E0B;&#x9762;&#x57FA;&#x4E8E;&#x5BF9;&#x5E94;&#x7684;io&#x591A;&#x8DEF;&#x590D;&#x7528;&#x7CFB;&#x7EDF;&#x8C03;&#x7528;&#x5B9E;&#x73B0;&#xFF0C;&#x8FD9;&#x91CC;&#x53EA;&#x5173;&#x6CE8;linux&#x5E73;&#x53F0;&#x4E0B;&#x7684;&#x5B9E;&#x73B0;&#x7EC6;&#x8282;&#x3002;</p>
+<p><strong>poller.h</strong></p>
+<pre><code class="lang-c"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">mill_poller_init</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span></span>;
+
+<span class="hljs-comment">// poller&#x4E5F;&#x5B9E;&#x73B0;&#x4E86;libmill.h&#x4E2D;&#x5B9A;&#x4E49;&#x7684;mill_wait()&#x548C;mill_fdwait()</span>
+
+<span class="hljs-comment">// &#x7B49;&#x5F85;&#x81F3;&#x5C11;&#x4E00;&#x4E2A;coroutine&#x6062;&#x590D;&#x6267;&#x884C;</span>
+<span class="hljs-comment">// &#x5982;&#x679C;block=0&#xFF0C;&#x8F6E;&#x8BE2;&#x4E8B;&#x4EF6;&#x65F6;&#x6CA1;&#x6709;&#x4E8B;&#x4EF6;&#x5C31;&#x7EEA;&#x5219;&#x7ACB;&#x5373;&#x8FD4;&#x56DE;</span>
+<span class="hljs-comment">// &#x5982;&#x679C;block=1&#xFF0C;&#x8F6E;&#x8BE2;&#x4E8B;&#x4EF6;&#x65F6;&#x6CA1;&#x6709;&#x4E8B;&#x4EF6;&#x5C31;&#x7EEA;&#x5219;&#x963B;&#x585E;&#xFF0C;&#x76F4;&#x5230;&#x81F3;&#x5C11;&#x6709;&#x4E00;&#x4E2A;&#x4E8B;&#x4EF6;&#x5C31;&#x7EEA;</span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">mill_wait</span><span class="hljs-params">(<span class="hljs-keyword">int</span> block)</span></span>;
+
+<span class="hljs-comment">// &#x5B50;&#x8FDB;&#x7A0B;&#x4E2D;&#x8C03;&#x7528;&#x8BE5;&#x51FD;&#x6570;&#x5C06;&#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#x5168;&#x65B0;&#x7684;pollset&#xFF0C;&#x4E0E;&#x7236;&#x8FDB;&#x7A0B;&#x7684;pollset&#x8131;&#x79BB;&#x5173;&#x7CFB;</span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">mill_poller_postfork</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span></span>;
+</code></pre>
+<p><strong>poller.c</strong></p>
+<pre><code class="lang-c"><span class="hljs-comment">/* Forward declarations for the functions implemented by specific poller
+   mechanisms (poll, epoll, kqueue). */</span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">mill_poller_init</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span></span>;
+<span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">mill_poller_add</span><span class="hljs-params">(<span class="hljs-keyword">int</span> fd, <span class="hljs-keyword">int</span> events)</span></span>;
+<span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">mill_poller_rm</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> mill_cr *cr)</span></span>;
+<span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">mill_poller_clean</span><span class="hljs-params">(<span class="hljs-keyword">int</span> fd)</span></span>;
+<span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> <span class="hljs-title">mill_poller_wait</span><span class="hljs-params">(<span class="hljs-keyword">int</span> timeout)</span></span>;
+
+<span class="hljs-comment">// poller&#x662F;&#x5426;&#x5DF2;&#x7ECF;&#x88AB;&#x521D;&#x59CB;&#x5316;&#x8FC7;&#xFF0C;1&#x662F;&#xFF0C;0&#x5426;</span>
+<span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> mill_poller_initialised = <span class="hljs-number">0</span>;
+
+<span class="hljs-comment">// &#x68C0;&#x67E5;poller&#x662F;&#x5426;&#x5DF2;&#x521D;&#x59CB;&#x5316;&#xFF0C;&#x6CA1;&#x6709;&#x521D;&#x59CB;&#x5316;&#x5219;&#x521D;&#x59CB;&#x5316;&#xFF0C;&#x5DF2;&#x7ECF;&#x521D;&#x59CB;&#x5316;&#x4E0D;&#x5904;&#x7406;</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> check_poller_initialised() \
+do {\
+    <span class="hljs-meta-keyword">if</span>(mill_slow(!mill_poller_initialised)) {\
+        mill_poller_init();\
+        mill_assert(errno == 0);\
+        mill_main.fd = -1;\
+        mill_main.timer.expiry = -1;\
+        mill_poller_initialised = 1;\
+    }\
+} while(0)</span>
+
+<span class="hljs-comment">// &#x6302;&#x8D77;&#x5F53;&#x524D;&#x8FD0;&#x884C;&#x4E2D;&#x7684;coroutine&#x4E00;&#x5B9A;&#x7684;&#x65F6;&#x95F4;</span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">mill_msleep_</span><span class="hljs-params">(int64_t deadline, <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> *current)</span> </span>{
+    mill_fdwait_(<span class="hljs-number">-1</span>, <span class="hljs-number">0</span>, deadline, current);
+}
+
+<span class="hljs-comment">// </span>
+<span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">mill_poller_callback</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> mill_timer *timer)</span> </span>{
+    <span class="hljs-keyword">struct</span> mill_cr *cr = mill_cont(timer, <span class="hljs-keyword">struct</span> mill_cr, timer);
+    mill_resume(cr, <span class="hljs-number">-1</span>);
+    <span class="hljs-keyword">if</span> (cr-&gt;fd != <span class="hljs-number">-1</span>)
+        mill_poller_rm(cr);
+}
+
+<span class="hljs-comment">// &#x7B49;&#x5F85;fd&#x4E0A;&#x7684;events&#x5C31;&#x7EEA;&#x6216;&#x8005;&#x76F4;&#x5230;&#x8D85;&#x65F6;</span>
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">mill_fdwait_</span><span class="hljs-params">(<span class="hljs-keyword">int</span> fd, <span class="hljs-keyword">int</span> events, int64_t deadline, <span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span> *current)</span> </span>{
+    check_poller_initialised();
+    <span class="hljs-comment">// &#x5982;&#x679C;&#x6307;&#x5B9A;&#x4E86;deadline&#xFF0C;&#x5219;&#x6DFB;&#x52A0;&#x4E00;&#x4E2A;&#x5B9A;&#x65F6;&#x5668;&#xFF0C;&#x8D85;&#x65F6;&#x56DE;&#x8C03;mill_poller_callback&#x5524;&#x9192;&#x5B9A;&#x65F6;&#x5668;&#x5173;&#x8054;&#x7684;&#x534F;&#x7A0B;</span>
+    <span class="hljs-keyword">if</span>(deadline &gt;= <span class="hljs-number">0</span>)
+        mill_timer_add(&amp;mill_running-&gt;timer, deadline, mill_poller_callback);
+    <span class="hljs-comment">// &#x5982;&#x679C;&#x6307;&#x5B9A;&#x4E86;fd&#xFF0C;&#x5219;&#x6CE8;&#x518C;coroutine&#x5BF9;&#x8BE5;fd&#x4E0A;&#x7684;io&#x4E8B;&#x4EF6;&#x76D1;&#x542C;</span>
+    <span class="hljs-keyword">if</span>(fd &gt;= <span class="hljs-number">0</span>)
+        mill_poller_add(fd, events);
+    <span class="hljs-comment">// &#x6267;&#x884C;&#x4E86;&#x5B9E;&#x9645;&#x7684;wait&#xFF0C;mill_suspend&#x6302;&#x8D77;&#x5F53;&#x524D;&#x534F;&#x7A0B;&#x5207;&#x6362;&#x5230;&#x5176;&#x4ED6;ready&#x72B6;&#x6001;&#x7684;&#x534F;&#x7A0B;</span>
+    mill_running-&gt;state = fd &lt; <span class="hljs-number">0</span> ? MILL_MSLEEP : MILL_FDWAIT;
+    mill_running-&gt;fd = fd;
+    mill_running-&gt;events = events;
+    mill_set_current(&amp;mill_running-&gt;debug, current);
+    <span class="hljs-comment">// &#x5F53;&#x524D;&#x534F;&#x7A0B;&#x8981;&#x7B49;&#x5F85;&#x5176;&#x4ED6;&#x534F;&#x7A0B;&#x8C03;&#x7528;mill_resume&#x6765;&#x5524;&#x9192;&#x5F53;&#x524D;&#x534F;&#x7A0B;&#x624D;&#x4F1A;&#x4ECE;&#x8FD9;&#x91CC;&#x7EE7;&#x7EED;&#x5411;&#x4E0B;&#x6267;&#x884C;</span>
+    <span class="hljs-comment">// mill_suspend&#x8FD4;&#x56DE;&#x503C;&#x4E3A;mill_resume(struct mill_cr *cr, int result)&#x4E2D;&#x7684;&#x53C2;&#x6570;result</span>
+    <span class="hljs-comment">// &#x8C01;&#x6765;&#x5524;&#x9192;&#x5F53;&#x524D;&#x534F;&#x7A0B;&#x5462;&#xFF1F;epfd&#x4E8B;&#x4EF6;&#x8F6E;&#x8BE2;&#x7684;&#x65F6;&#x5019;&#x6709;fd&#x4E8B;&#x4EF6;&#x5C31;&#x7EEA;&#x5219;&#x4F1A;&#x5524;&#x9192;&#x7B49;&#x5F85;&#x5728;&#x8BE5;fd&#x4E0A;&#x7684;&#x534F;&#x7A0B;&#xFF01;</span>
+    <span class="hljs-keyword">int</span> rc = mill_suspend();
+    <span class="hljs-comment">/* Handle file descriptor events. */</span>
+    <span class="hljs-keyword">if</span>(rc &gt;= <span class="hljs-number">0</span>) {
+        mill_assert(!mill_timer_enabled(&amp;mill_running-&gt;timer));
+        <span class="hljs-keyword">return</span> rc;
+    }
+    <span class="hljs-comment">/* Handle the timeout. */</span>
+    mill_assert(mill_running-&gt;fd == <span class="hljs-number">-1</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+
+<span class="hljs-comment">// &#x5C06;fd&#x4ECE;epfd&#x4E0A;&#x53D6;&#x6D88;&#x6CE8;&#x518C;</span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">mill_fdclean_</span><span class="hljs-params">(<span class="hljs-keyword">int</span> fd)</span> </span>{
+    check_poller_initialised();
+    mill_poller_clean(fd);
+}
+
+<span class="hljs-comment">// &#x4E8B;&#x4EF6;&#x8F6E;&#x8BE2;&#xFF0C;block=1&#x8868;&#x793A;&#x963B;&#x585E;&#x76F4;&#x5230;&#x6709;&#x4E8B;&#x4EF6;&#x5230;&#x8FBE;&#xFF08;&#x8FD9;&#x91CC;&#x7684;&#x4E8B;&#x4EF6;&#x5305;&#x62EC;&#x5B9A;&#x65F6;&#x5668;&#x8D85;&#x65F6;&#x4E8B;&#x4EF6;&#x3001;io&#x5C31;&#x7EEA;&#x4E8B;&#x4EF6;&#xFF09; </span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">mill_wait</span><span class="hljs-params">(<span class="hljs-keyword">int</span> block)</span> </span>{
+    check_poller_initialised();
+    <span class="hljs-keyword">while</span>(<span class="hljs-number">1</span>) {
+        <span class="hljs-comment">// &#x8BA1;&#x7B97;&#x4E0B;&#x6B21;&#x8F6E;&#x8BE2;&#x7684;&#x8D85;&#x65F6;&#x65F6;&#x95F4;</span>
+        <span class="hljs-keyword">int</span> timeout = block ? mill_timer_next() : <span class="hljs-number">0</span>;
+        <span class="hljs-comment">// &#x68C0;&#x67E5;fd&#x4E0A;&#x7684;io&#x4E8B;&#x4EF6;</span>
+        <span class="hljs-keyword">int</span> fd_fired = mill_poller_wait(timeout);
+        <span class="hljs-comment">// &#x68C0;&#x67E5;&#x5B9A;&#x65F6;&#x5668;&#x8D85;&#x65F6;&#x65F6;&#x95F4;</span>
+        <span class="hljs-keyword">int</span> timer_fired = mill_timer_fire();
+        <span class="hljs-comment">// &#x975E;&#x963B;&#x585E;&#x60C5;&#x51B5;&#x4E0B;&#x4E0D;&#x91CD;&#x8BD5;</span>
+        <span class="hljs-keyword">if</span>(!block || fd_fired || timer_fired)
+            <span class="hljs-keyword">break</span>;
+        <span class="hljs-comment">/* If timeout was hit but there were no expired timers do the poll
+           again. This should not happen in theory but let&apos;s be ready for the
+           case when the system timers are not precise. */</span>
+    }
+}
+
+<span class="hljs-comment">// libmill&#x5728;linux&#x5E73;&#x53F0;&#x4E0B;&#x57FA;&#x4E8E;epoll&#x5B9E;&#x73B0;&#x4E8B;&#x4EF6;&#x8F6E;&#x8BE2;</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-string">&quot;epoll.inc&quot;</span></span>
+</code></pre>
+<p><strong>epoll.inc</strong></p>
+<pre><code class="lang-c"><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> MILL_ENDLIST 0xffffffff</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> MILL_EPOLLSETSIZE 128</span>
+
+<span class="hljs-comment">// &#x5168;&#x5C40;pollset&#xFF0C;linux&#x4E0B;&#x5176;&#x5B9E;&#x662F;&#x4E2A;epfd</span>
+<span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> mill_efd = <span class="hljs-number">-1</span>;
+
+<span class="hljs-comment">// epoll&#x5141;&#x8BB8;&#x4E3A;&#x6BCF;&#x4E2A;fd&#x6CE8;&#x518C;&#x4E00;&#x4E2A;&#x5355;&#x72EC;&#x7684;&#x6307;&#x9488;&#xFF0C;&#x6211;&#x4EEC;&#x5BF9;&#x6BCF;&#x4E2A;fd&#x9700;&#x8981;&#x6CE8;&#x518C;&#x4E24;&#x4E2A;coroutine&#x6307;&#x9488;&#xFF0C;</span>
+<span class="hljs-comment">// &#x4E00;&#x4E2A;&#x662F;&#x7B49;&#x5F85;&#x4ECE;fd&#x63A5;&#x6536;&#x6570;&#x636E;&#x7684;coroutine&#x6307;&#x9488;&#xFF0C;&#x4E00;&#x4E2A;&#x662F;&#x7B49;&#x5F85;&#x5411;fd&#x53D1;&#x9001;&#x6570;&#x636E;&#x7684;coroutine&#x6307;&#x9488;</span>
+<span class="hljs-comment">// &#x56E0;&#x6B64;&#xFF0C;&#x6211;&#x4EEC;&#x9700;&#x8981;&#x521B;&#x5EFA;&#x4E00;&#x4E2A;coroutine&#x6307;&#x9488;pair&#x6570;&#x7EC4;&#x6765;&#x8DDF;&#x8E2A;&#x6253;&#x5F00;&#x7684;socket fds&#x4E0A;&#x7684;io</span>
+<span class="hljs-keyword">struct</span> mill_crpair {
+    <span class="hljs-keyword">struct</span> mill_cr *in;
+    <span class="hljs-keyword">struct</span> mill_cr *out;
+    <span class="hljs-keyword">uint32_t</span> currevs;
+    <span class="hljs-comment">// 1-based&#x7D22;&#x5F15;&#x503C;&#xFF0C;0&#x4EE3;&#x8868;&#x4E0D;&#x5C5E;&#x4E8E;&#x8FD9;&#x4E2A;list&#xFF0C;MILL_ENDLIST&#x4EE3;&#x8868;list&#x7ED3;&#x675F;&#xFF08;&#x901A;&#x8FC7;&#x6570;&#x7EC4;&#x7D22;&#x5F15;&#x5B9E;&#x73B0;&#x7684;&#x94FE;&#x8868;&#xFF09;</span>
+    <span class="hljs-keyword">uint32_t</span> next;
+};
+
+<span class="hljs-keyword">static</span> <span class="hljs-keyword">struct</span> mill_crpair *mill_crpairs = <span class="hljs-literal">NULL</span>;
+<span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> mill_ncrpairs = <span class="hljs-number">0</span>;
+<span class="hljs-keyword">static</span> <span class="hljs-keyword">uint32_t</span> mill_changelist = MILL_ENDLIST;
+
+<span class="hljs-comment">// poller&#x521D;&#x59CB;&#x5316;</span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">mill_poller_init</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span> </span>{
+    <span class="hljs-comment">// &#x68C0;&#x67E5;&#x7CFB;&#x7EDF;&#x5141;&#x8BB8;&#x7684;&#x8FDB;&#x7A0B;&#x6700;&#x5927;&#x53EF;&#x6253;&#x5F00;&#x6587;&#x4EF6;&#x6570;&#x91CF;</span>
+    <span class="hljs-keyword">struct</span> rlimit rlim;
+    <span class="hljs-keyword">int</span> rc = getrlimit(RLIMIT_NOFILE, &amp;rlim);
+    <span class="hljs-keyword">if</span>(mill_slow(rc &lt; <span class="hljs-number">0</span>)) 
+        <span class="hljs-keyword">return</span>;
+    mill_ncrpairs = rlim.rlim_max;
+    <span class="hljs-comment">// &#x6700;&#x591A;&#x53EF;&#x6253;&#x5F00;mill_ncrpairs&#x4E2A;socket&#xFF0C;&#x6BCF;&#x4E2A;socket&#x5E94;&#x8BE5;&#x6709;&#x5BF9;&#x5E94;&#x7684;&#x4E00;&#x4E2A;struct_crpair</span>
+    mill_crpairs = (<span class="hljs-keyword">struct</span> mill_crpair*)<span class="hljs-built_in">calloc</span>(mill_ncrpairs, <span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">struct</span> mill_crpair));
+    <span class="hljs-keyword">if</span>(mill_slow(!mill_crpairs)) {
+        errno = ENOMEM; 
+        <span class="hljs-keyword">return</span>;
+    }
+    <span class="hljs-comment">// &#x521B;&#x5EFA;epfd&#x51C6;&#x5907;socket io&#x4E8B;&#x4EF6;&#x8FDB;&#x884C;&#x76D1;&#x542C;</span>
+    mill_efd = epoll_create(<span class="hljs-number">1</span>);
+    <span class="hljs-keyword">if</span>(mill_slow(mill_efd &lt; <span class="hljs-number">0</span>)) {
+        <span class="hljs-built_in">free</span>(mill_crpairs);
+        mill_crpairs = <span class="hljs-literal">NULL</span>;
+        <span class="hljs-keyword">return</span>;
+    }
+    errno = <span class="hljs-number">0</span>;
+}
+
+<span class="hljs-comment">// &#x5B50;&#x8FDB;&#x7A0B;&#x4E2D;&#x91CD;&#x65B0;&#x521B;&#x5EFA;&#x4E00;&#x4E2A;pollset&#xFF0C;&#x4E0E;&#x7236;&#x8FDB;&#x7A0B;&#x7684;pollset&#x8131;&#x79BB;&#x4E86;&#x5173;&#x7CFB;</span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">mill_poller_postfork</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span> </span>{
+    <span class="hljs-keyword">if</span>(mill_efd != <span class="hljs-number">-1</span>) {
+        <span class="hljs-keyword">int</span> rc = close(mill_efd);
+        mill_assert(rc == <span class="hljs-number">0</span>);
+    }
+    mill_efd = <span class="hljs-number">-1</span>;
+    mill_crpairs = <span class="hljs-literal">NULL</span>;
+    mill_ncrpairs = <span class="hljs-number">0</span>;
+    mill_changelist = MILL_ENDLIST;
+    mill_poller_init();
+}
+
+<span class="hljs-comment">// &#x6CE8;&#x518C;&#x5F53;&#x524D;&#x534F;&#x7A0B;&#x5BF9;fd&#x4E0A;events&#x5C31;&#x7EEA;&#x7684;&#x76D1;&#x542C;</span>
+<span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">mill_poller_add</span><span class="hljs-params">(<span class="hljs-keyword">int</span> fd, <span class="hljs-keyword">int</span> events)</span> </span>{
+    <span class="hljs-comment">// &#x6BCF;&#x4E2A;fd&#x90FD;&#x662F;&#x4ECE;&#x6700;&#x5C0F;&#x672A;&#x88AB;&#x4F7F;&#x7528;&#x7684;&#x6574;&#x6570;&#x5F00;&#x59CB;&#x5206;&#x914D;&#x7684;&#xFF0C;&#x56E0;&#x6B64;fd&#x53D6;&#x503C;&#x4E00;&#x5B9A;&#x5728;[0,rlim.rlim_max]&#x8303;&#x56F4;&#x5185;&#xFF0C;</span>
+    <span class="hljs-comment">// &#x56E0;&#x6B64;&#xFF0C;&#x8FD9;&#x91CC;&#x7684;mill_crpairs[fd]&#x4E00;&#x5B9A;&#x4E0D;&#x4F1A;&#x51FA;&#x73B0;&#x5185;&#x5B58;&#x8D8A;&#x754C;</span>
+    <span class="hljs-keyword">struct</span> mill_crpair *crp = &amp;mill_crpairs[fd];
+    <span class="hljs-keyword">if</span>(events &amp; FDW_IN) {
+        <span class="hljs-comment">// &#x4E0D;&#x5141;&#x8BB8;&#x591A;&#x4E2A;&#x534F;&#x7A0B;wait&#x540C;&#x4E00;&#x4E2A;fd&#xFF0C;&#x4E0D;&#x7136;io&#x5C31;&#x4E71;&#x4E86;</span>
+        <span class="hljs-keyword">if</span>(crp-&gt;in)
+            mill_panic(<span class="hljs-string">&quot;multiple coroutines waiting for a single file descriptor&quot;</span>);
+        crp-&gt;in = mill_running;
+    }
+    <span class="hljs-keyword">if</span>(events &amp; FDW_OUT) {
+        <span class="hljs-comment">// &#x4E0D;&#x5141;&#x8BB8;&#x591A;&#x4E2A;&#x534F;&#x7A0B;wait&#x540C;&#x4E00;&#x4E2A;fd&#xFF0C;&#x4E0D;&#x7136;io&#x5C31;&#x4E71;&#x4E86;</span>
+        <span class="hljs-keyword">if</span>(crp-&gt;out)
+            mill_panic(<span class="hljs-string">&quot;multiple coroutines waiting for a single file descriptor&quot;</span>);
+        crp-&gt;out = mill_running;
+    }
+    <span class="hljs-keyword">if</span>(!crp-&gt;next) {
+        crp-&gt;next = mill_changelist;
+        mill_changelist = fd + <span class="hljs-number">1</span>;           <span class="hljs-comment">// 1-based&#x7D22;&#x5F15;&#x503C;</span>
+    }
+}
+
+<span class="hljs-comment">// &#x53D6;&#x6D88;&#x534F;&#x7A0B;cr&#x5F53;&#x524D;&#x5BF9;fd&#x4E0A;&#x4E8B;&#x4EF6;&#x7684;&#x76D1;&#x542C;</span>
+<span class="hljs-comment">// &#x6CE8;&#x610F;&#x8FD9;&#x91CC;&#x5E76;&#x6CA1;&#x6709;&#x4ECE;epfd&#x4E2D;&#x6E05;&#x9664;&#x5BF9;fd&#x7684;&#x76D1;&#x542C;&#xFF0C;&#x5176;&#x4ED6;&#x534F;&#x7A0B;&#x8FD8;&#x53EF;&#x80FD;&#x76D1;&#x542C;&#x5462;</span>
+<span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">mill_poller_rm</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> mill_cr *cr)</span> </span>{
+    <span class="hljs-keyword">int</span> fd = cr-&gt;fd;
+    mill_assert(fd != <span class="hljs-number">-1</span>);
+    <span class="hljs-keyword">struct</span> mill_crpair *crp = &amp;mill_crpairs[fd];
+    <span class="hljs-keyword">if</span>(crp-&gt;in == cr) {
+        crp-&gt;in = <span class="hljs-literal">NULL</span>;
+        cr-&gt;fd = <span class="hljs-number">-1</span>;
+    }
+    <span class="hljs-keyword">if</span>(crp-&gt;out == cr) {
+        crp-&gt;out = <span class="hljs-literal">NULL</span>;
+        cr-&gt;fd = <span class="hljs-number">-1</span>;
+    }
+    <span class="hljs-keyword">if</span>(!crp-&gt;next) {
+        crp-&gt;next = mill_changelist;
+        mill_changelist = fd + <span class="hljs-number">1</span>;           <span class="hljs-comment">// 1-based&#x7D22;&#x5F15;&#x503C;</span>
+    }
+}
+
+<span class="hljs-comment">// &#x4ECE;epfd&#x4E2D;&#x6E05;&#x9664;&#x5BF9;fd&#x7684;&#x76D1;&#x542C;</span>
+<span class="hljs-comment">// &#x6CE8;&#x610F;&#x5FC5;&#x987B;&#x6240;&#x6709;coroutine&#x90FD;&#x6CA1;&#x6709;&#x76D1;&#x542C;&#x8FD9;&#x4E2A;fd</span>
+<span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">mill_poller_clean</span><span class="hljs-params">(<span class="hljs-keyword">int</span> fd)</span> </span>{
+    <span class="hljs-keyword">struct</span> mill_crpair *crp = &amp;mill_crpairs[fd];
+    <span class="hljs-comment">// &#x65AD;&#x8A00;&#x5FC5;&#x987B;&#x6240;&#x6709;coroutine&#x90FD;&#x6CA1;&#x6709;&#x76D1;&#x542C;&#x8FD9;&#x4E2A;fd</span>
+    mill_assert(!crp-&gt;in);
+    mill_assert(!crp-&gt;out);
+    <span class="hljs-comment">/* Remove the file descriptor from the pollset, if it is still present. */</span>
+    <span class="hljs-keyword">if</span>(crp-&gt;currevs) {   
+        <span class="hljs-keyword">struct</span> epoll_event ev;
+        ev.data.fd = fd;
+        ev.events = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> rc = epoll_ctl(mill_efd, EPOLL_CTL_DEL, fd, &amp;ev);
+        mill_assert(rc == <span class="hljs-number">0</span> || errno == ENOENT);
+    }
+    <span class="hljs-comment">/* Clean the cache. */</span>
+    crp-&gt;currevs = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">if</span>(!crp-&gt;next) {
+        crp-&gt;next = mill_changelist;
+        mill_changelist = fd + <span class="hljs-number">1</span>;
+    }
+}
+
+<span class="hljs-comment">// epoll&#x8F6E;&#x8BE2;&#x4E8B;&#x4EF6;&#x5C31;&#x7EEA;&#x72B6;&#x6001;</span>
+<span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> <span class="hljs-title">mill_poller_wait</span><span class="hljs-params">(<span class="hljs-keyword">int</span> timeout)</span> </span>{
+    <span class="hljs-comment">/* Apply any changes to the pollset.
+       <span class="hljs-doctag">TODO:</span> Use epoll_ctl_batch once available. */</span>
+    <span class="hljs-keyword">while</span>(mill_changelist != MILL_ENDLIST) {
+        <span class="hljs-keyword">int</span> fd = mill_changelist - <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">struct</span> mill_crpair *crp = &amp;mill_crpairs[fd];
+        <span class="hljs-keyword">struct</span> epoll_event ev;
+        ev.data.fd = fd;
+        ev.events = <span class="hljs-number">0</span>;
+        <span class="hljs-comment">// &#x6839;&#x636E;crp&#x4E2D;&#x662F;&#x5426;&#x6709;coroutine&#x76D1;&#x542C;crp-&gt;fd&#x4E0A;&#x7684;io&#x4E8B;&#x4EF6;&#x6765;&#x66F4;&#x65B0;crp-&gt;currevs&#xFF0C;&#x5E76;&#x66F4;&#x65B0;epfd&#x4E8B;&#x4EF6;&#x6CE8;&#x518C;</span>
+        <span class="hljs-keyword">if</span>(crp-&gt;in)
+            ev.events |= EPOLLIN;
+        <span class="hljs-keyword">if</span>(crp-&gt;out)
+            ev.events |= EPOLLOUT;
+        <span class="hljs-keyword">if</span>(crp-&gt;currevs != ev.events) {
+            <span class="hljs-keyword">int</span> op;
+            <span class="hljs-keyword">if</span>(!ev.events)
+                 op = EPOLL_CTL_DEL;
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(!crp-&gt;currevs)
+                 op = EPOLL_CTL_ADD;
+            <span class="hljs-keyword">else</span>
+                 op = EPOLL_CTL_MOD;
+            crp-&gt;currevs = ev.events;
+            <span class="hljs-keyword">int</span> rc = epoll_ctl(mill_efd, op, fd, &amp;ev);
+            mill_assert(rc == <span class="hljs-number">0</span>);
+        }
+        mill_changelist = crp-&gt;next;
+        crp-&gt;next = <span class="hljs-number">0</span>;
+    }
+    <span class="hljs-comment">// epoll_wait&#x4E8B;&#x4EF6;&#x8F6E;&#x8BE2;&#xFF0C;&#x8FD4;&#x56DE;&#x5C31;&#x7EEA;&#x4E8B;&#x4EF6;</span>
+    <span class="hljs-keyword">struct</span> epoll_event evs[MILL_EPOLLSETSIZE];
+    <span class="hljs-keyword">int</span> numevs;
+    <span class="hljs-keyword">while</span>(<span class="hljs-number">1</span>) {
+        numevs = epoll_wait(mill_efd, evs, MILL_EPOLLSETSIZE, timeout);
+        <span class="hljs-keyword">if</span>(numevs &lt; <span class="hljs-number">0</span> &amp;&amp; errno == EINTR)
+            <span class="hljs-keyword">continue</span>;
+        mill_assert(numevs &gt;= <span class="hljs-number">0</span>);
+        <span class="hljs-keyword">break</span>;
+    }
+    <span class="hljs-comment">// &#x904D;&#x5386;fd&#x5C31;&#x7EEA;&#x7684;&#x4E8B;&#x4EF6;&#xFF0C;&#x5E76;&#x5524;&#x9192;&#x7B49;&#x5F85;&#x8BE5;fd&#x4E8B;&#x4EF6;&#x5C31;&#x7EEA;&#x7684;coroutine</span>
+    <span class="hljs-keyword">int</span> i;
+    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">0</span>; i != numevs; ++i) {
+        <span class="hljs-keyword">struct</span> mill_crpair *crp = &amp;mill_crpairs[evs[i].data.fd];
+        <span class="hljs-keyword">int</span> inevents = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> outevents = <span class="hljs-number">0</span>;
+        <span class="hljs-comment">/* Set the result values. */</span>
+        <span class="hljs-keyword">if</span>(evs[i].events &amp; EPOLLIN)
+            inevents |= FDW_IN;
+        <span class="hljs-keyword">if</span>(evs[i].events &amp; EPOLLOUT)
+            outevents |= FDW_OUT;
+        <span class="hljs-keyword">if</span>(evs[i].events &amp; (EPOLLERR | EPOLLHUP)) {
+            inevents |= FDW_ERR;
+            outevents |= FDW_ERR;
+        }
+        <span class="hljs-comment">// &#x5524;&#x9192;&#x7B49;&#x5F85;&#x8BE5;fd&#x4E0A;&#x5C31;&#x7EEA;&#x4E8B;&#x4EF6;&#x7684;coroutine</span>
+        <span class="hljs-keyword">if</span>(crp-&gt;in == crp-&gt;out) {
+            <span class="hljs-keyword">struct</span> mill_cr *cr = crp-&gt;in;
+            mill_resume(cr, inevents | outevents);
+            mill_poller_rm(cr);
+            <span class="hljs-keyword">if</span>(mill_timer_enabled(&amp;cr-&gt;timer))
+                mill_timer_rm(&amp;cr-&gt;timer);
+        }
+        <span class="hljs-keyword">else</span> {
+            <span class="hljs-comment">// &#x5524;&#x9192;&#x7B49;&#x5F85;&#x8BE5;fd&#x8BFB;&#x5C31;&#x7EEA;&#x4E8B;&#x4EF6;&#x7684;&#x534F;&#x7A0B;</span>
+            <span class="hljs-keyword">if</span>(crp-&gt;in &amp;&amp; inevents) {
+                <span class="hljs-keyword">struct</span> mill_cr *cr = crp-&gt;in;
+                mill_resume(cr, inevents);
+                mill_poller_rm(cr);
+                <span class="hljs-keyword">if</span>(mill_timer_enabled(&amp;cr-&gt;timer))
+                    mill_timer_rm(&amp;cr-&gt;timer);
+            }
+            <span class="hljs-comment">// &#x5524;&#x9192;&#x7B49;&#x5F85;&#x8BE5;fd&#x5199;&#x5C31;&#x7EEA;&#x4E8B;&#x4EF6;&#x7684;&#x534F;&#x7A0B;</span>
+            <span class="hljs-keyword">if</span>(crp-&gt;out &amp;&amp; outevents) {
+                <span class="hljs-keyword">struct</span> mill_cr *cr = crp-&gt;out;
+                mill_resume(cr, outevents);
+                mill_poller_rm(cr);
+                <span class="hljs-keyword">if</span>(mill_timer_enabled(&amp;cr-&gt;timer))
+                    mill_timer_rm(&amp;cr-&gt;timer);
+            }
+        }
+    }
+
+    <span class="hljs-comment">// &#x81F3;&#x5C11;&#x6709;&#x4E00;&#x4E2A;&#x534F;&#x7A0B;&#x88AB;&#x5524;&#x9192;&#x5219;&#x8FD4;&#x56DE;1&#xFF0C;&#x53CD;&#x4E4B;&#x8FD4;&#x56DE;0</span>
+    <span class="hljs-keyword">return</span> numevs &gt; <span class="hljs-number">0</span> ? <span class="hljs-number">1</span> : <span class="hljs-number">0</span>;
+}
+</code></pre>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="network-file.html" class="navigation navigation-prev " aria-label="Previous page: network: file">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="../datatypes/datatype-iterator.html" class="navigation navigation-next " aria-label="Next page: 通用链表及迭代器实现">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"description":"libmill是一个基于c语言开发的go风格协程库，实现了go风格的协程操作、chan操作、非阻塞的网络io操作等等，是一个不错的linux平台下c风格协程库实现。如果你想从0到1的快速了解如何开发一个协程库，libmill将是一个非常不错的案例；如果你想更深入地了解go，libmill里面也借鉴了go的一些设计思想；或者你想在生产环境中使用，开发者也提供了一个更健壮的版本libdill。","title":"network: poller","level":"6.6","depth":1,"next":{"title":"通用链表及迭代器实现","level":"7.1","depth":1,"path":"datatypes/datatype-iterator.md","ref":"datatypes/datatype-iterator.md","articles":[]},"previous":{"title":"network: file","level":"6.5","depth":1,"path":"io-multiplexing/network-file.md","ref":"io-multiplexing/network-file.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"io-multiplexing/network-poller.md","mtime":"2021-03-25T18:20:16.960Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-03-25T19:09:21.649Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

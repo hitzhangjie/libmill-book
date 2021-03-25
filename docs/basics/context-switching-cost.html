@@ -1,0 +1,725 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>上下文切换开销 · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="这里我们介绍深入介绍下上下文是什么、上下文切换的开销是什么、如何减少上下文切换开销。">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="thread-model.html" />
+    
+    
+    <link rel="prev" href="context-switching.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    序言
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="../author.html">
+            
+                <a href="../author.html">
+            
+                    
+                    作者
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">Part I - 系统基础</li>
+        
+        
+    
+        <li class="chapter " data-level="2.1" data-path="server-programming-model.html">
+            
+                <a href="server-programming-model.html">
+            
+                    
+                    服务编程模型
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" data-path="process-thread-coroutine.html">
+            
+                <a href="process-thread-coroutine.html">
+            
+                    
+                    进程, 线程, 协程
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3" data-path="libmill-intro.html">
+            
+                <a href="libmill-intro.html">
+            
+                    
+                    libmill协程库
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.4" data-path="libdill-intro.html">
+            
+                <a href="libdill-intro.html">
+            
+                    
+                    libdill协程库
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.5" data-path="stack-memory.html">
+            
+                <a href="stack-memory.html">
+            
+                    
+                    栈空间分配
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.6" data-path="context-switching.html">
+            
+                <a href="context-switching.html">
+            
+                    
+                    上下文切换
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="2.7" data-path="context-switching-cost.html">
+            
+                <a href="context-switching-cost.html">
+            
+                    
+                    上下文切换开销
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.8" data-path="thread-model.html">
+            
+                <a href="thread-model.html">
+            
+                    
+                    线程模型
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">Part II - 源码分析</li>
+        
+        
+    
+
+    
+        
+        <li class="header">chan：通过通信来共享</li>
+        
+        
+    
+        <li class="chapter " data-level="4.1" data-path="../libmill-chan.html">
+            
+                <a href="../libmill-chan.html">
+            
+                    
+                    chan: 通过通信来共享
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">coroutine: 高效轻量级并发</li>
+        
+        
+    
+        <li class="chapter " data-level="5.1" data-path="../coroutine-libmill.html">
+            
+                <a href="../coroutine-libmill.html">
+            
+                    
+                    coroutine: libmill.h
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.2" data-path="../coroutine-cr.html">
+            
+                <a href="../coroutine-cr.html">
+            
+                    
+                    coroutine: cr.h/cr.c
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.3" data-path="../coroutine-mfork.html">
+            
+                <a href="../coroutine-mfork.html">
+            
+                    
+                    coroutine: mfork
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="5.4" data-path="../coroutine-stack.html">
+            
+                <a href="../coroutine-stack.html">
+            
+                    
+                    coroutine: stack
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">网络IO: 多路复用Hook系统调用</li>
+        
+        
+    
+        <li class="chapter " data-level="6.1" data-path="../io-multiplexing/network-ip.html">
+            
+                <a href="../io-multiplexing/network-ip.html">
+            
+                    
+                    network: ip
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.2" data-path="../io-multiplexing/network-tcp.html">
+            
+                <a href="../io-multiplexing/network-tcp.html">
+            
+                    
+                    network: tcp
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.3" data-path="../io-multiplexing/network-udp.html">
+            
+                <a href="../io-multiplexing/network-udp.html">
+            
+                    
+                    network: udp
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.4" data-path="../io-multiplexing/network-unix.html">
+            
+                <a href="../io-multiplexing/network-unix.html">
+            
+                    
+                    network: unix
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.5" data-path="../io-multiplexing/network-file.html">
+            
+                <a href="../io-multiplexing/network-file.html">
+            
+                    
+                    network: file
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="6.6" data-path="../io-multiplexing/network-poller.html">
+            
+                <a href="../io-multiplexing/network-poller.html">
+            
+                    
+                    network: poller
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">常用数据结构</li>
+        
+        
+    
+        <li class="chapter " data-level="7.1" data-path="../datatypes/datatype-iterator.html">
+            
+                <a href="../datatypes/datatype-iterator.html">
+            
+                    
+                    通用链表及迭代器实现
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="7.2" data-path="../datatypes/datatype-list.html">
+            
+                <a href="../datatypes/datatype-list.html">
+            
+                    
+                    双向链表: list
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="7.3" data-path="../datatypes/datatype-slist.html">
+            
+                <a href="../datatypes/datatype-slist.html">
+            
+                    
+                    单向链表: slist
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">高精度定时器</li>
+        
+        
+    
+        <li class="chapter " data-level="8.1" data-path="../timer/libmill-timer.html">
+            
+                <a href="../timer/libmill-timer.html">
+            
+                    
+                    定时器: timer
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">调试说明</li>
+        
+        
+    
+        <li class="chapter " data-level="9.1" data-path="../debugging/libmill-debugging.html">
+            
+                <a href="../debugging/libmill-debugging.html">
+            
+                    
+                    如何调试libmill
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">常用辅助方法</li>
+        
+        
+    
+        <li class="chapter " data-level="10.1" data-path="../utils/libmill-utils.html">
+            
+                <a href="../utils/libmill-utils.html">
+            
+                    
+                    常用工具函数：函数+宏
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >上下文切换开销</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="&#x4E0A;&#x4E0B;&#x6587;&#x5207;&#x6362;&#x5F00;&#x9500;">&#x4E0A;&#x4E0B;&#x6587;&#x5207;&#x6362;&#x5F00;&#x9500;</h1>
+<h2 id="&#x4E0A;&#x4E0B;&#x6587;&#x5207;&#x6362;&#x6709;&#x54EA;&#x4E9B;&#x5F00;&#x9500;">&#x4E0A;&#x4E0B;&#x6587;&#x5207;&#x6362;&#x6709;&#x54EA;&#x4E9B;&#x5F00;&#x9500;</h2>
+<p>&#x4E0A;&#x4E0B;&#x6587;&#x5207;&#x6362;&#xFF0C;&#x4E3B;&#x8981;&#x5C31;&#x662F;&#x4EFB;&#x52A1;&#x5207;&#x6362;&#x65F6;&#x4EFB;&#x52A1;&#x72B6;&#x6001;&#x7684;&#x4FDD;&#x5B58;&#xFF0C;&#x4EE5;&#x53CA;&#x9009;&#x62E9;&#x4E0B;&#x4E00;&#x4E2A;&#x5F85;&#x6267;&#x884C;&#x7684;&#x4EFB;&#x52A1;&#x5E76;&#x5C06;&#x5176;&#x4E0A;&#x4E0B;&#x6587;&#x6062;&#x590D;&#x3002;&#x8FD9;&#x5176;&#x4E2D;&#x7684;&#x5F00;&#x9500;&#xFF0C;&#x4E3B;&#x8981;&#x5305;&#x542B;&#x8FD9;&#x4E48;&#x51E0;&#x90E8;&#x5206;&#xFF1A;</p>
+<h3 id="&#x5207;&#x6362;&#x76F4;&#x63A5;&#x5F15;&#x5165;&#x7684;&#x5F00;&#x9500;">&#x5207;&#x6362;&#x76F4;&#x63A5;&#x5F15;&#x5165;&#x7684;&#x5F00;&#x9500;</h3>
+<p>&#x8FD9;&#x90E8;&#x5206;&#x662F;&#x6BD4;&#x8F83;&#x597D;&#x7406;&#x89E3;&#x7684;&#xFF0C;&#x4FDD;&#x5B58;&#x3001;&#x6062;&#x590D;&#x4E0A;&#x4E0B;&#x6587;&#x65F6;&#x9700;&#x8981;&#x4FDD;&#x5B58;&#x7684;&#x5BC4;&#x5B58;&#x5668;&#x7684;&#x6570;&#x636E;&#x91CF;&#xFF0C;&#x76F4;&#x63A5;&#x51B3;&#x5B9A;&#x4E86;&#x8FD9;&#x90E8;&#x5206;&#x5F00;&#x9500;&#x3002;&#x6709;&#x4E9B;&#x5BC4;&#x5B58;&#x5668;&#x5BF9;&#x4E0A;&#x4E0B;&#x6587;&#x5207;&#x6362;&#x5F00;&#x9500;&#x5F71;&#x54CD;&#x662F;&#x6BD4;&#x8F83;&#x5927;&#x7684;&#xFF0C;&#x6BD4;&#x5982;FPU&#x3001;MMX&#x3001;SSE&#x3001;AVX&#x7B49;&#x5BC4;&#x5B58;&#x5668;&#x7684;&#x72B6;&#x6001;&#xFF0C;&#x7531;&#x4E8E;&#x5176;&#x6570;&#x636E;&#x91CF;&#x662F;&#x6BD4;&#x8F83;&#x5927;&#x7684;&#xFF0C;&#x53EF;&#x80FD;&#x4F1A;&#x589E;&#x52A0;&#x51E0;KB&#x7684;&#x6570;&#x636E;&#xFF0C;&#x7279;&#x522B;&#x662F;AVX&#x5BC4;&#x5B58;&#x5668;&#xFF0C;AVX2&#x6709;512&#x5B57;&#x8282;&#xFF0C;AVX-512&#x6709;2KB&#xFF0C;&#x8FD9;&#x4E48;&#x5927;&#x7684;&#x6570;&#x636E;&#x91CF;&#x5728;&#x4E0A;&#x4E0B;&#x6587;&#x5207;&#x6362;&#x65F6;&#x8FD8;&#x9700;&#x8981;&#x8BFB;&#x5199;&#x5185;&#x5B58;&#xFF0C;&#x8FD9;&#x91CC;&#x7684;&#x5185;&#x5B58;&#x8BFB;&#x5199;&#x5EF6;&#x8FDF;&#xFF08;+&#x8BFB;&#x5199;&#x5BC4;&#x5B58;&#x5668;&#xFF09;&#x5F15;&#x5165;&#x7684;&#x5F00;&#x9500;&#x662F;&#x6BD4;&#x8F83;&#x5927;&#x7684;&#x3002;</p>
+<p>&#x73B0;&#x5728;&#x4E5F;&#x5B58;&#x5728;&#x201C;&#x5EF6;&#x8FDF;&#x72B6;&#x6001;&#x52A0;&#x8F7D;&#xFF08;lazy state load&#xFF09;&#x201D;&#x8FD9;&#x6837;&#x7684;&#x673A;&#x5236;&#xFF0C;&#x5F53;FPU&#x3001;MMX&#x3001;SSE&#x3001;AVX&#x5BC4;&#x5B58;&#x5668;&#x6CA1;&#x6709;&#x52A0;&#x8F7D;&#x6570;&#x636E;&#x65F6;&#xFF0C;&#x80FD;&#x591F;&#x907F;&#x514D;&#x52A0;&#x8F7D;&#x5176;&#x4E2D;&#x7684;&#x90E8;&#x5206;&#x6216;&#x8005;&#x5168;&#x90E8;&#x5BC4;&#x5B58;&#x5668;&#x6570;&#x636E;&#xFF0C;&#x4ECE;&#x800C;&#x4E00;&#x5B9A;&#x7A0B;&#x5EA6;&#x4E0A;&#x964D;&#x4F4E;&#x5F00;&#x9500;&#x3002;&#x5982;&#x679C;&#x51E0;&#x4E4E;&#x6240;&#x6709;&#x7684;&#x4EFB;&#x52A1;&#x90FD;&#x4F7F;&#x7528;&#x4E86;&#x8FD9;&#x4E9B;&#x5BC4;&#x5B58;&#x5668;&#x72B6;&#x6001;&#x4FE1;&#x606F;&#xFF0C;&#x90A3;&#x4E48;&#x5EF6;&#x8FDF;&#x72B6;&#x6001;&#x52A0;&#x8F7D;&#xFF0C;&#x8FD9;&#x4E2A;&#x903B;&#x8F91;&#x53CD;&#x800C;&#x4F1A;&#x53D8;&#x6210;&#x7D2F;&#x8D58;&#xFF0C;&#x589E;&#x5927;&#x5F00;&#x9500;&#x3002;&#x4E3A;&#x5565;&#x5462;&#xFF1F;&#x56E0;&#x4E3A;&#x4E0A;&#x4E0B;&#x6587;&#x5207;&#x6362;&#x8FC7;&#x7A0B;&#x4E2D;&#x201C;&#x6309;&#x9700;&#x52A0;&#x8F7D;&#x5BC4;&#x5B58;&#x5668;&#x7684;&#x5224;&#x65AD;&#x3001;&#x6267;&#x884C;&#x903B;&#x8F91;&#x201D;&#x7684;&#x5F00;&#x9500;&#xFF0C;&#x5DF2;&#x7ECF;&#x8D85;&#x51FA;&#x4E86;&#x76F4;&#x63A5;&#x52A0;&#x8F7D;&#x8FD9;&#x4E9B;&#x5BC4;&#x5B58;&#x5668;&#x6570;&#x636E;&#x7684;&#x5F00;&#x9500;&#x3002;&#x8FD9;&#x79CD;&#x60C5;&#x51B5;&#x4E0B;&#xFF0C;&#x53EF;&#x4EE5;&#x9009;&#x62E9;&#x7981;&#x7528;&#x8FD9;&#x4E2A;&#x7279;&#x6027;&#x3002;</p>
+<p>&#x76F4;&#x63A5;&#x5F15;&#x5165;&#x7684;&#x5F00;&#x9500;&#xFF0C;&#x8FD8;&#x5305;&#x542B;&#x4E86;&#x4E00;&#x4E9B;&#x5176;&#x4ED6;&#x7684;&#x3002;&#x6BD4;&#x5982;&#x5185;&#x6838;&#x66F4;&#x65B0;&#x7EDF;&#x8BA1;&#x6570;&#x636E;&#x76F8;&#x5173;&#x7684;&#xFF0C;&#x8FDB;&#x7A0B;&#x5207;&#x6362;&#x65F6;&#xFF0C;&#x5185;&#x6838;&#x9700;&#x8981;&#x66F4;&#x65B0;&#x524D;&#x4E00;&#x4E2A;&#x4EFB;&#x52A1;&#x6267;&#x884C;&#x7684;CPU&#x65F6;&#x95F4;&#xFF1B;&#x6BD4;&#x5982;&#xFF0C;&#x5185;&#x6838;&#x9700;&#x8981;&#x6267;&#x884C;&#x8C03;&#x5EA6;&#x7B97;&#x6CD5;&#x9009;&#x62E9;&#x4E0B;&#x4E00;&#x4E2A;&#x8981;&#x6267;&#x884C;&#x7684;&#x4EFB;&#x52A1;&#x7B49;&#x7B49;&#x3002;</p>
+<h3 id="&#x5207;&#x6362;&#x95F4;&#x63A5;&#x5F15;&#x5165;&#x7684;&#x5F00;&#x9500;">&#x5207;&#x6362;&#x95F4;&#x63A5;&#x5F15;&#x5165;&#x7684;&#x5F00;&#x9500;</h3>
+<p>&#x95F4;&#x63A5;&#x5F15;&#x5165;&#x7684;&#x5F00;&#x9500;&#xFF0C;&#x4E3B;&#x8981;&#x662F;&#x4E0E;cache miss&#x76F8;&#x5173;&#x7684;&#xFF0C;CPU&#x672C;&#x8EAB;&#x6709;&#x81EA;&#x5DF1;&#x7684;L1&#x3001;L2&#x3001;L3&#x7EA7;&#x7F13;&#x5B58;&#xFF0C;&#x5BF9;&#x4E8E;&#x9875;&#x5F0F;&#x7BA1;&#x7406;&#x8FD8;&#x6709;TLB&#xFF08;&#x8F6C;&#x6362;&#x65C1;&#x8DEF;&#x7F13;&#x51B2;&#xFF09;&#xFF0C;&#x8FD8;&#x6709;&#x5206;&#x652F;&#x9884;&#x6D4B;&#x76F8;&#x5173;&#x7684;&#xFF08;branch direction, branch target, return buffer&#xFF09;&#xFF0C;&#x7B49;&#x7B49;&#x3002;</p>
+<h4 id="l1l3-cache-miss">L1~L3 cache miss</h4>
+<p>CPU&#x672C;&#x8EAB;&#x7684;L1&#x3001;L2&#x3001;L3&#x7EA7;&#x7F13;&#x5B58;&#xFF0C;&#x672C;&#x8EAB;&#x662F;&#x4E3A;&#x4E86;&#x52A0;&#x901F;&#x6570;&#x636E;&#x8BFB;&#x5199;&#x3001;&#x51CF;&#x5C11;&#x5BF9;&#x5185;&#x5B58;&#x7684;&#x8BBF;&#x95EE;&#x6240;&#x5F15;&#x5165;&#x7684;&#xFF0C;&#x5982;&#x679C;&#x4EFB;&#x52A1;&#x5207;&#x6362;&#x540E;&#xFF0C;&#x4EFB;&#x52A1;&#x9700;&#x8981;&#x8BFB;&#x5199;&#x7684;&#x6570;&#x636E;&#x5728;CPU cache&#x4E2D;&#x6CA1;&#x6709;&#x627E;&#x5230;&#xFF0C;&#x5C31;&#x8981;&#x518D;&#x53BB;&#x8BFB;&#x5199;&#x5185;&#x5B58;&#x5E76;&#x540C;&#x6B65;&#x5230;cache&#x4E2D;&#x53BB;&#xFF0C;&#x8FD9;&#x4E2A;&#x662F;&#x6BD4;&#x8F83;&#x8017;&#x65F6;&#x95F4;&#x7684;&#x3002;&#x53E6;&#x5916;&#xFF0C;&#x5982;&#x679C;&#x4EFB;&#x52A1;&#x4E4B;&#x524D;&#x5728;&#x5F53;&#x524D;CPU core&#x7684;cache&#x4E0A;&#x662F;&#x6709;&#x6570;&#x636E;&#x7684;&#xFF0C;&#x4F46;&#x662F;&#x7ECF;&#x8FC7;&#x51E0;&#x6B21;&#x4EFB;&#x52A1;&#x5207;&#x6362;&#x540E;&#xFF0C;&#x5C06;&#x5176;&#x8C03;&#x5EA6;&#x5230;&#x4E86;&#x53E6;&#x5916;&#x7684;CPU&#x6216;CPU core&#x4E0A;&#xFF0C;&#x90A3;&#x4E48;&#x8FD9;&#x4E2A;&#x65F6;&#x5019;&#x4EFB;&#x52A1;&#x8BFB;&#x5199;&#x6570;&#x636E;&#x65F6;&#x4E5F;&#x80AF;&#x5B9A;&#x4F1A;&#x51FA;&#x73B0;cache miss&#xFF0C;&#x4E5F;&#x9700;&#x8981;&#x8BFB;&#x5199;&#x5185;&#x5B58;&#x3002;&#x8FD9;&#x4E9B;CPU cache miss&#x7684;&#x95EE;&#x9898;&#x4F1A;&#x5E26;&#x6765;&#x660E;&#x663E;&#x7684;&#x5F00;&#x9500;&#x3002;</p>
+<p><img src="../assets/image%20%2816%29.png" alt="Intel Core i7"></p>
+<h4 id="tlb-cache-miss">TLB cache miss</h4>
+<p>&#x64CD;&#x4F5C;&#x7CFB;&#x7EDF;&#x91C7;&#x7528;&#x9875;&#x5F0F;&#x7BA1;&#x7406;&#x5BF9;&#x8FDB;&#x7A0B;&#x5730;&#x5740;&#x7A7A;&#x95F4;&#x8FDB;&#x884C;&#x7BA1;&#x7406;&#xFF0C;&#x4E3A;&#x4E86;&#x8282;&#x7701;&#x5185;&#x5B58;&#x7A7A;&#x95F4;&#xFF0C;&#x64CD;&#x4F5C;&#x7CFB;&#x7EDF;&#x4E00;&#x822C;&#x90FD;&#x662F;&#x91C7;&#x7528;&#x591A;&#x7EA7;&#x9875;&#x8868;&#x7684;&#x65B9;&#x5F0F;&#xFF0C;&#x5982;Linux&#x4E2D;&#x91C7;&#x7528;PGD+PUD+PMD+PTE+Offset&#x7684;&#x65B9;&#x5F0F;&#xFF0C;&#x8FD9;&#x6837;&#x4EE5;&#x66F4;&#x5C11;&#x7684;&#x5185;&#x5B58;&#x5360;&#x7528;&#x652F;&#x6301;&#x4E86;&#x66F4;&#x5927;&#x7684;&#x865A;&#x5730;&#x5740;&#x7A7A;&#x95F4;&#x3002;&#x4F46;&#x662F;&#x591A;&#x7EA7;&#x9875;&#x8868;&#x4E5F;&#x6709;&#x4E2A;&#x95EE;&#x9898;&#xFF0C;&#x8BA1;&#x7B97;&#x4E00;&#x4E2A;&#x865A;&#x5730;&#x5740;&#x5BF9;&#x5E94;&#x7684;&#x7269;&#x7406;&#x5730;&#x5740;&#x9700;&#x8981;&#x591A;&#x6B21;&#x8BFB;&#x53D6;&#x5185;&#x5B58;&#xFF0C;&#x4E5F;&#x6709;&#x5F00;&#x9500;&#x3002;</p>
+<p><img src="../assets/image%20%2820%29.png" alt=""></p>
+<p>&#x9875;&#x5F0F;&#x7BA1;&#x7406;&#x4E2D;&#x5F88;&#x91CD;&#x8981;&#x7684;&#x4E00;&#x4E2A;&#x64CD;&#x4F5C;&#x5C31;&#x662F;&#x8BA1;&#x7B97;&#x865A;&#x62DF;&#x5730;&#x5740;&#x5411;&#x7269;&#x7406;&#x5730;&#x5740;&#x7684;&#x6620;&#x5C04;&#x3002;&#x5BF9;&#x4E8E;&#x67D0;&#x4E9B;&#x9AD8;&#x9891;&#x8BBF;&#x95EE;&#x7684;&#x5185;&#x5B58;&#x5730;&#x5740;&#xFF0C;&#x96BE;&#x9053;&#x6BCF;&#x6B21;&#x90FD;&#x9700;&#x8981;&#x8BA1;&#x7B97;&#x5417;&#xFF1F;&#x975E;&#x4E5F;&#xFF01;&#x4EFB;&#x4F55;&#x8BFB;&#x5199;&#x6BD4;&#x5F88;&#x9AD8;&#x7684;&#x573A;&#x666F;&#xFF0C;&#x90FD;&#x53EF;&#x4EE5;&#x8003;&#x8651;&#x901A;&#x8FC7;&#x7F13;&#x5B58;&#x6765;&#x89E3;&#x51B3;&#x3002;&#x4E5F;&#x662F;&#x7BA1;&#x7406;&#x4E2D;&#x7684;TLB&#xFF08;Translation Lookaside Buffer&#xFF09;&#x5C31;&#x662F;&#x6765;&#x7F13;&#x5B58;&#x9AD8;&#x9891;&#x8BBF;&#x95EE;&#x7684;&#x5730;&#x5740;&#x6620;&#x5C04;&#x5173;&#x7CFB;&#x7684;&#x3002;&#x5982;&#x679C;&#x4E0A;&#x4E0B;&#x6587;&#x5207;&#x6362;&#x5BFC;&#x81F4;&#x5730;&#x5740;&#x6620;&#x5C04;&#x65F6;&#x51FA;&#x73B0;&#x4E86;TLB cache miss&#xFF0C;&#x90A3;&#x91CD;&#x65B0;&#x8BA1;&#x7B97;&#x5730;&#x5740;&#x6620;&#x5C04;&#x6240;&#x5F15;&#x5165;&#x7684;&#x5F00;&#x9500;&#x4E5F;&#x662F;&#x4E0D;&#x53EF;&#x5FFD;&#x89C6;&#x7684;&#x3002;</p>
+<p><img src="../assets/image%20%2822%29.png" alt="&#x9875;&#x5F0F;&#x7BA1;&#x7406;&#x5730;&#x5740;&#x6620;&#x5C04;-TLB"></p>
+<h3 id="&#x5176;&#x4ED6;&#x5F00;&#x9500;">&#x5176;&#x4ED6;&#x5F00;&#x9500;</h3>
+<h4 id="tlb&#x6CA1;&#x6709;pcid&#x652F;&#x6301;">TLB&#x6CA1;&#x6709;PCID&#x652F;&#x6301;</h4>
+<p>&#x5728;&#x67D0;&#x4E9B;&#x786C;&#x4EF6;&#x5E73;&#x53F0;&#x4E0A;&#xFF0C;TLB&#x662F;&#x6709;PCID&#x652F;&#x6301;&#x7684;&#xFF0C;PCID&#x5141;&#x8BB8;&#x4ECE;&#x786C;&#x4EF6;&#x5C42;&#x9762;&#x5BF9;TLB&#x4E2D;&#x7684;&#x6761;&#x76EE;&#x8FDB;&#x884C;&#x7CBE;&#x7EC6;&#x5316;&#x7BA1;&#x7406;&#xFF0C;&#x5982;&#x6DD8;&#x6C70;&#x7279;&#x5B9A;&#x7684;&#x6761;&#x76EE;&#x3002;</p>
+<p>&#x5982;&#x679C;&#x6CA1;&#x6709;PCID&#x652F;&#x6301;&#x7684;&#x8BDD;&#xFF0C;&#x6BCF;&#x6B21;CR3&#x5BC4;&#x5B58;&#x5668;&#x5199;&#x64CD;&#x4F5C;&#xFF0C;&#x90FD;&#x4F1A;&#x6E05;&#x7A7A;&#x6574;&#x4E2A;TLB&#xFF0C;&#x8BF4;&#x7684;&#x518D;&#x5177;&#x4F53;&#x70B9;&#x5C31;&#x662F;&#x6267;&#x884C;&#x7CFB;&#x7EDF;&#x8C03;&#x7528;&#x3001;&#x9047;&#x5230;interrupt&#x3001;exception&#x3001;trap&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x90FD;&#x8981;&#x6E05;&#x7A7A;TLB&#xFF0C;&#x8FD9;&#x4E5F;&#x662F;&#x4E00;&#x79CD;&#x5F00;&#x9500;&#x3002;</p>
+<h4 id="tlb&#x6709;pcid&#x652F;&#x6301;">TLB&#x6709;PCID&#x652F;&#x6301;</h4>
+<p>PCID&#x672C;&#x8EAB;&#x4E5F;&#x662F;&#x6709;&#x5F00;&#x9500;&#x7684;&#xFF0C;&#x5177;&#x4F53;&#x6765;&#x8BF4;&#xFF0C;&#x5F53;&#x5728;&#x67D0;&#x4E2A;CPU&#x4E0A;&#x7684;&#x9875;&#x5F0F;&#x6620;&#x5C04;&#x51FA;&#x73B0;&#x53D8;&#x5316;&#x4E4B;&#x540E;&#xFF0C;&#x5B83;&#x4F1A;&#x4F7F;&#x5F97;&#x5176;&#x4ED6;CPU&#x4E0A;&#x7684;&#x9875;&#x5F0F;&#x6620;&#x5C04;&#x5931;&#x6548;&#xFF0C;&#x4EE5;&#x91CD;&#x5EFA;&#x6700;&#x65B0;&#x7684;&#x6620;&#x5C04;&#x3002;&#x8FD9;&#x79F0;&#x4E3A;&#x201C;multi-CPU TLB shootdown&#x201D;&#x3002;&#x8FD9;&#x4E2A;&#x7684;&#x5F00;&#x9500;&#x76F8;&#x5BF9;&#x6765;&#x8BF4;&#x662F;&#x6BD4;&#x8F83;&#x5927;&#x7684;&#xFF0C;&#x5B83;&#x4F1A;&#x4E2D;&#x65AD;&#x5176;&#x4ED6;&#x7684;CPU&#xFF0C;&#x6BCF;&#x4E2A;&#x88AB;&#x4E2D;&#x65AD;&#x7684;CPU&#x90FD;&#x4F1A;&#x5F15;&#x5165;&#x51E0;&#x767E;&#x4E2A;&#x65F6;&#x949F;&#x5468;&#x671F;&#x7684;&#x5EF6;&#x8FDF;&#x3002;&#x5982;&#x679C;&#x6CA1;&#x6709;PCID&#x7684;&#x8BDD;&#xFF0C;&#x5C31;&#x53EF;&#x4EE5;&#x907F;&#x514D;&#x4E0A;&#x8FF0;&#x5F00;&#x9500;&#x3002;</p>
+<p>&#x4E3E;&#x4E2A;&#x4F8B;&#x5B50;&#xFF0C;&#x6BD4;&#x5982;&#xFF0C;&#x5BF9;&#x4E8E;&#x4E00;&#x4E2A;&#x5355;&#x8FDB;&#x7A0B;&#x5355;&#x7EBF;&#x7A0B;&#x7A0B;&#x5E8F;&#xFF0C;&#x5B83;&#x53EA;&#x53EF;&#x80FD;&#x540C;&#x65F6;&#x5728;&#x4E00;&#x4E2A;CPU core&#x4E0A;&#x8FD0;&#x884C;&#xFF0C;&#x4E0D;&#x53EF;&#x80FD;&#x5B58;&#x5728;&#x5176;&#x4ED6;CPU&#x540C;&#x65F6;&#x8BBF;&#x95EE;&#x8BE5;&#x8FDB;&#x7A0B;&#x7684;&#x5730;&#x5740;&#x7A7A;&#x95F4;&#xFF0C;&#x7136;&#x540E;&#x4E5F;&#x4E0D;&#x5E94;&#x8BE5;&#x51FA;&#x73B0;&#x5BFC;&#x81F4;&#x201C;multi-CPU TLB shootdown&#x201D;&#x7684;&#x60C5;&#x51B5;&#x3002;&#x7981;&#x7528;PCID&#x5C31;&#x53EF;&#x4EE5;&#x907F;&#x514D;&#x8FD9;&#x79CD;&#x5F00;&#x9500;&#x3002;</p>
+<p>&#x518D;&#x4E3E;&#x4E2A;&#x4F8B;&#x5B50;&#xFF0C;&#x5982;&#x679C;&#x4E00;&#x4E2A;&#x5355;&#x8FDB;&#x7A0B;&#x591A;&#x7EBF;&#x7A0B;&#x7684;&#x7A0B;&#x5E8F;&#xFF0C;&#x5373;&#x4FBF;&#x4ED6;&#x4EEC;&#x53EF;&#x80FD;&#x8FD0;&#x884C;&#x5728;&#x591A;&#x4E2A;CPU core&#x4E0A;&#xFF0C;&#x4F46;&#x662F;&#x53EA;&#x8981;&#x5B83;&#x7684;&#x5730;&#x5740;&#x7A7A;&#x95F4;&#x662F;&#x5728;&#x76F8;&#x540C;&#x7684;NUMA domain&#xFF0C;&#x90A3;&#x4E48;&#x53EA;&#x6709;&#x8BBF;&#x95EE;&#x8FD9;&#x4E2A;NUMA domain&#x7684;CPU&#x9700;&#x8981;&#x53C2;&#x4E0E;&#x5230;&#x201C;multi-CPU TLB shootdown&#x201D;&#x7684;&#x4EFB;&#x52A1;&#x4E2D;&#xFF0C;&#x5E76;&#x4E0D;&#x9700;&#x8981;&#x6240;&#x6709;&#x7684;CPU&#x90FD;&#x5F15;&#x5165;&#x8FD9;&#x4E2A;&#x5F00;&#x9500;&#x3002;&#x7981;&#x7528;PCID&#x4E5F;&#x53EF;&#x4EE5;&#x907F;&#x514D;&#x8FD9;&#x79CD;&#x5F00;&#x9500;&#x3002;</p>
+<p>&#x8FD9;&#x5C31;&#x662F;&#x5177;&#x4F53;&#x95EE;&#x9898;&#x5177;&#x4F53;&#x5206;&#x6790;&#x4E86;&#xFF0C;&#x4E0D;&#x540C;&#x7684;&#x4EFB;&#x52A1;&#x573A;&#x666F;&#xFF0C;&#x9700;&#x8981;&#x9488;&#x5BF9;&#x6027;&#x5904;&#x7406;&#xFF0C;PCID&#x867D;&#x7136;&#x5BF9;&#x4E8E;&#x907F;&#x514D;&#x6574;&#x4E2A;flush TLB&#x800C;&#x8A00;&#x4F1A;&#x6709;&#x4E00;&#x5B9A;&#x7684;&#x4F18;&#x5316;&#x6548;&#x679C;&#xFF0C;&#x4F46;&#x662F;&#x6211;&#x4EEC;&#x4E0A;&#x9762;&#x5217;&#x4E3E;&#x7684;&#x60C5;&#x666F;&#x4E0B;&#xFF0C;PCID&#x672C;&#x8EAB;&#x5F15;&#x5165;&#x7684;&#x5F00;&#x9500;&#x5DF2;&#x7ECF;&#x8D85;&#x8FC7;&#x4E86;&#x5176;&#x5E26;&#x6765;&#x7684;&#x6536;&#x76CA;&#xFF0C;&#x53CD;&#x800C;&#x5BFC;&#x81F4;&#x6027;&#x80FD;&#x66F4;&#x5DEE;&#x4E86;&#x3002;</p>
+<h4 id="id&#x7BA1;&#x7406;">ID&#x7BA1;&#x7406;</h4>
+<p>&#x5F53;&#x7136;&#x4E5F;&#x6709;&#x5176;&#x4ED6;&#x7684;&#x4E00;&#x4E9B;&#x5F00;&#x9500;&#xFF0C;&#x6BD4;&#x5982;&#x521B;&#x5EFA;&#x65B0;&#x4EFB;&#x52A1;&#x9700;&#x8981;&#x5206;&#x914D;&#x65B0;&#x7684;pid&#x3001;tid&#xFF0C;&#x6216;&#x8005;&#x8981;&#x56DE;&#x6536;pid&#x3001;tid&#xFF0C;id&#x5206;&#x914D;&#x8FD8;&#x9700;&#x8981;&#x9009;&#x62E9;&#x6700;&#x5C0F;&#x672A;&#x4F7F;&#x7528;&#x7684;id&#xFF0C;&#x8FD9;&#x91CC;&#x4E5F;&#x6709;&#x5F00;&#x9500;&#x3002;</p>
+<p>&#x9664;&#x4E86;&#x8FD9;&#x91CC;&#x5217;&#x51FA;&#x6765;&#x7684;&#xFF0C;&#x5E94;&#x8BE5;&#x8FD8;&#x6709;&#x5176;&#x4ED6;&#x5F00;&#x9500;&#xFF0C;&#x8FD9;&#x91CC;&#x5C31;&#x4E0D;&#x518D;&#x8BA8;&#x8BBA;&#x4E86;&#x3002;</p>
+<h2 id="&#x91CF;&#x5316;&#x4E0A;&#x4E0B;&#x6587;&#x5207;&#x6362;&#x5F00;&#x9500;">&#x91CF;&#x5316;&#x4E0A;&#x4E0B;&#x6587;&#x5207;&#x6362;&#x5F00;&#x9500;</h2>
+<h3 id="&#x91CF;&#x5316;&#x7684;&#x590D;&#x6742;&#x6027;">&#x91CF;&#x5316;&#x7684;&#x590D;&#x6742;&#x6027;</h3>
+<p>&#x8981;&#x60F3;&#x51C6;&#x786E;&#x5730;&#x91CF;&#x5316;&#x4E0A;&#x4E0B;&#x6587;&#x5207;&#x6362;&#x7684;&#x5F00;&#x9500;&#xFF0C;&#x5C31;&#x5FC5;&#x987B;&#x8981;&#x77E5;&#x9053;&#x8FD9;&#x91CC;&#x7684;&#x5F00;&#x9500;&#x6D89;&#x53CA;&#x5230;&#x54EA;&#x4E9B;&#x7C7B;&#x578B;&#x3002;&#x524D;&#x6587;&#x5DF2;&#x7ECF;&#x4ECB;&#x7ECD;&#x4E86;&#x8FD9;&#x91CC;&#x5927;&#x81F4;&#x5305;&#x542B;&#x7684;&#x5F00;&#x9500;&#x7C7B;&#x578B;&#xFF0C;&#x8BFB;&#x8005;&#x80AF;&#x5B9A;&#x4E5F;&#x611F;&#x53D7;&#x5230;&#x4E86;&#x91CF;&#x5316;&#x8FD9;&#x4E00;&#x5F00;&#x9500;&#x7684;&#x590D;&#x6742;&#x6027;&#x3002;</p>
+<p>&#x786E;&#x5B9E;&#xFF0C;&#x8981;&#x60F3;&#x91CF;&#x5316;&#x8FD9;&#x91CC;&#x7684;&#x5F00;&#x9500;&#xFF0C;&#x4E00;&#x65B9;&#x9762;&#x8981;&#x8003;&#x8651;&#x5177;&#x4F53;&#x786C;&#x4EF6;&#x5C42;&#x9762;&#x7684;&#x7279;&#x6027;&#xFF0C;&#x53E6;&#x4E00;&#x65B9;&#x9762;&#x4E5F;&#x8981;&#x8003;&#x8651;&#x8F6F;&#x4EF6;&#x5C42;&#x9762;&#x7684;&#x5F71;&#x54CD;&#xFF0C;&#x6BD4;&#x5982;&#x7CFB;&#x7EDF;&#x5F53;&#x65F6;&#x7684;&#x8D1F;&#x8F7D;&#x3001;&#x7CFB;&#x7EDF;&#x91C7;&#x7528;&#x7684;&#x8C03;&#x5EA6;&#x5668;&#x7B97;&#x6CD5;&#xFF08;CFS&#x3001;FIFO&#x7B49;&#xFF09;&#x3001;&#x4EFB;&#x52A1;&#x7684;&#x4F18;&#x5148;&#x7EA7;&#xFF0C;&#x6D4B;&#x8BD5;&#x7A0B;&#x5E8F;&#x6D4B;&#x91CF;&#x7684;&#x6A21;&#x62DF;&#x4E0A;&#x4E0B;&#x6587;&#x5207;&#x6362;&#x7684;&#x4EE3;&#x7801;&#x7C92;&#x5EA6;&#x2026;&#x2026;&#x8FD9;&#x4E9B;&#x90FD;&#x4F1A;&#x5F71;&#x54CD;&#x91CF;&#x5316;&#x51C6;&#x786E;&#x6027;&#x3002;</p>
+<p>&#x9488;&#x5BF9;&#x8FD9;&#x4E00;&#x95EE;&#x9898;&#xFF0C;&#x5F88;&#x591A;&#x7CFB;&#x7EDF;&#x6027;&#x80FD;&#x5DE5;&#x7A0B;&#x5E08;&#x3001;&#x7814;&#x7A76;&#x4EBA;&#x5458;&#x8FDB;&#x884C;&#x4E86;&#x63A2;&#x7D22;&#xFF0C;&#x53EF;&#x4EE5;&#x4F9B;&#x6211;&#x4EEC;&#x53C2;&#x8003;&#xFF0C;&#x6587;&#x672B;&#x9644;&#x4E86;&#x90E8;&#x5206;&#x6D4B;&#x91CF;&#x76F8;&#x5173;&#x7684;&#x8D44;&#x6599;&#x3001;&#x8BBA;&#x6587;&#xFF0C;&#x611F;&#x5174;&#x8DA3;&#x7684;&#x53EF;&#x4EE5;&#x67E5;&#x770B;&#x4E86;&#x89E3;&#x66F4;&#x591A;&#x4FE1;&#x606F;&#x3002;</p>
+<h3 id="&#x4E00;&#x79CD;&#x91CF;&#x5316;&#x7684;&#x65B9;&#x6CD5;">&#x4E00;&#x79CD;&#x91CF;&#x5316;&#x7684;&#x65B9;&#x6CD5;</h3>
+<p>&#x8FD9;&#x91CC;&#x53EA;&#x8BB2;&#x8FF0;&#x4E00;&#x79CD;&#x53EA;&#x6D4B;&#x91CF;&#x4E0A;&#x4E0B;&#x6587;&#x5207;&#x6362;&#x5F15;&#x5165;&#x7684;&#x76F4;&#x63A5;&#x5F00;&#x9500;&#x7684;&#x65B9;&#x6CD5;&#xFF1A;</p>
+<p><img src="../assets/image%20%2817%29.png" alt=""></p>
+<ul>
+<li>pipe&#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#x7BA1;&#x9053;&#xFF1B;</li>
+<li>&#x521B;&#x5EFA;&#x4E24;&#x4E2A;threads&#xFF0C;&#x5B83;&#x4EEC;&#x901A;&#x8FC7;&#x8BE5;pipe&#x5B9E;&#x73B0;&#x7C7B;&#x4F3C;ping-pong&#x64CD;&#x4F5C;&#xFF0C;&#x6BCF;&#x6B21;&#x4EA4;&#x8FD8;1Byte&#x6570;&#x636E;&#xFF1B;</li>
+<li>&#x4E24;&#x4E2A;threads&#x901A;&#x8FC7;&#x4E00;&#x4E2A;&#x6761;&#x4EF6;&#x53D8;&#x91CF;&#x6765;&#x540C;&#x6B65;&#xFF1B;</li>
+</ul>
+<p>&#x8FD9;&#x4E2A;&#x4F8B;&#x5B50;&#x5F88;&#x597D;&#x7406;&#x89E3;&#xFF0C;&#x4E5F;&#x5E0C;&#x671B;&#x8BFB;&#x8005;&#x80FD;&#x7406;&#x89E3;&#x8FD9;&#x4E48;&#x8BBE;&#x8BA1;&#x7684;&#x7528;&#x610F;&#xFF0C;&#x80FD;&#x8DB3;&#x591F;&#x4EE3;&#x8868;&#x4E0A;&#x4E0B;&#x6587;&#x5207;&#x6362;&#x573A;&#x666F;&#xFF0C;&#x53C8;&#x5C3D;&#x91CF;&#x964D;&#x4F4E;&#x5176;&#x4ED6;&#x8D1F;&#x8F7D;&#x5BF9;&#x8BC4;&#x4F30;&#x51C6;&#x786E;&#x6027;&#x7684;&#x5F71;&#x54CD;&#x3002;&#x53E6;&#x5916;&#xFF0C;&#x4E3A;&#x4E86;&#x907F;&#x514D;&#x4EFB;&#x52A1;&#x8C03;&#x5EA6;&#x65F6;&#x7EBF;&#x7A0B;&#x5728;&#x4E0D;&#x540C;CPU&#x4E0A;&#x7684;&#x8FC1;&#x79FB;&#x5E26;&#x6765;&#x7684;&#x5F71;&#x54CD;&#xFF0C;&#x8FD8;&#x53EF;&#x4EE5;&#x8003;&#x8651;CPU affinity&#xFF0C;&#x901A;&#x8FC7;taskset&#x5C06;&#x8FDB;&#x7A0B;&#x7ED1;&#x5B9A;&#x5230;&#x7279;&#x5B9A;&#x7684;CPU&#x4E0A;&#x964D;&#x4F4E;&#x5F71;&#x54CD;&#x3002;</p>
+<p>&#x8FD9;&#x91CC;&#xFF0C;&#x79F0;&#x8FD9;&#x4E24;&#x4E2A;&#x7EBF;&#x7A0B;&#x4E3A;read&#x3001;write&#x7EBF;&#x7A0B;&#x5427;&#xFF0C;ping-pong&#x65F6;&#x6D89;&#x53CA;&#x5230;read&#x3001;write&#x7EBF;&#x7A0B;&#x7684;&#x4E0A;&#x4E0B;&#x6587;&#x5207;&#x6362;&#xFF0C;&#x53CD;&#x590D;&#x6267;&#x884C;&#x4E0A;&#x767E;&#x4E07;&#x6B21;&#xFF0C;&#x7136;&#x540E;&#x6C42;&#x5E73;&#x5747;&#x6BCF;&#x6B21;&#x6267;&#x884C;&#x8017;&#x8D39;&#x7684;&#x65F6;&#x95F4;&#xFF0C;&#x4ECE;&#x800C;&#x8FD1;&#x4F3C;&#x8BC4;&#x4F30;&#x4E0A;&#x4E0B;&#x6587;&#x5207;&#x6362;&#x7684;&#x65F6;&#x95F4;&#x3002;</p>
+<ul>
+<li>&#x8D77;&#x521D;&#xFF0C;pipe&#x7A7A;&#xFF0C;&#x6761;&#x4EF6;&#x53D8;&#x91CF;&#x4E3A;0&#xFF0C;read&#x7EBF;&#x7A0B;running&#xFF0C;write&#x7EBF;&#x7A0B;wait&#x6761;&#x4EF6;&#x53D8;&#x91CF;=1&#xFF1B;</li>
+<li>read&#x7EBF;&#x7A0B;&#xFF0C;&#x5199;&#x5165;1B&#x6570;&#x636E;&#xFF0C;&#x7136;&#x540E;&#x66F4;&#x65B0;&#x6761;&#x4EF6;&#x53D8;&#x91CF;=1&#xFF0C;&#x81EA;&#x8EAB;wait&#x6761;&#x4EF6;&#x53D8;&#x91CF;=0&#xFF1B;</li>
+<li>&#x6761;&#x4EF6;&#x53D8;&#x91CF;&#x66F4;&#x65B0;&#x4E3A;1&#x540E;&#xFF0C;&#x5524;&#x9192;wait&#x7684;write&#x7EBF;&#x7A0B;echo&#x6570;&#x636E;&#x3001;&#x66F4;&#x65B0;&#x6761;&#x4EF6;&#x53D8;&#x91CF;=0&#xFF0C;wait&#x6761;&#x4EF6;&#x53D8;&#x91CF;=1&#xFF1B;</li>
+<li>&#x6761;&#x4EF6;&#x53D8;&#x91CF;&#x66F4;&#x65B0;&#x4E3A;0&#x540E;&#xFF0C;&#x5524;&#x9192;wait&#x7684;read&#x7EBF;&#x7A0B;&#x5199;&#x6570;&#x636E;&#x3001;&#x66F4;&#x65B0;&#x6761;&#x4EF6;&#x53D8;&#x91CF;=1&#xFF0C;wait&#x6761;&#x4EF6;&#x53D8;&#x91CF;=0&#xFF1B;</li>
+<li>...</li>
+<li>&#x53CD;&#x590D;&#x6267;&#x884C;1millions&#x6B21;&#xFF1B;</li>
+</ul>
+<p><img src="../assets/image%20%2815%29.png" alt=""></p>
+<p>&#x4E0B;&#x56FE;&#x662F;&#x6839;&#x636E;&#x4E0A;&#x8FF0;&#x65B9;&#x6CD5;&#x6D4B;&#x91CF;&#x7684;&#x4E0A;&#x4E0B;&#x6587;&#x5207;&#x6362;&#x7684;&#x5F00;&#x9500;&#x3002;&#x5927;&#x5BB6;&#x53EF;&#x4EE5;&#x628A;&#x62F7;&#x8D1D;64KB&#x5185;&#x5B58;&#x6570;&#x636E;&#x4F5C;&#x4E3A;&#x4E00;&#x4E2A;&#x53C2;&#x8003;&#x503C;&#xFF0C;&#x5927;&#x7EA6;&#x4E3A;3&#x3BC;s&#x3002;&#x4E0A;&#x4E0B;&#x6587;&#x5207;&#x6362;+&#x8003;&#x8651;CPU&#x7C98;&#x6027;&#x7684;&#x60C5;&#x51B5;&#x4E0B;&#xFF0C;&#x4E0A;&#x4E0B;&#x6587;&#x5207;&#x6362;&#x8017;&#x65F6;&#x5927;&#x7EA6;&#x4E3A;1.2&#x3BC;s&#xFF1B;&#x4E0A;&#x4E0B;&#x6587;&#x5207;&#x6362;+&#x8003;&#x8651;CPU&#x7C98;&#x6027;&#x7684;&#x60C5;&#x51B5;&#x4E0B;&#xFF0C;&#x8FD9;&#x4E2A;&#x8017;&#x65F6;&#x5927;&#x7EA6;&#x5728;2.4&#x3BC;s&#x3002;</p>
+<h3 id="&#x91CF;&#x5316;&#x7ED3;&#x679C;&#x5206;&#x6790;">&#x91CF;&#x5316;&#x7ED3;&#x679C;&#x5206;&#x6790;</h3>
+<p>&#x867D;&#x7136;&#x770B;&#x4E0A;&#x53BB;&#x4E0A;&#x4E0B;&#x6587;&#x5207;&#x6362;&#x7684;&#x5F00;&#x9500;&#x53EA;&#x6709;1.2&#x3BC;s&#x6216;&#x8005;2.4&#x3BC;s&#xFF0C;&#x4F46;&#x662F;&#x6211;&#x4EEC;&#x5374;&#x4E0D;&#x80FD;&#x7B80;&#x5355;&#x8BA4;&#x4E3A;&#x4E0A;&#x4E0B;&#x6587;&#x5207;&#x6362;&#x5F00;&#x9500;&#x4F4E;&#xFF0C;&#x56E0;&#x4E3A;&#x4E0A;&#x4E0B;&#x6587;&#x5207;&#x6362;&#x53EF;&#x80FD;&#x5BF9;&#x5E94;&#x7740;&#x542F;&#x52A8;&#x4E00;&#x4E2A;&#x7EBF;&#x7A0B;&#xFF0C;&#x6216;&#x8005;&#x542F;&#x52A8;&#x4E00;&#x4E2A;&#x8FDB;&#x7A0B;&#x3002;&#x542F;&#x52A8;&#x4E00;&#x4E2A;&#x7EBF;&#x7A0B;&#x7684;&#x8017;&#x65F6;&#xFF0C;&#x5927;&#x7EA6;&#x4E3A;5&#x3BC;s&#xFF0C;&#x542F;&#x52A8;&#x4E00;&#x4E2A;&#x8FDB;&#x7A0B;&#x5219;&#x9700;&#x8981;22&#x3BC;s&#x5DE6;&#x53F3;&#x3002;&#x5F00;&#x9500;&#x6709;&#x4E86;&#x660E;&#x663E;&#x7684;&#x63D0;&#x5347;&#x3002;</p>
+<p>&#x8BFB;&#x8005;&#x53EF;&#x80FD;&#x4F1A;&#x95EE;&#x4EC0;&#x4E48;&#x65F6;&#x5019;&#x4F1A;&#x542F;&#x52A8;&#x4E00;&#x4E2A;&#x8FDB;&#x7A0B;or&#x7EBF;&#x7A0B;&#xFF0C;&#x8FD9;&#x4E0D;&#x5728;&#x672C;&#x7BC7;&#x6587;&#x7AE0;&#x8BA8;&#x8BBA;&#x4E4B;&#x5185;&#xFF0C;&#x4F46;&#x662F;&#x53EF;&#x4EE5;&#x7B80;&#x5355;&#x8BF4;&#x4E0B;&#x3002;&#x5728;&#x7CFB;&#x7EDF;&#x8C03;&#x7528;&#x3001;&#x4E2D;&#x65AD;&#x3001;&#x5F02;&#x5E38;&#x3001;&#x9677;&#x9631;&#x3001;timer&#x5B9A;&#x65F6;&#x5668;&#x89E6;&#x53D1;&#x7684;&#x65F6;&#x5019;&#x9700;&#x8981;&#x6D89;&#x53CA;&#x5230;&#x89E6;&#x53D1;&#x4EFB;&#x52A1;&#x8C03;&#x5EA6;&#xFF0C;&#x4F1A;&#x4E0D;&#x4F1A;&#x8C03;&#x5EA6;&#x4E00;&#x4E2A;&#x4E0D;&#x540C;&#x7684;&#x4EFB;&#x52A1;&#xFF0C;&#x9700;&#x8981;&#x770B;&#x5185;&#x6838;&#x91C7;&#x7528;&#x7684;&#x8C03;&#x5EA6;&#x5668;&#xFF0C;&#x4E0D;&#x540C;&#x7684;&#x8C03;&#x5EA6;&#x5668;&#x6709;&#x4E0D;&#x540C;&#x7684;&#x8C03;&#x5EA6;&#x7B56;&#x7565;&#xFF0C;&#x6BD4;&#x5982;CFS&#x9009;&#x62E9;vruntime&#x6700;&#x5C0F;&#x7684;&#x4E00;&#x4E2A;&#x4EFB;&#x52A1;&#x8FDB;&#x884C;&#x8C03;&#x5EA6;&#xFF0C;&#x4FDD;&#x8BC1;&#x8C03;&#x5EA6;&#x7684;&#x516C;&#x5E73;&#xFF0C;&#x6216;&#x8005;deadline&#x4FDD;&#x8BC1;&#x5BF9;&#x54CD;&#x5E94;&#x65F6;&#x95F4;&#x7B49;&#x7B49;&#x3002;</p>
+<p><img src="../assets/image%20%2819%29.png" alt=""></p>
+<p>&#x5982;&#x4E0A;&#x56FE;&#x6240;&#x793A;&#xFF0C;&#x6211;&#x4EEC;&#x62FF;&#x4E00;&#x4E2A;&#x771F;&#x5B9E;&#x7EBF;&#x4E0A;&#x673A;&#x5668;&#x6765;&#x770B;&#x4E0B;&#xFF0C;<code>vmstat 1</code> &#x89C2;&#x5BDF;&#x6709;&#x8FD1;6w&#x6B21;/s&#x7684;&#x4E0A;&#x4E0B;&#x6587;&#x5207;&#x6362;&#xFF0C;&#x673A;&#x5668;8&#x4E2A;&#x6838;&#xFF0C;&#x5E73;&#x5747;&#x4E0B;&#x6765;&#x6BCF;&#x4E2A;&#x6838;&#x4E0A;&#x53D1;&#x751F;&#x7684;&#x4E0A;&#x4E0B;&#x6587;&#x6B21;&#x6570;&#x5728;7500&#x6B21;/s&#xFF0C;&#x4E0A;&#x4E0B;&#x6587;&#x5207;&#x6362;&#x65F6;&#x95F4;&#x5360;&#x6BD4; 7500*2.4&#x3BC;s/1s=1.8%&#x3002;&#x8FD9;&#x91CC;&#x7684;&#x7ED3;&#x679C;&#x53EA;&#x662F;&#x4E00;&#x4E2A;&#x7406;&#x60F3;&#x60C5;&#x51B5;&#x4E0B;&#x7684;&#x4F30;&#x7B97;&#x503C;&#xFF0C;&#x8FDB;&#x4E00;&#x6B65;&#x8003;&#x8651;&#x95F4;&#x63A5;&#x5F15;&#x5165;&#x7684;&#x5F00;&#x9500;&#xFF0C;&#x5982;&#x5404;&#x79CD;cache miss&#x7B49;&#xFF0C;&#x5207;&#x6362;&#x8017;&#x65F6;&#x5360;&#x6BD4;&#x5E94;&#x8BE5;&#x6BD4;&#x8FD9;&#x91CC;&#x7684;&#x4F30;&#x7B97;&#x503C;&#x8981;&#x9AD8;&#x3002;</p>
+<h3 id="&#x4E0A;&#x4E0B;&#x6587;&#x5207;&#x6362;&#x4F18;&#x5316;">&#x4E0A;&#x4E0B;&#x6587;&#x5207;&#x6362;&#x4F18;&#x5316;</h3>
+<h4 id="12&#x3BC;s&#x610F;&#x5473;&#x7740;&#x4EC0;&#x4E48;&#xFF1F;">1.2&#x3BC;s&#x610F;&#x5473;&#x7740;&#x4EC0;&#x4E48;&#xFF1F;</h4>
+<p>1.2&#x3BC;s&#x610F;&#x5473;&#x7740;&#x4EC0;&#x4E48;&#x5462;&#xFF1F;&#x5B8F;&#x89C2;&#x4E0A;&#xFF0C;&#x4ECE;&#x4EBA;&#x7C7B;&#x89D2;&#x5EA6;&#x800C;&#x8A00;&#xFF0C;&#x5B83;&#x662F;&#x4E00;&#x79CD;&#x5F88;&#x96BE;&#x6E3A;&#x5C0F;&#x7684;thing&#xFF0C;&#x4F46;&#x662F;&#x4ECE;&#x5FAE;&#x89C2;&#x4E0A;&#x6765;&#x8BB2;&#xFF0C;&#x5B83;&#x53EF;&#x80FD;&#x7275;&#x626F;&#x5230;&#x4E86;&#x51E0;&#x767E;&#x4E0A;&#x5343;&#x6761;&#x673A;&#x5668;&#x6307;&#x4EE4;&#x7684;&#x6267;&#x884C;&#x3002;</p>
+<p>&#x53EF;&#x80FD;&#x5F88;&#x591A;&#x540C;&#x5B66;&#x8FD8;&#x662F;&#x4E0D;&#x89C9;&#x5F97;1.2&#x3BC;s&#x7684;&#x91CD;&#x8981;&#x6027;&#xFF0C;&#x90A3;&#x6211;&#x4E3E;&#x4E2A;&#x94B1;&#x7684;&#x4F8B;&#x5B50;&#x3002;&#x6708;&#x85AA;&#x7528;K&#x6765;&#x8861;&#x91CF;&#x7684;&#x540C;&#x5B66;&#x96BE;&#x4EE5;&#x4F53;&#x4F1A;&#x8EAB;&#x4EF7;&#x767E;&#x4EBF;&#x662F;&#x4EC0;&#x4E48;&#x611F;&#x53D7;&#x5417;&#xFF1F;No&#xFF0C;&#x5176;&#x5B9E;&#x53EF;&#x4EE5;&#x7684;&#xFF0C;&#x60F3;&#x8C61;&#x4E0B;&#x80FD;&#x8C03;&#x7528;&#x591A;&#x5C11;&#x8D44;&#x6E90;&#x3001;&#x751F;&#x4EA7;&#x8D44;&#x6599;&#x5427;&#xFF0C;&#x5982;&#x679C;&#x4F60;&#x89C9;&#x5F97;&#x8EAB;&#x4EF7;&#x767E;&#x4EBF;&#x5F88;&#x91CD;&#x8981;&#x7684;&#x8BDD;&#xFF0C;&#x540C;&#x6837;&#x4E5F;&#x5E94;&#x8BE5;&#x7406;&#x89E3;&#x8FD9;1.2&#x3BC;s&#x4E5F;&#x5F88;&#x91CD;&#x8981;&#xFF0C;&#x5B83;&#x4E5F;&#x53EF;&#x4EE5;&#x53D1;&#x6325;&#x91CD;&#x8981;&#x4F5C;&#x7528;&#xFF0C;&#x90A3;&#x5C31;&#x662F;&#x6267;&#x884C;&#x66F4;&#x591A;&#x7684;&#x6307;&#x4EE4;&#x3002;</p>
+<p>So&#xFF0C;&#x6211;&#x4EEC;&#x5C31;&#x662F;&#x5E94;&#x8BE5;&#x7269;&#x5C3D;&#x5176;&#x7528;&#xFF0C;&#x8BA9;&#x8FD9;1.2&#x3BC;s&#x6765;&#x53D1;&#x6325;&#x66F4;&#x5927;&#x7684;&#x4EF7;&#x503C;&#x3002;&#x6240;&#x8981;&#x505A;&#x7684;&#x5C31;&#x662F;&#x5728;1.2&#x3BC;s&#x5185;&#x5C3D;&#x53EF;&#x80FD;&#x6267;&#x884C;&#x66F4;&#x591A;&#x6709;&#x4EF7;&#x503C;&#x7684;&#x6307;&#x4EE4;&#xFF0C;&#x800C;&#x4E0D;&#x662F;&#x5728;&#x8FD9;&#x91CC;&#x6267;&#x884C;&#x201C;&#x65E0;&#x8C13;&#x7684;&#x201D;&#x4E0A;&#x4E0B;&#x6587;&#x5207;&#x6362;&#xFF08;&#x4E0A;&#x4E0B;&#x6587;&#x5207;&#x6362;&#x5F88;&#x91CD;&#x8981;&#xFF0C;&#x5B83;&#x662F;&#x5B9E;&#x73B0;&#x591A;&#x4EFB;&#x52A1;&#x7684;&#x57FA;&#x77F3;&#xFF0C;&#x4E0D;&#x8981;&#x65AD;&#x7AE0;&#x53D6;&#x4E49;&#x54E6;&#xFF09;&#x3002;</p>
+<h4 id="&#x6267;&#x884C;&#x6307;&#x4EE4;&#x8017;&#x65F6;&#xFF1F;">&#x6267;&#x884C;&#x6307;&#x4EE4;&#x8017;&#x65F6;&#xFF1F;</h4>
+<h4 id="&#x6709;&#x54EA;&#x4E9B;&#x4F18;&#x5316;&#x624B;&#x6BB5;&#xFF1F;">&#x6709;&#x54EA;&#x4E9B;&#x4F18;&#x5316;&#x624B;&#x6BB5;&#xFF1F;</h4>
+<h2 id="libgo-patches-getsetcontext">libgo patches get/setcontext</h2>
+<p>Google&apos;s Ian Lance Taylor explained in the commit improving libgo, &quot;Currently, goroutine switches are implemented with libc getcontext/setcontext functions, which saves/restores the machine register states and also the signal context. This does more than what we need, and performs an expensive syscall. This CL implements a simplified version of getcontext/setcontext, in assembly, that only saves/restores the necessary part, i.e. the callee-save registers, and the PC, SP. A simplified version of makecontext, written in C, is also added. Currently this is only implemented on Linux/AMD64.&quot;</p>
+<p>see: [libgo patch committed: Cheaper context switch on x86_64](<a href="https://patchwork.ozlabs.org/project/gcc/patch/CAOyqgcUHhUkx0YqtLea1G5eFWg+0bQBJW-44V=jdjCJpW5VX4A@mail.gmail.com/" target="_blank">https://patchwork.ozlabs.org/project/gcc/patch/CAOyqgcUHhUkx0YqtLea1G5eFWg+0bQBJW-44V=jdjCJpW5VX4A@mail.gmail.com/</a>)</p>
+<h2 id="go-cheaper-context-switch">go cheaper context switch</h2>
+<h4 id="httpsmoriohcomp36af32e3f52c-"><a href="https://morioh.com/p/36af32e3f52c" target="_blank">https://morioh.com/p/36af32e3f52c</a> <a id="thread-context-switch"></a></h4>
+<h4 id="thread-context-switch-">Thread Context Switch <a id="thread-context-switch"></a></h4>
+<p>Interrupt processing, multi-tasking, user-mode switching, and other reasons will cause the CPU to switch from one thread to another thread. The switching process needs to save the state of the current process and restore the state of another.</p>
+<p>The cost of context switching is high since swapping threads on the core takes a lot of time. The delay of context switching depends on different factors, probably between 50 and 100 nanoseconds. Considering that the hardware performs an average of 12 instructions per nanosecond on each core, then a context switch may take between 600 and 1200 instructions of latency. In fact, context switching takes up a lot of time for the program to execute instructions.</p>
+<p>If there is a <strong>Cross-Core Context Switch</strong>, it may cause the CPU cache to fail. (the cost of CPU accessing data from the cache is about 3 to 40 clock cycles, and the cost of accessing data from main memory is about 100 to 300 clock cycles ). The switching cost of this scenario will be more expensive.</p>
+<h3 id="go-is-born-for-concurrency-">Go is born for concurrency <a id="go-is-born-for-concurrency"></a></h3>
+<p>Since its official release in 2009, Golang has quickly gained market share due to its extremely high operating speed and efficient development efficiency. Golang supports concurrency from the language level and uses lightweight coroutines to implement concurrent programs.</p>
+<p>Goroutine is very lightweight, mainly reflected in the following two aspects:</p>
+<ul>
+<li>The cost of context switching is low: Goroutine context switching involves only the modification of the value of three registers(PC / SP / DX) while the context switching of the comparison thread needs to include mode switching (switching from user mode to kernel mode) and 16 registers, PC, SP, etc. register refresh</li>
+<li>Less memory usage: thread stack space is usually 2M, Goroutine stack space is at least 2K;</li>
+</ul>
+<p>Go programs can easily support six figures concurrent Goroutine operation, and when the number of threads reaches 1k, the memory consumption has reached 2G.</p>
+<h2 id="measure-the-timecost-of-context-switch">measure the timecost of context switch</h2>
+<p><a href="https://blog.tsunanet.net/2010/11/how-long-does-it-take-to-make-context.html" target="_blank">https://blog.tsunanet.net/2010/11/how-long-does-it-take-to-make-context.html</a></p>
+<p>&#x53C2;&#x8003;&#x8D44;&#x6599;&#xFF1A;</p>
+<ol>
+<li>what is the overhead of a context switch, <a href="https://stackoverflow.com/questions/21887797/what-is-the-overhead-of-a-context-switch/54057079#54057079" target="_blank">https://stackoverflow.com/questions/21887797/what-is-the-overhead-of-a-context-switch/54057079#54057079</a></li>
+<li>linux kernel documentation, <a href="https://sourcegraph.com/github.com/torvalds/linux/-/blob/Documentation/x86/pti.rst#L116" target="_blank">https://sourcegraph.com/github.com/torvalds/linux/-/blob/Documentation/x86/pti.rst#L116</a></li>
+<li>quantifying the cost of context switch, <a href="https://www.usenix.org/legacy/events/expcs07/papers/2-li.pdf" target="_blank">https://www.usenix.org/legacy/events/expcs07/papers/2-li.pdf</a></li>
+<li>measuring context switching and memory overheads for linux threads, <a href="https://eli.thegreenplace.net/2018/measuring-context-switching-and-memory-overheads-for-linux-threads/" target="_blank">https://eli.thegreenplace.net/2018/measuring-context-switching-and-memory-overheads-for-linux-threads/</a></li>
+<li>thread overhead, <a href="https://github.com/eliben/code-for-blog/tree/master/2018/threadoverhead" target="_blank">https://github.com/eliben/code-for-blog/tree/master/2018/threadoverhead</a></li>
+<li>user-level threads...with threads, Paul Turner, Google, <a href="https://www.youtube.com/watch?v=KXuZi9aeGTw&amp;feature=youtu.be" target="_blank">https://www.youtube.com/watch?v=KXuZi9aeGTw&amp;feature=youtu.be</a></li>
+<li></li>
+</ol>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="context-switching.html" class="navigation navigation-prev " aria-label="Previous page: 上下文切换">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="thread-model.html" class="navigation navigation-next " aria-label="Next page: 线程模型">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"description":"这里我们介绍深入介绍下上下文是什么、上下文切换的开销是什么、如何减少上下文切换开销。","title":"上下文切换开销","level":"2.7","depth":1,"next":{"title":"线程模型","level":"2.8","depth":1,"path":"basics/thread-model.md","ref":"basics/thread-model.md","articles":[]},"previous":{"title":"上下文切换","level":"2.6","depth":1,"path":"basics/context-switching.md","ref":"basics/context-switching.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"basics/context-switching-cost.md","mtime":"2021-03-25T18:20:16.896Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-03-25T19:09:21.649Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
