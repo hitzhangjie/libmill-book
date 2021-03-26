@@ -12,9 +12,19 @@ description: 我们先来介绍下上下文切换具体指的是什么、有哪�
 
 现在，我们了解了上下文其实就是记录任务执行状态的寄存器信息。那表示一个上下文，需要用到CPU中的哪些寄存器呢？全部吗？还是一部分？
 
-CPU中的寄存器数量有多少呢，这个肯定跟具体型号的CPU有关系。参考Intel手册，[https://software.intel.com/content/www/us/en/develop/articles/intel-sdm.html](https://software.intel.com/content/www/us/en/develop/articles/intel-sdm.html)。寄存器种类大致上包括：通用目的寄存器（AX\BX\CX\DX...\)，段寄存器\(CS\DS\SS...\)，标识寄存器\(EFLAGS\)，指令\(IR\)及指令指针寄存器\(IP\)，当然还有一些其他的，比如SP\GDTR\LDTR\CR3等等。
+CPU中的寄存器数量跟具体CPU型号有关系，但是按照功能大致上可以划分为下面几类：
 
-对于表征任务当前的执行状态而言，其实是不需要使用到所有的寄存器的，因为有些寄存器的值是从进程内存地址空间中加载出来的，或者从内核数据结构中加载出来的，我们只需要那些表征任务当前执行状态的寄存器就可以了，比如常见的CS:IP，它记录了任务要执行的下一条指令的地址，CR3是进程页表起始地址，由内核从特定数据结构中读取并加载到CR3寄存器，这个就不需要作为上下文中的信息。
+* 通用目的寄存器（AX\BX\CX\DX...\)；
+* 段寄存器\(CS\DS\SS...\)；
+* 标识寄存器\(EFLAGS\)；
+* 指令\(IR\)及指令指针寄存器\(IP\)；
+* 其他寄存器，比如SP\GDTR\LDTR\CR3，等等。
+
+更多信息可以参考\[Intel手册\]\([https://software.intel.com/content/www/us/en/develop/articles/intel-sdm.html](https://software.intel.com/content/www/us/en/develop/articles/intel-sdm.html)\)。
+
+处理器中的寄存器很多，但是并不都是用来记录任务执行状态的，比如IR用于保存指令数据，跟任务执行状态没关系，但是CS:IP记录了下一条待执行的指令，跟任务执行状态有关系。
+
+对于表示任务执行状态的寄存器，在执行上下文切换时，要妥善的将当前任务的这些寄存器的值保存下来，通常会保存到进程地址空间中，或者内核特定的数据结构中，以备下次被调度时还原上下文信息。比如还原CS:IP以继续从上次停下的位置执行，再比如还原CR3寄存器（由内核从特定数据结构中读取并加载到CR3寄存器），它代表了进程的页表起始地址。
 
 ## 上下文，jmp\_buf
 
