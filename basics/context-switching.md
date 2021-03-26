@@ -32,9 +32,9 @@ CPU中的寄存器数量跟具体CPU型号有关系，但是按照功能大致�
 
 ## 上下文，jmp\_buf
 
-我们看下Linux中如何标识进程上下文信息。熟悉Linux下c语言开发的同学，应该知道setjmp, longjmp这两个函数。前者定义一个`jmp_buf`结构体，后者可以在其他函数中实现跨函数的跳转（goto只能实现函数间跳转）。这里的jmp\_buf其实就是表示的任务的栈上下文信息（stack context）。
+我们看下Linux中如何标识进程上下文信息。熟悉Linux下c语言开发的同学，应该知道setjmp, longjmp这两个函数。setjmp将上下文信息记录到`jmp_buf`，longjmp则可还原jmp\_buf中信息到寄存器，实现“跳转”。longjmp可以实现函数间的跳转，这与goto不同，goto只能实现函数内的跳转。
 
-以下是i386架构中 `struct __jmp_buf` 的定义，x86\_64架构就先不赘述了。
+这里的jmp\_buf其实就是表示的栈上下文信息（stack context），以下是i386架构中 `struct __jmp_buf` 的定义，x86\_64架构就先不赘述了，读者可自行查阅。
 
 ```c
 // 处理器架构：i386 
@@ -42,10 +42,14 @@ CPU中的寄存器数量跟具体CPU型号有关系，但是按照功能大致�
 struct __jmp_buf {
 unsigned int __ebx; // 通用数据寄存器之一
 unsigned int __esp; // 栈指针寄存器(进程栈空间由高地址向低地址方向增长)
-unsigned int __ebp; // 基址指针寄存器(记录了当前栈帧的起始地址(进入一个函数后首先执行的便是push %ebp; mov %esp, %ebp))
+unsigned int __ebp; // 基址指针寄存器(记录了当前栈帧的起始地址
+                    // 进入一个函数后首先执行的便是：
+                    //   push %ebp; 
+                    //   mov %esp, %ebp)
 unsigned int __esi; // 源变址寄存器
 unsigned int __edi; // 目的变址寄存器
-unsigned int __eip; // 指令指针寄存器(程序计数器PC=CS:IP,二者结合起来确定下一条待执行的机器指令地址)
+unsigned int __eip; // 指令指针寄存器
+                    // 程序计数器PC=CS:IP, 确定下一条待执行机器指令的地址
 };
 typedef struct __jmp_buf jmp_buf[1];
 ```
