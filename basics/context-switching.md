@@ -114,17 +114,7 @@ void makecontext(ucontext_t *, (void *)(), int, ...);
 int  swapcontext(ucontext_t *, const ucontext_t *);
 ```
 
-wikipedia提供了一个非常赞的示例，来演示如何实现任务切换，如下所示。没有接触过这些的可能开始有点懵，我来解释下这里的逻辑。
-
-程序中创建了3个ucontext\_t变量，main\_context1在68行被设置，loop函数退出时loop函数绑定的loop\_context将被销毁，程序中会隐式调用setcontext\(loop\_context.uc\_link\)来切换到父上下文中去执行，即getcontext\(&main\_context1\)对应的下一条指令地址处（70行）。
-
-main函数执行时，什么时候激活loop函数呢，在while循环内swapcontext的时候（80行），执行到这里的时候，main函数将当前上下文信息存储到main\_context2，并切换到loop\_context去执行，执行什么呢？50行~61行定义了loop\_context的父上下文，以及loop\_context绑定的函数执行时要采用的栈空间，当然还绑定了要执行的函数loop以及传递给loop的参数信息。loop函数将使用数组iterator\_stack\[SIGSTKSZ\]作为自己的栈空间。
-
-loop执行起来之后，会进入一个循环，每轮循环会更新一下变量i\_from\_iterator的值，然后呢，就执行上下文切换swapcontext\(loop\_context, other\_context\)，这里的other\_context刚好是main\_context2，切过去之后就是执行语句printf\("%d\n", i\_from\_iterator\)来完成变量的打印。然后进入while\(1\)循环，此时又会执行上下文切换继续执行loop函数，loop函数从上次停下来的地方继续执行，这样连续打印了0~9。
-
-然后，loop函数for循环结束，退出函数，loop\_context结束，此时函数退出前会隐式调用setcontext以切换到父上下文main\_context1去执行，由于前面main函数执行时已经将变量iterator\_finished更新为了1，所以此时即便从main\_context1继续执行，也不会再次进入while循环再次执行loop函数。
-
-程序正常结束。
+wikipedia提供了一个非常赞的示例，来演示如何实现任务切换，如下所示。初接触的读者开始会有点懵，可以先试着阅读下代码，猜测下可能的结果。然后我再来解释下这里的逻辑。
 
 ```c
 #include <stdio.h>
@@ -215,6 +205,16 @@ int main(void)
 }
 ```
 
+下面的示例程序中创建了3个ucontext\_t变量，main\_context1在68行被设置，loop函数退出时loop函数绑定的loop\_context将被销毁，程序中会隐式调用setcontext\(loop\_context.uc\_link\)来切换到父上下文中去执行，即getcontext\(&main\_context1\)对应的下一条指令地址处（70行）。
+
+main函数执行时，什么时候激活loop函数呢，在while循环内swapcontext的时候（80行），执行到这里的时候，main函数将当前上下文信息存储到main\_context2，并切换到loop\_context去执行，执行什么呢？50行~61行定义了loop\_context的父上下文，以及loop\_context绑定的函数执行时要采用的栈空间，当然还绑定了要执行的函数loop以及传递给loop的参数信息。loop函数将使用数组iterator\_stack\[SIGSTKSZ\]作为自己的栈空间。
+
+loop执行起来之后，会进入一个循环，每轮循环会更新一下变量i\_from\_iterator的值，然后呢，就执行上下文切换swapcontext\(loop\_context, other\_context\)，这里的other\_context刚好是main\_context2，切过去之后就是执行语句printf\("%d\n", i\_from\_iterator\)来完成变量的打印。然后进入while\(1\)循环，此时又会执行上下文切换继续执行loop函数，loop函数从上次停下来的地方继续执行，这样连续打印了0~9。
+
+然后，loop函数for循环结束，退出函数，loop\_context结束，此时函数退出前会隐式调用setcontext以切换到父上下文main\_context1去执行，由于前面main函数执行时已经将变量iterator\_finished更新为了1，所以此时即便从main\_context1继续执行，也不会再次进入while循环再次执行loop函数。
+
+最后，程序正常结束。
+
 我们可以通过 `gcc -o main main.c` 编译并且通过 `./main` 来运行，运行会得到如下结果：
 
 ```text
@@ -231,11 +231,11 @@ $ ./main
 9
 ```
 
-这里的volatile qualifier是为了避免编译器相关的优化，在这个示例中作用不大，如果是多线程+强一致CPU中还有点用。关于volatile的细节可以参考我的另一篇文章：[https://hitzhangjie.github.io/blog/2019-01-07-%E4%BD%A0%E4%B8%8D%E8%AE%A4%E8%AF%86%E7%9A%84cc++-volatile/](https://hitzhangjie.github.io/blog/2019-01-07-%E4%BD%A0%E4%B8%8D%E8%AE%A4%E8%AF%86%E7%9A%84cc++-volatile/)。
+这里的volatile qualifier是为了避免编译器相关的优化，在这个示例中作用不大，如果是多线程+强一致CPU中还有点用。关于volatile的细节可以参考我的另一篇文章：\[你不认识的cc++ volatile\]\([https://www.hitzhangjie.pro/blog/2019-01-07-%E4%BD%A0%E4%B8%8D%E8%AE%A4%E8%AF%86%E7%9A%84cc++-volatile/](https://www.hitzhangjie.pro/blog/2019-01-07-%E4%BD%A0%E4%B8%8D%E8%AE%A4%E8%AF%86%E7%9A%84cc++-volatile/)\)。
 
-总结一下，ucontext\_t提供了更灵活的上下文切换控制，是比jmp\_buf/sigjmp\_buf更好的选择。ucontext\_t的设计初衷，也是为了支持实现一些更加高级的流程控制、fiber、coroutine等。所以协程并不是什么新概念，它只是一种调度实体粒度大小的划分方式。
+总结一下，ucontext\_t提供了更灵活的上下文切换控制，是比jmp\_buf、sigjmp\_buf更好的选择。ucontext\_t的设计初衷，也是为了支持实现一些更加高级的流程控制、fiber、coroutine等。所以协程并不是什么新概念，它只是一种更细粒度的、更轻量的调度实体。
 
-如果只实现协程其实也没什么大用，还需要大量的其他基础设施，如协程之间如何通信，如何做到同步、互斥，等等，这些才是决定好用不好用的问题。所以我们也能理解为什么协程库有五花八门的实现，但是没有哪个很出名的，但是go却能独领风骚。大致就是这个原因吧。
+如果只实现协程其实也没什么大用，还需要大量的其他基础设施，如协程之间如何通信，如何做到同步、互斥，等等，这些才是决定好用不好用的问题。所以我们也能理解为什么协程库有五花八门的实现，但是没有哪个很出名的，但是go却能独领风骚，大致就是这个原因吧。
 
 言归正传，我们是否可以直接利用ucontext\_t来实现协程呢？我们还需要考虑下上下文切换的开销才能决定。ucontext\_t的目的是通用，因此其内部mcontext\_t包含了所有的CPU寄存器信息，有些是没必要的，如果每次上下文切换都把寄存器信息保存一下、恢复一下，这里的开销我们人类感觉不到，但是机器是能感觉到的，必须要考虑下，这部分内容我们在下一节介绍。
 
