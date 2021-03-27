@@ -102,71 +102,29 @@ PCID本身也是有开销的，具体来说，当在某个CPU上的页式映射�
 
 ![](../.gitbook/assets/image%20%2819%29.png)
 
-如上图所示，我们拿一个真实线上机器来看下，`vmstat 1` 观察有近6w次/s的上下文切换，机器8个核，平均下来每个核上发生的上下文次数在7500次/s，上下文切换时间占比 7500\*2.4μs/1s=1.8%。这里的结果只是一个理想情况下的估算值，进一步考虑间接引入的开销，如各种cache miss等，切换耗时占比应该比这里的估算值要高。
+如上图所示，我们拿一个真实线上机器来看下，`vmstat 1` 观察有近6w次/s的上下文切换，机器8个核，平均下来每个核上发生的上下文次数在7500次/秒，一次的上下文切换时间大约在2.4微秒（线程）。这里的结果只是一个根据截图数据的估算值，进一步考虑间接引入的开销，如各种cache miss等，切换耗时占比应该比这里的估算值要高。
 
 ## 上下文切换优化
 
 ### 1.2μs意味着什么
 
-1.2μs意味着什么呢？从人对时间的感受而言，这个时间粒度很短，短到可以忽略不计，但是从微观上来讲，这段时间足够执行很多条机器指令了。
+1.2μs意味着什么呢？从人对时间的感受cd 而言，这个时间粒度很短，短到可以忽略不计，但是从微观上来讲，这段时间足够执行很多条机器指令了。
 
 我们应该充分压榨利用计算资源，在这1.2μs内输出更大的价值。所要做的就是在1.2μs内尽可能执行更多指令，而不是在这里执行“无谓的”上下文切换。
 
+对于CPU而言，CPI（平均指令时钟周期数）可以描述超标量流水线计算机执行指令时的并行情况如何。再就是IPS，表示每秒可以执行的指令数量。维基百科对不同处理器型号的效率进行了统计，详见：[https://en.wikipedia.org/wiki/Instructions\_per\_second\#:~:text=Instructions%20per%20second%20\(IPS\)%20is,IPS%20measurement%20can%20be%20problematic.](https://en.wikipedia.org/wiki/Instructions_per_second#:~:text=Instructions%20per%20second%20%28IPS%29%20is,IPS%20measurement%20can%20be%20problematic.)
+
+可见图中处理器[Intel Core i7 920](https://en.wikipedia.org/wiki/Intel_Core_i7) \(4-core\) 工作在8.93GHz下，每秒约执行82300 MIPS条指令。
+
+因此上下文切换如果不能避免，也应该尽量减少上下文读写的开销，比如只保留少量寄存器的信息用来存储上下文信息。
+
 ps：上下文切换很重要，它是实现多任务的基石，不要断章取义哦。
 
-### 平均指令执行耗时
+### 减少上下文信息量
 
-首先，需要理解一下几个时间相关的概念：振荡周期、时钟周期、机器周期、指令周期、CPI。如果读者之前有了解过计算机内部计时电路的工作原理，应该对振荡周期、时钟周期不会感到太陌生。我还是试着从头解释下这几个周期的概念。
+在表示一个用户态协程上下文时，并不是处理器中所有寄存器都会用到，所以就可以对ucontext\_t中那些没用的寄存器进行阉割，以降低处理器读写内存时的延时。
 
-ps：如果读者对计算机内部时钟工作原理感兴趣的话，可以参考我之前写的一篇博客：\[聊聊计算机系统中的时间\]\([https://www.hitzhangjie.pro/blog/2020-03-09-%E8%81%8A%E8%81%8A%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%AD%E7%9A%84%E6%97%B6%E9%97%B4/](https://www.hitzhangjie.pro/blog/2020-03-09-%E8%81%8A%E8%81%8A%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%AD%E7%9A%84%E6%97%B6%E9%97%B4/)\)。
-
-下面结合下图解释下振荡周期、时钟周期、机器周期、指令周期的概念。
-
-![&#x632F;&#x8361;&#x5468;&#x671F;&#x3001;&#x65F6;&#x949F;&#x5468;&#x671F;&#x3001;&#x673A;&#x5668;&#x5468;&#x671F;&#x3001;&#x6307;&#x4EE4;&#x5468;&#x671F;](../.gitbook/assets/image%20%2825%29.png)
-
-#### 振荡周期
-
-振荡周期，实际上指的就是晶振周期。振荡周期是单片机的基本时间单位。如果，晶振频率为12MHz，则振荡周期为\(1/12\)us。
-
-#### 时钟周期
-
-时钟周期，定义为时钟脉冲的倒数，是计算机中的最基本的、最小的时间单位。
-
-在一个时钟周期内，CPU仅完成一个最基本的动作。时钟周期是计算机的基本工作脉冲，控制着计算机的工作节奏。时钟频率越高，工作速度越快。
-
-一个时钟周期通常包括几个振荡周期，如振荡源信号经二分频后形成的时钟脉冲信号。
-
-#### 机器周期
-
-在计算机中，长把一条指令的执行过程划分为若干个阶段，每一个阶段完成一个基本操作，完成这个基本操作所需要的时间称之为机器周期。
-
-一条机器指令的完整执行过程，称之为指令周期。指令周期可以分为几个阶段，每个阶段称之为机器周期。
-
-#### 指令周期
-
-执行一条指令所需要的时间，一般由若干个机器周期组成。指令不同，所需要的的机器周期一般也不相同。
-
-通常而言，指令周期大致可以划分为如下几个机器周期：
-
-* IF，指令预取
-* ID，指令解码
-* EX，指令执行
-* MEM，内存访问
-* WB，写回结果
-
-#### 指令平均时钟周期
-
-Clock cycles per Instruction，or Clocks per Instruction，简称CPI，表示执行一条指令所需的平均时钟周期数。现代CPU设计通常都是支持超标量流水线的，在一个机器周期内会允许完成多条指令的多个操作，以提高指令执行的效率。
-
-![superscalar processor](../.gitbook/assets/image%20%2823%29.png)
-
-虽然指令周期包含了多个机器周期，但是由于流水线技术的引入，CPI也变小了。度量一个处理器的性能好不好，CPI就成了一个非常重要的指标。
-
-#### 有哪些优化手段？
-
-
-
-
+TODO 结构体定义
 
 ## go cheaper context switch
 
@@ -206,4 +164,5 @@ Go programs can easily support six figures concurrent Goroutine operation, and w
 5. thread overhead, [https://github.com/eliben/code-for-blog/tree/master/2018/threadoverhead](https://github.com/eliben/code-for-blog/tree/master/2018/threadoverhead)
 6. user-level threads...with threads, Paul Turner, Google, [https://www.youtube.com/watch?v=KXuZi9aeGTw&feature=youtu.be](https://www.youtube.com/watch?v=KXuZi9aeGTw&feature=youtu.be)
 7. 超标量处理器流水线，[https://zhuanlan.zhihu.com/p/195008675](https://zhuanlan.zhihu.com/p/195008675)
-8. 
+8. instruction per second，[https://en.wikipedia.org/wiki/Instructions\_per\_second\#:~:text=Instructions%20per%20second%20\(IPS\)%20is,IPS%20measurement%20can%20be%20problematic.](https://en.wikipedia.org/wiki/Instructions_per_second#:~:text=Instructions%20per%20second%20%28IPS%29%20is,IPS%20measurement%20can%20be%20problematic.)
+
