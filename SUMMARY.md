@@ -7,14 +7,15 @@
 
 * [服务编程模型](basics/server-programming-model.md)
 * [进程, 线程, 协程](basics/process-thread-coroutine.md)
-* [libmill协程库](basics/libmill-intro.md)
-* [libdill协程库](basics/libdill-intro.md)
 * [栈空间分配](basics/stack-memory.md)
 * [上下文切换](basics/context-switching.md)
 * [上下文切换开销](basics/context-switching-cost.md)
 * [线程模型](basics/thread-model.md)
 
 ## Part II - 源码分析 <a id="source"></a>
+
+* [libmill协程库](source/libmill-intro.md)
+* [libdill协程库](source/libdill-intro.md)
 
 ## chan：通过通信来共享 <a id="communication"></a>
 
