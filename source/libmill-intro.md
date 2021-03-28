@@ -9,11 +9,11 @@ description: >-
 
 ### libmill项目
 
-libmill是一个面向c语言的协程库，其下载地址、文档可以在这里找到：[libmill](http://libmill.org/)， 其源代码托管在github上，点击这里查看：[libmill-source](https://github.com/sustrik/libmill)。您也可以通过\[sourcegraph\]\([https://sourcegraph.com/github.com/sustrik/libmill?utm\_source=chrome-extension](https://sourcegraph.com/github.com/sustrik/libmill?utm_source=chrome-extension)\)在线阅读。
+libmill是一个面向c语言的协程库，其下载地址、文档可以在这里找到：[libmill](http://libmill.org/)， 其源代码托管在github上，点击这里查看：[libmill-source](https://github.com/sustrik/libmill)。您也可以通过 [sourcegraph](https://sourcegraph.com/github.com/sustrik/libmill?utm_source=chrome-extension) 在线阅读。
 
 ### go风格api
 
-libmill协程库是基于goroutine移植的，libmill的api非常友好，与go中的api非常接近，如下图所示。
+libmill协程库参考了go的设计，其编程接口与go非常接近，如下图所示。
 
 ![go&#x98CE;&#x683C;&#x534F;&#x7A0B;&#x5E93;libmill](../.gitbook/assets/image%20%282%29.png)
 
@@ -64,6 +64,8 @@ libmill协程库是基于goroutine移植的，libmill的api非常友好，与go�
 | ├── tests/ | 工程测试代码 |
 | ├── perf/ | 工程性能测试代码 |
 | ├── tutorial/ | 工程示例代码 |
+
+要研习libmill代码也比较容易上手，比如对于`go(foo(arg1,arg2,arg3))`是启动一个协程并执行foo函数，想了解这里的协程是如何创建、执行、退出的，只需要从`go`这个函数实现层层展开就可以了。而相比较之下，在go语言中go只是一个关键字，要了解go关键字的功能实现在哪里（比如哪个函数）还是需要翻很多代码的。
 
 关于libmill的简介，我们先简单提这些，下面再慢慢展开。
 
