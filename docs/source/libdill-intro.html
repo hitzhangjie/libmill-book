@@ -57,7 +57,7 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="stack-memory.html" />
+    <link rel="next" href="../libmill-chan.html" />
     
     
     <link rel="prev" href="libmill-intro.html" />
@@ -122,9 +122,9 @@
         
         
     
-        <li class="chapter " data-level="2.1" data-path="server-programming-model.html">
+        <li class="chapter " data-level="2.1" data-path="../basics/server-programming-model.html">
             
-                <a href="server-programming-model.html">
+                <a href="../basics/server-programming-model.html">
             
                     
                     服务编程模型
@@ -135,9 +135,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.2" data-path="process-thread-coroutine.html">
+        <li class="chapter " data-level="2.2" data-path="../basics/process-thread-coroutine.html">
             
-                <a href="process-thread-coroutine.html">
+                <a href="../basics/process-thread-coroutine.html">
             
                     
                     进程, 线程, 协程
@@ -148,35 +148,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.3" data-path="libmill-intro.html">
+        <li class="chapter " data-level="2.3" data-path="../basics/stack-memory.html">
             
-                <a href="libmill-intro.html">
-            
-                    
-                    libmill协程库
-            
-                </a>
-            
-
-            
-        </li>
-    
-        <li class="chapter active" data-level="2.4" data-path="libdill-intro.html">
-            
-                <a href="libdill-intro.html">
-            
-                    
-                    libdill协程库
-            
-                </a>
-            
-
-            
-        </li>
-    
-        <li class="chapter " data-level="2.5" data-path="stack-memory.html">
-            
-                <a href="stack-memory.html">
+                <a href="../basics/stack-memory.html">
             
                     
                     栈空间分配
@@ -187,9 +161,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.6" data-path="context-switching.html">
+        <li class="chapter " data-level="2.4" data-path="../basics/context-switching.html">
             
-                <a href="context-switching.html">
+                <a href="../basics/context-switching.html">
             
                     
                     上下文切换
@@ -200,9 +174,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.7" data-path="context-switching-cost.html">
+        <li class="chapter " data-level="2.5" data-path="../basics/context-switching-cost.html">
             
-                <a href="context-switching-cost.html">
+                <a href="../basics/context-switching-cost.html">
             
                     
                     上下文切换开销
@@ -213,9 +187,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.8" data-path="thread-model.html">
+        <li class="chapter " data-level="2.6" data-path="../basics/thread-model.html">
             
-                <a href="thread-model.html">
+                <a href="../basics/thread-model.html">
             
                     
                     线程模型
@@ -232,6 +206,32 @@
         <li class="header">Part II - 源码分析</li>
         
         
+    
+        <li class="chapter " data-level="3.1" data-path="libmill-intro.html">
+            
+                <a href="libmill-intro.html">
+            
+                    
+                    libmill协程库
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="3.2" data-path="libdill-intro.html">
+            
+                <a href="libdill-intro.html">
+            
+                    
+                    libdill协程库
+            
+                </a>
+            
+
+            
+        </li>
     
 
     
@@ -582,7 +582,7 @@
                 </a>
                 
                 
-                <a href="stack-memory.html" class="navigation navigation-next " aria-label="Next page: 栈空间分配">
+                <a href="../libmill-chan.html" class="navigation navigation-next " aria-label="Next page: chan: 通过通信来共享">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -593,7 +593,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"description":"libmill是Martin Sustrik发起的一个go风格协程库，这个协程库其实已经可以满足很多场景的使用了，已经超越了现如今绝大部分c协程库函数的实现了。但是，它还有个更强大的版本libdill，来支持更多的使用场景。不禁想起一句话，”当我们需要一个新特性的时候，我们真的需要发明一个语言吗？”，maybe! maybe not!","title":"libdill协程库","level":"2.4","depth":1,"next":{"title":"栈空间分配","level":"2.5","depth":1,"path":"basics/stack-memory.md","ref":"basics/stack-memory.md","articles":[]},"previous":{"title":"libmill协程库","level":"2.3","depth":1,"path":"basics/libmill-intro.md","ref":"basics/libmill-intro.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"basics/libdill-intro.md","mtime":"2021-03-25T18:20:16.896Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-03-28T04:50:09.740Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"description":"libmill是Martin Sustrik发起的一个go风格协程库，这个协程库其实已经可以满足很多场景的使用了，已经超越了现如今绝大部分c协程库函数的实现了。但是，它还有个更强大的版本libdill，来支持更多的使用场景。不禁想起一句话，”当我们需要一个新特性的时候，我们真的需要发明一个语言吗？”，maybe! maybe not!","title":"libdill协程库","level":"3.2","depth":1,"next":{"title":"chan: 通过通信来共享","level":"4.1","depth":1,"path":"libmill-chan.md","ref":"libmill-chan.md","articles":[]},"previous":{"title":"libmill协程库","level":"3.1","depth":1,"path":"source/libmill-intro.md","ref":"source/libmill-intro.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"source/libdill-intro.md","mtime":"2021-03-28T17:40:01.472Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-03-28T17:40:04.482Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

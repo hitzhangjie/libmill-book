@@ -57,7 +57,7 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="libmill-intro.html" />
+    <link rel="next" href="stack-memory.html" />
     
     
     <link rel="prev" href="server-programming-model.html" />
@@ -148,33 +148,7 @@
             
         </li>
     
-        <li class="chapter " data-level="2.3" data-path="libmill-intro.html">
-            
-                <a href="libmill-intro.html">
-            
-                    
-                    libmill协程库
-            
-                </a>
-            
-
-            
-        </li>
-    
-        <li class="chapter " data-level="2.4" data-path="libdill-intro.html">
-            
-                <a href="libdill-intro.html">
-            
-                    
-                    libdill协程库
-            
-                </a>
-            
-
-            
-        </li>
-    
-        <li class="chapter " data-level="2.5" data-path="stack-memory.html">
+        <li class="chapter " data-level="2.3" data-path="stack-memory.html">
             
                 <a href="stack-memory.html">
             
@@ -187,7 +161,7 @@
             
         </li>
     
-        <li class="chapter " data-level="2.6" data-path="context-switching.html">
+        <li class="chapter " data-level="2.4" data-path="context-switching.html">
             
                 <a href="context-switching.html">
             
@@ -200,7 +174,7 @@
             
         </li>
     
-        <li class="chapter " data-level="2.7" data-path="context-switching-cost.html">
+        <li class="chapter " data-level="2.5" data-path="context-switching-cost.html">
             
                 <a href="context-switching-cost.html">
             
@@ -213,7 +187,7 @@
             
         </li>
     
-        <li class="chapter " data-level="2.8" data-path="thread-model.html">
+        <li class="chapter " data-level="2.6" data-path="thread-model.html">
             
                 <a href="thread-model.html">
             
@@ -232,6 +206,32 @@
         <li class="header">Part II - 源码分析</li>
         
         
+    
+        <li class="chapter " data-level="3.1" data-path="../source/libmill-intro.html">
+            
+                <a href="../source/libmill-intro.html">
+            
+                    
+                    libmill协程库
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.2" data-path="../source/libdill-intro.html">
+            
+                <a href="../source/libdill-intro.html">
+            
+                    
+                    libdill协程库
+            
+                </a>
+            
+
+            
+        </li>
     
 
     
@@ -627,7 +627,7 @@
                 </a>
                 
                 
-                <a href="libmill-intro.html" class="navigation navigation-next " aria-label="Next page: libmill协程库">
+                <a href="stack-memory.html" class="navigation navigation-next " aria-label="Next page: 栈空间分配">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -638,7 +638,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"description":"进程、线程的概念在学习操作系统基本原理时，大家都有一定的掌握，协程前面也已经简单介绍了。这些理论基础是重要的，但是还不够。落地一项技术会涉及到具体平台相关的内容，协程实现也不例外。这一节我们结合Linux操作系统，来详细了解下进程、线程的真面目，以及如何利用Linux、c库提供的基础设施来实现协程。","title":"进程, 线程, 协程","level":"2.2","depth":1,"next":{"title":"libmill协程库","level":"2.3","depth":1,"path":"basics/libmill-intro.md","ref":"basics/libmill-intro.md","articles":[]},"previous":{"title":"服务编程模型","level":"2.1","depth":1,"path":"basics/server-programming-model.md","ref":"basics/server-programming-model.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"basics/process-thread-coroutine.md","mtime":"2021-03-28T04:49:58.762Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-03-28T04:50:09.740Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"description":"进程、线程的概念在学习操作系统基本原理时，大家都有一定的掌握，协程前面也已经简单介绍了。这些理论基础是重要的，但是还不够。落地一项技术会涉及到具体平台相关的内容，协程实现也不例外。这一节我们结合Linux操作系统，来详细了解下进程、线程的真面目，以及如何利用Linux、c库提供的基础设施来实现协程。","title":"进程, 线程, 协程","level":"2.2","depth":1,"next":{"title":"栈空间分配","level":"2.3","depth":1,"path":"basics/stack-memory.md","ref":"basics/stack-memory.md","articles":[]},"previous":{"title":"服务编程模型","level":"2.1","depth":1,"path":"basics/server-programming-model.md","ref":"basics/server-programming-model.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"basics/process-thread-coroutine.md","mtime":"2021-03-28T04:49:58.762Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-03-28T17:40:04.482Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

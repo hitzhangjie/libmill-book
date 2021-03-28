@@ -60,7 +60,7 @@
     <link rel="next" href="coroutine-libmill.html" />
     
     
-    <link rel="prev" href="basics/thread-model.html" />
+    <link rel="prev" href="source/libdill-intro.html" />
     
 
     </head>
@@ -148,33 +148,7 @@
             
         </li>
     
-        <li class="chapter " data-level="2.3" data-path="basics/libmill-intro.html">
-            
-                <a href="basics/libmill-intro.html">
-            
-                    
-                    libmill协程库
-            
-                </a>
-            
-
-            
-        </li>
-    
-        <li class="chapter " data-level="2.4" data-path="basics/libdill-intro.html">
-            
-                <a href="basics/libdill-intro.html">
-            
-                    
-                    libdill协程库
-            
-                </a>
-            
-
-            
-        </li>
-    
-        <li class="chapter " data-level="2.5" data-path="basics/stack-memory.html">
+        <li class="chapter " data-level="2.3" data-path="basics/stack-memory.html">
             
                 <a href="basics/stack-memory.html">
             
@@ -187,7 +161,7 @@
             
         </li>
     
-        <li class="chapter " data-level="2.6" data-path="basics/context-switching.html">
+        <li class="chapter " data-level="2.4" data-path="basics/context-switching.html">
             
                 <a href="basics/context-switching.html">
             
@@ -200,7 +174,7 @@
             
         </li>
     
-        <li class="chapter " data-level="2.7" data-path="basics/context-switching-cost.html">
+        <li class="chapter " data-level="2.5" data-path="basics/context-switching-cost.html">
             
                 <a href="basics/context-switching-cost.html">
             
@@ -213,7 +187,7 @@
             
         </li>
     
-        <li class="chapter " data-level="2.8" data-path="basics/thread-model.html">
+        <li class="chapter " data-level="2.6" data-path="basics/thread-model.html">
             
                 <a href="basics/thread-model.html">
             
@@ -232,6 +206,32 @@
         <li class="header">Part II - 源码分析</li>
         
         
+    
+        <li class="chapter " data-level="3.1" data-path="source/libmill-intro.html">
+            
+                <a href="source/libmill-intro.html">
+            
+                    
+                    libmill协程库
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.2" data-path="source/libdill-intro.html">
+            
+                <a href="source/libdill-intro.html">
+            
+                    
+                    libdill协程库
+            
+                </a>
+            
+
+            
+        </li>
     
 
     
@@ -549,7 +549,12 @@
                                 <section class="normal markdown-section">
                                 
                                 <h1 id="chan-&#x901A;&#x8FC7;&#x901A;&#x4FE1;&#x6765;&#x5171;&#x4EAB;">chan: &#x901A;&#x8FC7;&#x901A;&#x4FE1;&#x6765;&#x5171;&#x4EAB;</h1>
-<p>&#x201C;<strong>&#x901A;&#x8FC7;&#x901A;&#x4FE1;&#x6765;&#x5171;&#x4EAB;&#x6570;&#x636E;&#xFF0C;&#x800C;&#x975E;&#x901A;&#x8FC7;&#x5171;&#x4EAB;&#x6570;&#x636E;&#x6765;&#x901A;&#x4FE1;</strong>&#x201D;&#xFF0C;&#x8FD9;&#x662F;golang&#x91CC;chan&#x7684;&#x8BBE;&#x8BA1;&#x601D;&#x60F3;&#xFF0C;libmill&#x4E2D;&#x4E5F;&#x57FA;&#x4E8E;&#x8FD9;&#x4E00;&#x601D;&#x60F3;&#x5B9E;&#x73B0;&#x4E86;chan&#x3002;chan&#x53EF;&#x4EE5;&#x7406;&#x89E3;&#x4E3A;&#x7BA1;&#x9053;&#x3002;</p>
+<h2 id="&#x8BBE;&#x8BA1;&#x601D;&#x60F3;">&#x8BBE;&#x8BA1;&#x601D;&#x60F3;</h2>
+<p>&#x901A;&#x4FE1;&#x4E32;&#x884C;&#x5904;&#x7406;&#xFF08;CSP&#xFF09;&#x548C;&#x6838;&#x5FC3;&#x601D;&#x60F3;&#x662F;&#xFF0C;&#x201C;<strong>&#x901A;&#x8FC7;&#x901A;&#x4FE1;&#x6765;&#x5171;&#x4EAB;&#x6570;&#x636E;&#xFF0C;&#x800C;&#x975E;&#x901A;&#x8FC7;&#x5171;&#x4EAB;&#x6570;&#x636E;&#x6765;&#x901A;&#x4FE1;</strong>&#x201D;&#xFF0C;&#x8FD9;&#x662F;&#x4E5F;&#x662F;&#x6307;&#x5BFC;go&#x8BED;&#x8A00;chan&#x7684;&#x8BBE;&#x8BA1;&#x601D;&#x60F3;&#xFF0C;libmill&#x4E2D;&#x4E5F;&#x57FA;&#x4E8E;&#x8FD9;&#x4E00;&#x601D;&#x60F3;&#x5B9E;&#x73B0;&#x4E86;chan&#x3002;chan&#x53EF;&#x4EE5;&#x7406;&#x89E3;&#x4E3A;&#x7BA1;&#x9053;&#xFF0C;&#x5F53;&#x6709;&#x591A;&#x4E2A;&#x5E76;&#x53D1;&#x4EFB;&#x52A1;&#x5B9E;&#x4F53;&#x8981;&#x5171;&#x4EAB;&#x6570;&#x636E;&#x65F6;&#xFF0C;&#x901A;&#x8FC7;&#x8FD9;&#x4E2A;chan&#x5C06;&#x6570;&#x636E;&#x4F20;&#x9012;&#x7ED9;&#x5BF9;&#x65B9;&#xFF0C;&#x800C;&#x975E;&#x901A;&#x8FC7;&#x5171;&#x4EAB;&#x5B58;&#x50A8;&#x5668;&#x6570;&#x636E;&#x7684;&#x65B9;&#x5F0F;&#x3002;</p>
+<p>&#x91C7;&#x7528;&#x5171;&#x4EAB;&#x5B58;&#x50A8;&#x5668;&#x6570;&#x636E;&#x7684;&#x65B9;&#x5F0F;&#xFF0C;&#x4E5F;&#x662F;&#x4E00;&#x79CD;&#x601D;&#x8DEF;&#xFF0C;&#x4F46;&#x662F;&#x5C31;&#x8981;&#x6D89;&#x53CA;&#x5230;&#x4E00;&#x4E9B;&#x540C;&#x6B65;&#x4E92;&#x65A5;&#x7684;&#x5904;&#x7406;&#xFF0C;&#x8FD9;&#x7ED9;&#x5E76;&#x53D1;&#x7F16;&#x7A0B;&#x5E26;&#x6765;&#x4E86;&#x4E0D;&#x5C0F;&#x7684;&#x8D1F;&#x62C5;&#xFF0C;&#x7ECF;&#x5E38;&#x4F1A;&#x6709;&#x529F;&#x80FD;&#x6B63;&#x786E;&#x6027;&#x95EE;&#x9898;&#x3001;&#x6027;&#x80FD;&#x5DEE;&#x95EE;&#x9898;&#x51FA;&#x73B0;&#xFF0C;&#x5F00;&#x53D1;&#x6548;&#x7387;&#x4E5F;&#x4F4E;&#x3002;</p>
+<p>&#x73B0;&#x5728;&#x901A;&#x8FC7;CSP&#x7684;&#x65B9;&#x5F0F;&#xFF0C;&#x6211;&#x4EEC;&#x5C06;&#x8981;&#x5171;&#x4EAB;&#x7684;&#x6570;&#x636E;&#x4EE5;&#x503C;&#x7684;&#x5F62;&#x5F0F;&#x901A;&#x8FC7;chan&#x53D1;&#x9001;&#x7ED9;&#x5BF9;&#x65B9;&#xFF0C;&#x63A5;&#x6536;&#x5230;&#x8FD9;&#x4E2A;&#x503C;&#x7684;&#x534F;&#x7A0B;&#x53D8;&#x4E3A;&#x8FD9;&#x4E2A;&#x503C;&#x7684;owner&#xFF0C;&#x518D;&#x7EE7;&#x7EED;&#x8FDB;&#x884C;&#x540E;&#x7EED;&#x5904;&#x7406;&#x3002;&#x601D;&#x8DEF;&#x6E05;&#x6670;&#x3001;&#x7F16;&#x7801;&#x7B80;&#x5355;&#x3001;&#x6027;&#x80FD;&#x4E5F;&#x597D;&#x3002;</p>
+<p>ps&#xFF1A;&#x81F3;&#x4E8E;&#x4E3A;&#x4EC0;&#x4E48;&#x6027;&#x80FD;&#x597D;&#xFF0C;&#x9700;&#x8981;&#x4E86;&#x89E3;&#x4E0B;&#x8FDB;&#x7A0B;&#x3001;&#x7EBF;&#x7A0B;&#x5B9E;&#x73B0;&#x540C;&#x6B65;&#x4E92;&#x65A5;&#x6240;&#x4F9D;&#x8D56;&#x7684;futex&#x5177;&#x4F53;&#x5DE5;&#x4F5C;&#x539F;&#x7406;&#xFF0C;&#x4E5F;&#x9700;&#x8981;&#x4E86;&#x89E3;&#x4E0B;chan&#x7684;&#x5B9E;&#x73B0;&#x539F;&#x7406;&#xFF0C;&#x4EE5;go&#x4E3A;&#x4F8B;&#xFF0C;chan&#x5185;&#x90E8;&#x6709;&#x9501;&#x4FDD;&#x62A4;&#x961F;&#x5217;&#xFF0C;&#x4F46;&#x662F;&#x8FD9;&#x91CC;&#x7684;&#x9501;&#x4E5F;&#x662F;&#x57FA;&#x4E8E;sync.Mutex&#x5B9E;&#x73B0;&#x7684;&#xFF0C;&#x4E0D;&#x662F;&#x57FA;&#x4E8E;futex&#x7684;&#x3002;</p>
+<h2 id="&#x6E90;&#x7801;&#x5B9E;&#x73B0;">&#x6E90;&#x7801;&#x5B9E;&#x73B0;</h2>
 <p><strong>file: chan.h</strong></p>
 <pre><code class="lang-c"><span class="hljs-comment">// choose&#x8BED;&#x53E5;&#x662F;&#x6839;&#x636E;chan&#x7684;&#x72B6;&#x6001;&#x6765;&#x51B3;&#x5B9A;&#x662F;&#x5426;&#x6267;&#x884C;&#x5BF9;&#x5E94;&#x52A8;&#x4F5C;&#x7684;&#x5206;&#x652F;&#x63A7;&#x5236;&#x8BED;&#x53E5;</span>
 <span class="hljs-comment">//</span>
@@ -1032,7 +1037,7 @@
 
             
                 
-                <a href="basics/thread-model.html" class="navigation navigation-prev " aria-label="Previous page: 线程模型">
+                <a href="source/libdill-intro.html" class="navigation navigation-prev " aria-label="Previous page: libdill协程库">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
@@ -1048,7 +1053,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"description":"libmill是一个基于c语言开发的go风格协程库，实现了go风格的协程操作、chan操作、非阻塞的网络io操作等等，是一个不错的linux平台下c风格协程库实现。如果你想从0到1的快速了解如何开发一个协程库，libmill将是一个非常不错的案例；如果你想更深入地了解go，libmill里面也借鉴了go的一些设计思想；或者你想在生产环境中使用，开发者也提供了一个更健壮的版本libdill。","title":"chan: 通过通信来共享","level":"4.1","depth":1,"next":{"title":"coroutine: libmill.h","level":"5.1","depth":1,"path":"coroutine-libmill.md","ref":"coroutine-libmill.md","articles":[]},"previous":{"title":"线程模型","level":"2.8","depth":1,"path":"basics/thread-model.md","ref":"basics/thread-model.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"libmill-chan.md","mtime":"2021-03-25T18:20:16.961Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-03-28T04:50:09.740Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"description":"libmill是一个基于c语言开发的go风格协程库，实现了go风格的协程操作、chan操作、非阻塞的网络io操作等等，是一个不错的linux平台下c风格协程库实现。如果你想从0到1的快速了解如何开发一个协程库，libmill将是一个非常不错的案例；如果你想更深入地了解go，libmill里面也借鉴了go的一些设计思想；或者你想在生产环境中使用，开发者也提供了一个更健壮的版本libdill。","title":"chan: 通过通信来共享","level":"4.1","depth":1,"next":{"title":"coroutine: libmill.h","level":"5.1","depth":1,"path":"coroutine-libmill.md","ref":"coroutine-libmill.md","articles":[]},"previous":{"title":"libdill协程库","level":"3.2","depth":1,"path":"source/libdill-intro.md","ref":"source/libdill-intro.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"libmill-chan.md","mtime":"2021-03-28T17:40:01.471Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-03-28T17:40:04.482Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

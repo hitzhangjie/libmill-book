@@ -148,33 +148,7 @@
             
         </li>
     
-        <li class="chapter " data-level="2.3" data-path="libmill-intro.html">
-            
-                <a href="libmill-intro.html">
-            
-                    
-                    libmill协程库
-            
-                </a>
-            
-
-            
-        </li>
-    
-        <li class="chapter " data-level="2.4" data-path="libdill-intro.html">
-            
-                <a href="libdill-intro.html">
-            
-                    
-                    libdill协程库
-            
-                </a>
-            
-
-            
-        </li>
-    
-        <li class="chapter " data-level="2.5" data-path="stack-memory.html">
+        <li class="chapter " data-level="2.3" data-path="stack-memory.html">
             
                 <a href="stack-memory.html">
             
@@ -187,7 +161,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="2.6" data-path="context-switching.html">
+        <li class="chapter active" data-level="2.4" data-path="context-switching.html">
             
                 <a href="context-switching.html">
             
@@ -200,7 +174,7 @@
             
         </li>
     
-        <li class="chapter " data-level="2.7" data-path="context-switching-cost.html">
+        <li class="chapter " data-level="2.5" data-path="context-switching-cost.html">
             
                 <a href="context-switching-cost.html">
             
@@ -213,7 +187,7 @@
             
         </li>
     
-        <li class="chapter " data-level="2.8" data-path="thread-model.html">
+        <li class="chapter " data-level="2.6" data-path="thread-model.html">
             
                 <a href="thread-model.html">
             
@@ -232,6 +206,32 @@
         <li class="header">Part II - 源码分析</li>
         
         
+    
+        <li class="chapter " data-level="3.1" data-path="../source/libmill-intro.html">
+            
+                <a href="../source/libmill-intro.html">
+            
+                    
+                    libmill协程库
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.2" data-path="../source/libdill-intro.html">
+            
+                <a href="../source/libdill-intro.html">
+            
+                    
+                    libdill协程库
+            
+                </a>
+            
+
+            
+        </li>
     
 
     
@@ -791,7 +791,7 @@ int  swapcontext(ucontext_t *, const ucontext_t *);
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"description":"我们先来介绍下上下文切换具体指的是什么、有哪些实现上下文切换的方法，在下一节我们将进一步探讨下上下文切换的开销以及如何优化。","title":"上下文切换","level":"2.6","depth":1,"next":{"title":"上下文切换开销","level":"2.7","depth":1,"path":"basics/context-switching-cost.md","ref":"basics/context-switching-cost.md","articles":[]},"previous":{"title":"栈空间分配","level":"2.5","depth":1,"path":"basics/stack-memory.md","ref":"basics/stack-memory.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"basics/context-switching.md","mtime":"2021-03-28T04:49:58.762Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-03-28T04:50:09.740Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"description":"我们先来介绍下上下文切换具体指的是什么、有哪些实现上下文切换的方法，在下一节我们将进一步探讨下上下文切换的开销以及如何优化。","title":"上下文切换","level":"2.4","depth":1,"next":{"title":"上下文切换开销","level":"2.5","depth":1,"path":"basics/context-switching-cost.md","ref":"basics/context-switching-cost.md","articles":[]},"previous":{"title":"栈空间分配","level":"2.3","depth":1,"path":"basics/stack-memory.md","ref":"basics/stack-memory.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"basics/context-switching.md","mtime":"2021-03-28T04:49:58.762Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-03-28T17:40:04.482Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
