@@ -102,9 +102,9 @@ PCID本身也是有开销的，具体来说，当在某个CPU上的页式映射�
 
 ![](../.gitbook/assets/image%20%2819%29.png)
 
-如上图所示，我们拿一个真实线上机器来看下，`vmstat 1` 观察有近6w次/s的上下文切换，机器8个核，平均下来每个核上发生的上下文次数在7500次/秒，一次的上下文切换时间大约在2.4微秒（线程）。这里的结果只是一个根据截图数据的估算值，进一步考虑间接引入的开销，如各种cache miss等，切换耗时占比应该比这里的估算值要高。
+如上图所示，我们拿一个真实线上机器来看下，`vmstat 1` 输出信息中列cs表示上下文切换次数，我们可以观察到不同任务的上下文切换次数。
 
-## 上下文切换优化
+前面展示的量化方法中提及一次上下文切换时间最快为1.2微秒（线程+CPU亲和性），我们姑且认为这个结果可信，我们来考虑下这1.2微秒内能发生什么。
 
 ### 1.2μs意味着什么
 
@@ -114,48 +114,31 @@ PCID本身也是有开销的，具体来说，当在某个CPU上的页式映射�
 
 对于CPU而言，CPI（平均指令时钟周期数）可以描述超标量流水线计算机执行指令时的并行情况如何。再就是IPS，表示每秒可以执行的指令数量。维基百科对不同处理器型号的效率进行了统计，详见：[https://en.wikipedia.org/wiki/Instructions\_per\_second\#:~:text=Instructions%20per%20second%20\(IPS\)%20is,IPS%20measurement%20can%20be%20problematic.](https://en.wikipedia.org/wiki/Instructions_per_second#:~:text=Instructions%20per%20second%20%28IPS%29%20is,IPS%20measurement%20can%20be%20problematic.)
 
-可见图中处理器[Intel Core i7 920](https://en.wikipedia.org/wiki/Intel_Core_i7) \(4-core\) 工作在8.93GHz下，每秒约执行82300 MIPS条指令。
+可见图中处理器[Intel Core i7 920](https://en.wikipedia.org/wiki/Intel_Core_i7) \(4-core\) 工作在8.93GHz下，每秒约执行82300 MIPS（百万）条指令，那1.2微秒也就相当于可以执行82300条指令，天呐，一次上下文切换的时间竟然能够执行82300条指令啦。即使上下文切换不能避免，也应该尽量减少上下文切换的开销。
 
-因此上下文切换如果不能避免，也应该尽量减少上下文读写的开销，比如只保留少量寄存器的信息用来存储上下文信息。
+## 减少上下文切换开销
 
-ps：上下文切换很重要，它是实现多任务的基石，不要断章取义哦。
-
-### 减少上下文信息量
+### 精简上下文数据
 
 在表示一个用户态协程上下文时，并不是处理器中所有寄存器都会用到，所以就可以对ucontext\_t中那些没用的寄存器进行阉割，以降低处理器读写内存时的延时。
 
-TODO 结构体定义
+### 考虑CPU亲和性
 
-## go cheaper context switch
+考虑CPU亲和性，任务切换时尽量将任务切换回原来执行的CPU核心上，以减少CPU cache miss的几率。
 
-#### [https://morioh.com/p/36af32e3f52c](https://morioh.com/p/36af32e3f52c) <a id="thread-context-switch"></a>
+### 其他可行方法
 
-#### Thread Context Switch <a id="thread-context-switch"></a>
+应该也有一些其他的方法用来减少上下文切换的开销，特别是上下切换间接引入的部分，比如前面提及的PCID对TLB的精细化管理，等等，这可能跟操作系统、硬件都有关系了。
 
-Interrupt processing, multi-tasking, user-mode switching, and other reasons will cause the CPU to switch from one thread to another thread. The switching process needs to save the state of the current process and restore the state of another.
+## 考虑下协程切换
 
-The cost of context switching is high since swapping threads on the core takes a lot of time. The delay of context switching depends on different factors, probably between 50 and 100 nanoseconds. Considering that the hardware performs an average of 12 instructions per nanosecond on each core, then a context switch may take between 600 and 1200 instructions of latency. In fact, context switching takes up a lot of time for the program to execute instructions.
+前面我们介绍了上下文切换的开销类型，介绍了一种量化上下文开销的方法，并看到了大致的一个上下文切换的结果数据，有了一点直观的感受。然后我们提及了几种可行的减少上下文切换开销的可行方法。
 
-If there is a **Cross-Core Context Switch**, it may cause the CPU cache to fail. \(the cost of CPU accessing data from the cache is about 3 to 40 clock cycles, and the cost of accessing data from main memory is about 100 to 300 clock cycles \). The switching cost of this scenario will be more expensive.
+现在是时候认真考虑下协程相关的问题了，我们也已经知道，协程相对进程、线程会更加轻量，包括其初始栈内存大小、上下文信息、创建销毁速度，等等。那不禁要问，协程的上下文是长什么样子，和进程、线程有什么差别呢？
 
-### Go is born for concurrency <a id="go-is-born-for-concurrency"></a>
+以go语言为例，goroutine上下文切换的成本很低，goroutine上下文切换仅涉及三个寄存器（PC、SP、DX）的修改，那线程呢？线程的上下文切换需要包括模式切换（从用户模式切换到内核模式） 和PC、SP等16个寄存器的修改。开销谁大谁小一看便知。
 
-Since its official release in 2009, Golang has quickly gained market share due to its extremely high operating speed and efficient development efficiency. Golang supports concurrency from the language level and uses lightweight coroutines to implement concurrent programs.
-
-Goroutine is very lightweight, mainly reflected in the following two aspects:
-
-* The cost of context switching is low: Goroutine context switching involves only the modification of the value of three registers\(PC / SP / DX\) while the context switching of the comparison thread needs to include mode switching \(switching from user mode to kernel mode\) and 16 registers, PC, SP, etc. register refresh
-* Less memory usage: thread stack space is usually 2M, Goroutine stack space is at least 2K;
-
-Go programs can easily support six figures concurrent Goroutine operation, and when the number of threads reaches 1k, the memory consumption has reached 2G.
-
-## measure the timecost of context switch
-
-[https://blog.tsunanet.net/2010/11/how-long-does-it-take-to-make-context.html](https://blog.tsunanet.net/2010/11/how-long-does-it-take-to-make-context.html)
-
-
-
-参考资料：
+## 参考资料
 
 1. what is the overhead of a context switch, [https://stackoverflow.com/questions/21887797/what-is-the-overhead-of-a-context-switch/54057079\#54057079](https://stackoverflow.com/questions/21887797/what-is-the-overhead-of-a-context-switch/54057079#54057079)
 2. linux kernel documentation, [https://sourcegraph.com/github.com/torvalds/linux/-/blob/Documentation/x86/pti.rst\#L116](https://sourcegraph.com/github.com/torvalds/linux/-/blob/Documentation/x86/pti.rst#L116)
@@ -165,4 +148,6 @@ Go programs can easily support six figures concurrent Goroutine operation, and w
 6. user-level threads...with threads, Paul Turner, Google, [https://www.youtube.com/watch?v=KXuZi9aeGTw&feature=youtu.be](https://www.youtube.com/watch?v=KXuZi9aeGTw&feature=youtu.be)
 7. 超标量处理器流水线，[https://zhuanlan.zhihu.com/p/195008675](https://zhuanlan.zhihu.com/p/195008675)
 8. instruction per second，[https://en.wikipedia.org/wiki/Instructions\_per\_second\#:~:text=Instructions%20per%20second%20\(IPS\)%20is,IPS%20measurement%20can%20be%20problematic.](https://en.wikipedia.org/wiki/Instructions_per_second#:~:text=Instructions%20per%20second%20%28IPS%29%20is,IPS%20measurement%20can%20be%20problematic.)
+9. how long does it take to make context, [https://blog.tsunanet.net/2010/11/how-long-does-it-take-to-make-context.html](https://blog.tsunanet.net/2010/11/how-long-does-it-take-to-make-context.html)
+10. why go so fast, [**https://morioh.com/p/36af32e3f52c**](https://morioh.com/p/36af32e3f52c)\*\*\*\*
 
