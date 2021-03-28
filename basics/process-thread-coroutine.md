@@ -64,9 +64,7 @@ Linux里面提供了task group，sched\_entity可以描述一个特定进程的�
 
 libmill作为一个go风格协程库的简单实现，它也是不支持栈空间动态伸缩的，libdill则是在libmill基础上的进一步升级，它支持协程栈大小的动态伸缩，能够适应更多应用场景，在生产环境中使用时，libdill则更值得选择。本书出于学习目的，就以libmill来作为学习材料了，背后的原理也是大同小异的。
 
-
-
-参考文献：
+## 参考资料
 
 \[1\] [Marty Kalin](https://opensource.com/users/mkalindepauledu), fair-scheduling-linux, [https://opensource.com/article/19/2/fair-scheduling-linux](https://opensource.com/article/19/2/fair-scheduling-linux)
 
